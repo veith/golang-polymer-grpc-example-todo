@@ -1,0 +1,86 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "auth.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/auth": {
+      "delete": {
+        "summary": "Ausloggen, setzt nur den cookie auf leer, kann später die jwt.id revoken",
+        "operationId": "Logout",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protobufEmpty"
+            }
+          }
+        },
+        "tags": [
+          "AuthService"
+        ]
+      },
+      "post": {
+        "summary": "Einloggen,\nDer Login setzt Header und Cookies, darum kein Body",
+        "operationId": "Login",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protobufEmpty"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protoCredentials"
+            }
+          }
+        ],
+        "tags": [
+          "AuthService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protoCredentials": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "title": "Eine ULID"
+        },
+        "password": {
+          "type": "string",
+          "title": "Titel des Tasks"
+        },
+        "secondFactor": {
+          "type": "string",
+          "title": "String für zweiten Faktor"
+        }
+      },
+      "title": "Username Passwort"
+    },
+    "protobufEmpty": {
+      "type": "object",
+      "description": "service Foo {\n      rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);\n    }\n\nThe JSON representation for `Empty` is empty JSON object `{}`.",
+      "title": "A generic empty message that you can re-use to avoid defining duplicated\nempty messages in your APIs. A typical example is to use it as the request\nor the response type of an API method. For instance:"
+    }
+  }
+}

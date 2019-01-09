@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package furoDesigner.proto;
+
+option go_package = "auth";
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+
+
+service AuthService {
+
+    // Ausloggen, setzt nur den cookie auf leer, kann später die jwt.id revoken
+    rpc Logout (google.protobuf.Empty) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+			delete: "/auth"
+		};
+    }
+
+    // Einloggen,
+    // Der Login setzt Header und Cookies, darum kein Body
+    rpc Login (CredentialsRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+			post: "/auth"
+			body: "credentials"
+		};
+    }
+}
+
+message User{
+    int64 id = 1  [(gogoproto.moretags) = "db:\"username,pk,omitempty\""];
+    // Eine ULID
+    string username = 2 [(gogoproto.moretags) = "db:\"username\""];
+    // Titel des Tasks
+    string password = 3 [(gogoproto.moretags) = "db:\"password,omitempty\""];
+}
+
+// Username Passwort
+message Credentials{
+    // Eine ULID
+    string username = 1;
+    // Titel des Tasks
+    string password = 2;
+    // String für zweiten Faktor
+    string secondFactor = 3;
+}
+
+message CredentialsRequest{
+    Credentials credentials = 1;
+}

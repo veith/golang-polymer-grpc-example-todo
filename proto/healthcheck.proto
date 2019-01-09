@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package furoDesigner.proto;
+option go_package = "healthcheck";
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+
+// Einfacher Service um zu prüfen ob furoDesigner noch reagiert.
+service HealthCheck {
+    rpc Check(google.protobuf.Empty) returns (google.protobuf.Empty){
+        option (google.api.http) = {
+			get: "/_healthcheck"
+		};
+    }
+}
