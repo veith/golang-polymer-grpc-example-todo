@@ -14,6 +14,7 @@ fi
 
 echo "Generating $1.pb.go"
 echo "Generating $1.pb.gw.go"
+echo "Generating doc/$1.swagger.json"
 
 protoc -I. \
 -I/usr/local/include \
