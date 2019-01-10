@@ -12,7 +12,8 @@ then
      mkdir $1
 fi
 
-echo "Generating $1"
+echo "Generating $1.pb.go"
+echo "Generating $1.pb.gw.go"
 
 protoc -I. \
 -I/usr/local/include \
