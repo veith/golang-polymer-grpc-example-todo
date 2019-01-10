@@ -8,19 +8,19 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-var RegisterTaskServiceServer = proto.RegisterTaskServiceServer
+var RegisterServiceServer = proto.RegisterTaskServiceServer
 
 // Gibt den grpc ServiceServer zurück
 func GetServiceServer() proto.TaskServiceServer {
-	var s taskServiceServer
+	var s serviceServer
 	return &s
 }
 
-// taskServiceServer is used to implement taskServiceServer.
-type taskServiceServer struct {
+// serviceServer is used to implement taskServiceServer.
+type serviceServer struct {
 }
 
-func (s *taskServiceServer) CompleteTask(ctx context.Context, req *proto.CompleteTaskRequest) (*proto.TaskEntity, error) {
+func (s *serviceServer) CompleteTask(ctx context.Context, req *proto.CompleteTaskRequest) (*proto.TaskEntity, error) {
 	taskID, _ := ulid.Parse(req.Id)
 	item, err := CompleteTaskItem(taskID)
 	entity := proto.TaskEntity{Data: MapTaskToProtoTask(&item), Links: GenerateEntityHateoas(item.Id.String()).Links}
@@ -28,13 +28,13 @@ func (s *taskServiceServer) CompleteTask(ctx context.Context, req *proto.Complet
 	return &entity, err
 }
 
-func (s *taskServiceServer) CreateTask(ctx context.Context, req *proto.CreateTaskRequest) (*proto.TaskEntity, error) {
+func (s *serviceServer) CreateTask(ctx context.Context, req *proto.CreateTaskRequest) (*proto.TaskEntity, error) {
 	item, err := CreateTaskItem(MapProtoTaskToTask(req.Item))
 	entity := proto.TaskEntity{Data: MapTaskToProtoTask(&item), Links: GenerateEntityHateoas(item.Id.String()).Links}
 	return &entity, err
 }
 
-func (s *taskServiceServer) DeleteTask(ctx context.Context, req *proto.DeleteTaskRequest) (*proto.DeleteTaskResponse, error) {
+func (s *serviceServer) DeleteTask(ctx context.Context, req *proto.DeleteTaskRequest) (*proto.DeleteTaskResponse, error) {
 	taskID, _ := ulid.Parse(req.Id)
 	err := DeleteTaskItem(taskID)
 	if err != nil {
@@ -43,7 +43,7 @@ func (s *taskServiceServer) DeleteTask(ctx context.Context, req *proto.DeleteTas
 	return nil, nil
 }
 
-func (s *taskServiceServer) UpdateTask(ctx context.Context, req *proto.UpdateTaskRequest) (*proto.TaskEntity, error) {
+func (s *serviceServer) UpdateTask(ctx context.Context, req *proto.UpdateTaskRequest) (*proto.TaskEntity, error) {
 	taskID, _ := ulid.Parse(req.Id)
 
 	item, err := UpdateTaskItem(taskID, MapProtoTaskToTask(req.Item))
@@ -54,7 +54,7 @@ func (s *taskServiceServer) UpdateTask(ctx context.Context, req *proto.UpdateTas
 	return &entity, nil
 }
 
-func (s *taskServiceServer) GetTask(ctx context.Context, req *proto.GetTaskRequest) (*proto.TaskEntity, error) {
+func (s *serviceServer) GetTask(ctx context.Context, req *proto.GetTaskRequest) (*proto.TaskEntity, error) {
 	taskID, _ := ulid.Parse(req.Id)
 	item, err := GetTaskItem(taskID)
 	if err != nil {
@@ -64,7 +64,7 @@ func (s *taskServiceServer) GetTask(ctx context.Context, req *proto.GetTaskReque
 	return &entity, nil
 }
 
-func (s *taskServiceServer) ListTask(ctx context.Context, req *proto.ListTaskRequest) (*proto.TaskCollection, error) {
+func (s *serviceServer) ListTask(ctx context.Context, req *proto.ListTaskRequest) (*proto.TaskCollection, error) {
 	//token := ctx.Value("tokenInfo")
 
 	opts := GetListOptionsFromRequest(req)

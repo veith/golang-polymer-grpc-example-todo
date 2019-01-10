@@ -346,7 +346,7 @@ var (
 
 	pattern_TagService_ListAllTags_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"tags"}, ""))
 
-	pattern_TagService_ListTagsFromTask_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 1, 0, 4, 2, 5, 1, 2, 2}, []string{"tasks", "task", "tags"}, ""))
+	pattern_TagService_ListTagsFromTask_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"tasks", "task", "tags"}, ""))
 
 	pattern_TagService_DeleteTag_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"tags", "id"}, ""))
 

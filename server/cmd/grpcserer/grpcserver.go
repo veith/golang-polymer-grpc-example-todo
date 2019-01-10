@@ -5,6 +5,7 @@ import (
 	"../../internal/_healthcheck"
 	"../../internal/auth"
 	"../../internal/task"
+	"../../internal/tag"
 	"./middleware"
 	"github.com/grpc-ecosystem/go-grpc-middleware"
 	"github.com/grpc-ecosystem/go-grpc-middleware/auth"
@@ -42,7 +43,11 @@ func main() {
 
 	// Task
 	task.InitEnvironment(env)
-	task.RegisterTaskServiceServer(grpcServer, task.GetServiceServer())
+	task.RegisterServiceServer(grpcServer, task.GetServiceServer())
+
+	// Tag
+	tag.InitEnvironment(env)
+	tag.RegisterServiceServer(grpcServer, tag.GetServiceServer())
 
 	// weitere Services kann man hier registrieren
 

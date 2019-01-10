@@ -87,7 +87,7 @@
               "vars": [
                 {
                   "key": "get",
-                  "value": "/tasks/{task=tasks/*}/tags"
+                  "value": "/tasks/{task=*}/tags"
                 }
               ]
             }

@@ -48,7 +48,7 @@ func (m *Credentials) Reset()         { *m = Credentials{} }
 func (m *Credentials) String() string { return proto.CompactTextString(m) }
 func (*Credentials) ProtoMessage()    {}
 func (*Credentials) Descriptor() ([]byte, []int) {
-	return fileDescriptor_auth_c03bc528172046c1, []int{0}
+	return fileDescriptor_auth_55f6cad1df4076eb, []int{0}
 }
 func (m *Credentials) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -115,7 +115,7 @@ func (m *User) Reset()         { *m = User{} }
 func (m *User) String() string { return proto.CompactTextString(m) }
 func (*User) ProtoMessage()    {}
 func (*User) Descriptor() ([]byte, []int) {
-	return fileDescriptor_auth_c03bc528172046c1, []int{1}
+	return fileDescriptor_auth_55f6cad1df4076eb, []int{1}
 }
 func (m *User) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -178,7 +178,7 @@ func (m *CredentialsRequest) Reset()         { *m = CredentialsRequest{} }
 func (m *CredentialsRequest) String() string { return proto.CompactTextString(m) }
 func (*CredentialsRequest) ProtoMessage()    {}
 func (*CredentialsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_auth_c03bc528172046c1, []int{2}
+	return fileDescriptor_auth_55f6cad1df4076eb, []int{2}
 }
 func (m *CredentialsRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -991,9 +991,9 @@ var (
 	ErrIntOverflowAuth   = fmt.Errorf("proto: integer overflow")
 )
 
-func init() { proto.RegisterFile("auth.proto", fileDescriptor_auth_c03bc528172046c1) }
+func init() { proto.RegisterFile("auth.proto", fileDescriptor_auth_55f6cad1df4076eb) }
 
-var fileDescriptor_auth_c03bc528172046c1 = []byte{
+var fileDescriptor_auth_55f6cad1df4076eb = []byte{
 	// 405 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x52, 0xcf, 0x8a, 0xd3, 0x40,
 	0x18, 0x27, 0xe9, 0x1f, 0x75, 0xa2, 0x08, 0x43, 0xd1, 0x90, 0x96, 0x56, 0xc6, 0x4b, 0x91, 0x3a,
