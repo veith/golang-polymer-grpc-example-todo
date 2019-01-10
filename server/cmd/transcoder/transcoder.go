@@ -4,6 +4,7 @@ import (
 	"../../../proto/auth"
 	"../../../proto/healthcheck"
 	"../../../proto/task"
+	"../../../proto/tag"
 	"flag"
 	"github.com/golang/glog"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
@@ -50,6 +51,12 @@ func run() error {
 
 	//Tasks
 	err = task.RegisterTaskServiceHandlerFromEndpoint(ctx, mux, *endpoint, opts)
+	if err != nil {
+		return err
+	}
+
+	//Tag
+	err = tag.RegisterTagServiceHandlerFromEndpoint(ctx, mux, *endpoint, opts)
 	if err != nil {
 		return err
 	}

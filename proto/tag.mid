@@ -1,5 +1,5 @@
 {
-  "package": "tags",
+  "package": "example.package",
   "major_version": "1",
   "description": "Interface Definitonen für die Entity Tags \nVerwaltet Tags",
   "__proto": {

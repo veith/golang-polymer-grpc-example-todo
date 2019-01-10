@@ -10,6 +10,6 @@
 ./scripts/build.sh task
 
 
-./scripts/mid2proto.sh tags
-./scripts/build.sh tags
+./scripts/mid2proto.sh tag
+./scripts/build.sh tag
 
