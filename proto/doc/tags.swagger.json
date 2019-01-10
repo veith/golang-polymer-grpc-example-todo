@@ -187,7 +187,7 @@
         ]
       }
     },
-    "/{task}/tags": {
+    "/tasks/{task}/tags": {
       "get": {
         "summary": "Abfragen aller Tags eines Tasks",
         "operationId": "ListTagsFromTask",
