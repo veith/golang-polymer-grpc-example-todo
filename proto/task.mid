@@ -1,5 +1,5 @@
 {
-  "package": "task",
+  "package": "example.package",
   "source_repo": "github.com/veith/golang-polymer-grpc-example-todo",
   "major_version": "1",
   "description": "Service Definitonen für das Modul Task \nZweck diese Moduls ist es sowas wie eine TO-DO Liste zu haben",

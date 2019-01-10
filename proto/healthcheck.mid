@@ -1,0 +1,52 @@
+{
+  "package": "example.package",
+  "source_repo": "github.com/veith/golang-polymer-grpc-example-todo",
+  "major_version": "1",
+  "description": "Healthcheck Service zur Überprüfung der Connectivität",
+  "__mid": {
+    "imports": [
+    ]
+  },
+  "__proto": {
+    "imports": [
+      "google/api/annotations.proto",
+      "google/protobuf/empty.proto"
+    ],
+    "options": [
+      {
+        "key": "go_package",
+        "value": "healthcheck"
+      }
+    ]
+  },
+  "services": [
+    {
+      "name": "HealthCheck",
+      "description": "Einfacher Service um zu prüfen ob furoDesigner noch reagiert.",
+      "methods": [
+        {
+          "name": "Check",
+          "description": "Prüfen der Verbindung\nAchtung: Authentifizierung erforderlich",
+          "input_type": "google.protobuf.Empty",
+          "output_type": "google.protobuf.Empty",
+          "options": [
+            {
+              "name": "google.api.http",
+              "vars": [
+                {
+                  "key": "get",
+                  "value": "/_healthcheck"
+                }
+              ]
+            }
+          ],
+          "__agent": {
+            "update": true
+          }
+        }
+      ]
+    }
+  ],
+  "enum_types": [],
+  "types": []
+}

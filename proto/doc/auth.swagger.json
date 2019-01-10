@@ -32,7 +32,7 @@
         ]
       },
       "post": {
-        "summary": "Einloggen,\nDer Login setzt Header und Cookies, darum kein Body",
+        "summary": "Der Login setzt Header und Cookies, darum kein Body in der Antwort.\nFalls du ein Profil erwartest, sollte dies über ProfileServices angeboten werden.",
         "operationId": "Login",
         "responses": {
           "200": {
@@ -45,10 +45,11 @@
         "parameters": [
           {
             "name": "body",
+            "description": "enthält im mindesten:  username \u0026amp;\u0026amp; (password || secondFactor)",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/protoCredentials"
+              "$ref": "#/definitions/packageCredentials"
             }
           }
         ],
@@ -59,23 +60,23 @@
     }
   },
   "definitions": {
-    "protoCredentials": {
+    "packageCredentials": {
       "type": "object",
       "properties": {
         "username": {
           "type": "string",
-          "title": "Eine ULID"
+          "title": "Der eindeutige Name des Benutzers.\nKönnte auch die emailadresse sein"
         },
         "password": {
           "type": "string",
-          "title": "Titel des Tasks"
+          "title": "Das Kennwort des Benutzers"
         },
         "secondFactor": {
           "type": "string",
-          "title": "String für zweiten Faktor"
+          "description": "not-implemented\nDer zweite Faktor.\nKönnte TOPT Verfahren sein."
         }
       },
-      "title": "Username Passwort"
+      "title": "Allgemeine Anmeldeinformationen"
     },
     "protobufEmpty": {
       "type": "object",

@@ -23,7 +23,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/taskTaskCollection"
+              "$ref": "#/definitions/packageTaskCollection"
             }
           }
         },
@@ -107,7 +107,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/taskTaskEntity"
+              "$ref": "#/definitions/packageTaskEntity"
             }
           }
         },
@@ -118,7 +118,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/taskTask"
+              "$ref": "#/definitions/packageTask"
             }
           }
         ],
@@ -135,7 +135,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/taskTaskEntity"
+              "$ref": "#/definitions/packageTaskEntity"
             }
           }
         },
@@ -159,7 +159,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/taskDeleteTaskResponse"
+              "$ref": "#/definitions/packageDeleteTaskResponse"
             }
           }
         },
@@ -183,7 +183,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/taskTaskEntity"
+              "$ref": "#/definitions/packageTaskEntity"
             }
           }
         },
@@ -201,7 +201,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/taskTask"
+              "$ref": "#/definitions/packageTask"
             }
           }
         ],
@@ -218,7 +218,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/taskTaskEntity"
+              "$ref": "#/definitions/packageTaskEntity"
             }
           }
         },
@@ -253,7 +253,7 @@
       "default": "PUT",
       "title": "Set der REST Verben\nhttps://tools.ietf.org/html/rfc7231#section-4"
     },
-    "taskComplete": {
+    "packageComplete": {
       "type": "string",
       "enum": [
         "UNKNOWN",
@@ -263,11 +263,11 @@
       "default": "UNKNOWN",
       "title": "Unkown mit 0 ist bewusst. So können wir feststellen ob ein Wert auch wirklich gesetzt wurde \nNeue Zeile"
     },
-    "taskDeleteTaskResponse": {
+    "packageDeleteTaskResponse": {
       "type": "object",
       "title": "Leere Antwort nach dem Löschen eines Tasks"
     },
-    "taskTask": {
+    "packageTask": {
       "type": "object",
       "properties": {
         "id": {
@@ -283,7 +283,7 @@
           "title": "Beschreibung des Tasks"
         },
         "completed": {
-          "$ref": "#/definitions/taskComplete",
+          "$ref": "#/definitions/packageComplete",
           "title": "Status des Tasks"
         },
         "date": {
@@ -303,13 +303,13 @@
       },
       "title": "Ein einzelner Task"
     },
-    "taskTaskCollection": {
+    "packageTaskCollection": {
       "type": "object",
       "properties": {
         "data": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/taskTaskEntity"
+            "$ref": "#/definitions/packageTaskEntity"
           },
           "title": "enthält eine liste von Tasks"
         },
@@ -323,11 +323,11 @@
       },
       "title": "REST Collection von Tasks"
     },
-    "taskTaskEntity": {
+    "packageTaskEntity": {
       "type": "object",
       "properties": {
         "data": {
-          "$ref": "#/definitions/taskTask",
+          "$ref": "#/definitions/packageTask",
           "title": "enthält einen Task"
         },
         "links": {

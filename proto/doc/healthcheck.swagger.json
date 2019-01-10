@@ -17,6 +17,7 @@
   "paths": {
     "/_healthcheck": {
       "get": {
+        "summary": "Prüfen der Verbindung\nAchtung: Authentifizierung erforderlich",
         "operationId": "Check",
         "responses": {
           "200": {

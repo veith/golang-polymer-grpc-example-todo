@@ -1,0 +1,179 @@
+{
+  "package": "example.package",
+  "source_repo": "github.com/veith/golang-polymer-grpc-example-todo",
+  "major_version": "1",
+  "description": "Authentifizierungs-Service um sich einzuloggen.\nDer Aufrufer bekommt einen JWT Token.",
+  "__mid": {
+    "imports": [
+    ]
+  },
+  "__proto": {
+    "imports": [
+      "google/api/annotations.proto",
+      "google/protobuf/empty.proto",
+      "github.com/gogo/protobuf/gogoproto/gogo.proto"
+    ],
+    "options": [
+      {
+        "key": "go_package",
+        "value": "auth"
+      }
+    ]
+  },
+  "services": [
+    {
+      "name": "AuthService",
+      "description": "Bis jetzt sind Login und Logout implememtiert. Ein Ändern des Kennworts könnte ebenfalls implementiert werden.",
+      "methods": [
+        {
+          "name": "Logout",
+          "description": "Ausloggen, setzt nur den cookie auf leer, kann später die jwt.id revoken",
+          "input_type": "google.protobuf.Empty",
+          "output_type": "google.protobuf.Empty",
+          "options": [
+            {
+              "name": "google.api.http",
+              "vars": [
+                {
+                  "key": "delete",
+                  "value": "/auth"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Login",
+          "description": "Der Login setzt Header und Cookies, darum kein Body in der Antwort.\nFalls du ein Profil erwartest, sollte dies über ProfileServices angeboten werden.",
+          "input_type": "CredentialsRequest",
+          "output_type": "google.protobuf.Empty",
+          "options": [
+            {
+              "name": "google.api.http",
+              "vars": [
+                {
+                  "key": "post",
+                  "value": "/auth"
+                },
+                {
+                  "key": "body",
+                  "value": "credentials"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "enum_types": [],
+  "types": [
+    {
+      "name": "Credentials",
+      "description": "Allgemeine Anmeldeinformationen",
+      "fields": [
+        {
+          "name": "username",
+          "description": "Der eindeutige Name des Benutzers.\nKönnte auch die emailadresse sein",
+          "type": "string",
+          "__proto": {
+            "type": "string",
+            "number": 1,
+            "options": []
+          }
+        },
+        {
+          "name": "password",
+          "description": "Das Kennwort des Benutzers",
+          "type": "string",
+          "__proto": {
+            "type": "string",
+            "number": 2,
+            "options": []
+          }
+        },
+        {
+          "name": "secondFactor",
+          "description": "not-implemented\nDer zweite Faktor.\nKönnte TOPT Verfahren sein.",
+          "type": "string",
+          "__proto": {
+            "type": "string",
+            "number": 3,
+            "options": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "description": "Benutzer Credentials mit ID",
+      "fields": [
+        {
+          "name": "id",
+          "description": "Die ulid des Benutzers",
+          "type": "string",
+          "__proto": {
+            "type": "string",
+            "number": 1,
+            "options": [
+              {
+                "name": "gogoproto.moretags",
+                "key": "db",
+                "value": "id,pk,omitempty"
+              }
+            ]
+          }
+        },
+        {
+          "name": "username",
+          "description": "Der _neue_ Benutzername",
+          "type": "string",
+          "__proto": {
+            "type": "string",
+            "number": 2,
+            "options": [
+              {
+                "name": "gogoproto.moretags",
+                "key": "db",
+                "value": "username,omitempty"
+              }
+            ]
+          }
+        },
+        {
+          "name": "password",
+          "description": "Das _neue_ Kennwort des Benutzers",
+          "type": "string",
+          "__proto": {
+            "type": "string",
+            "number": 3,
+            "options": [
+              {
+                "name": "gogoproto.moretags",
+                "key": "db",
+                "value": "password,omitempty"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "CredentialsRequest",
+      "description": "Request Daten für die Anmeldung",
+      "fields": [
+        {
+          "name": "credentials",
+          "description": "enthält im mindesten:  username && (password || secondFactor)",
+          "type": "Credentials",
+          "repeated": false,
+          "__proto": {
+            "type": "Credentials",
+            "number": 1,
+            "options": []
+          }
+        }
+      ]
+    }
+  ]
+}
