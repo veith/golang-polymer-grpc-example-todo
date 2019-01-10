@@ -1,0 +1,386 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "task.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/tasks": {
+      "get": {
+        "summary": "Laden aller Tasks. Es werden per default 23 Tasks pro Page gezeigt.",
+        "operationId": "ListTask",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/packageTaskCollection"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "fields",
+            "description": "Partielle Repräsentation fields=id,name.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "description": "Sortierung nach feldern\n**?filter=-completed** um completed absteigend zu bekommen\n**?filter=completed** um completed aufsteigend zu bekommen.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "filter",
+            "description": "Filter.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "description": "Gewünschte Seite. Tipp: Folge dem HATEOAS next, prev,...",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "limit",
+            "description": "Anzahl Elemente pro Seite, maximal sind 99 erlaubt.",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "count",
+            "description": "Meta für die Anzahl der Elemente der Resource, bei true ist in der Antwort Meta der count aufgeführt.",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          },
+          {
+            "name": "sum",
+            "description": "not implemented.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "view",
+            "description": "not implemented (ehemals context).",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "not_completed",
+            "description": "nur abgeschlossene Tasks anzeigen.",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          }
+        ],
+        "tags": [
+          "TaskService"
+        ]
+      },
+      "post": {
+        "summary": "Erstellen eines neuen Tasks",
+        "operationId": "CreateTask",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/packageTaskEntity"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "enthält einen Task",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/packageTask"
+            }
+          }
+        ],
+        "tags": [
+          "TaskService"
+        ]
+      }
+    },
+    "/tasks/{id}": {
+      "get": {
+        "summary": "Laden eines einzelnen Tasks",
+        "operationId": "GetTask",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/packageTaskEntity"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "ULID vom Task",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TaskService"
+        ]
+      },
+      "delete": {
+        "summary": "Löschen eines Tasks \nNicht widerrufbar",
+        "operationId": "DeleteTask",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/packageDeleteTaskResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "ULID vom Task",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TaskService"
+        ]
+      },
+      "patch": {
+        "summary": "Inhalt eines Tasks aktualisieren. Es werden nur gelieferte Felder aktualisiert.",
+        "operationId": "UpdateTask",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/packageTaskEntity"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "ULID vom Task",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "description": "enthält einen Task",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/packageTask"
+            }
+          }
+        ],
+        "tags": [
+          "TaskService"
+        ]
+      }
+    },
+    "/tasks/{id}:complete": {
+      "post": {
+        "summary": "Benutzerdefinierte Methode um einen Task direkt als abgeschlossen zu setzen",
+        "operationId": "CompleteTask",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/packageTaskEntity"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "ULID vom Task",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TaskService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "LinkMethod": {
+      "type": "string",
+      "enum": [
+        "PUT",
+        "GET",
+        "HEAD",
+        "POST",
+        "PATCH",
+        "DELETE",
+        "TRACE",
+        "OPTIONS"
+      ],
+      "default": "PUT",
+      "title": "Set der REST Verben\nhttps://tools.ietf.org/html/rfc7231#section-4"
+    },
+    "packageComplete": {
+      "type": "string",
+      "enum": [
+        "UNKNOWN",
+        "RUNNING",
+        "COMPLETED"
+      ],
+      "default": "UNKNOWN",
+      "title": "Unkown mit 0 ist bewusst. So können wir feststellen ob ein Wert auch wirklich gesetzt wurde \nNeue Zeile"
+    },
+    "packageDeleteTaskResponse": {
+      "type": "object",
+      "title": "Leere Antwort nach dem Löschen eines Tasks"
+    },
+    "packageTask": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "ulid des Tasks"
+        },
+        "title": {
+          "type": "string",
+          "title": "Titel des Tasks"
+        },
+        "description": {
+          "type": "string",
+          "title": "Beschreibung des Tasks"
+        },
+        "completed": {
+          "$ref": "#/definitions/packageComplete",
+          "title": "Status des Tasks"
+        },
+        "date": {
+          "$ref": "#/definitions/typeDate",
+          "title": "Ablaufdatum"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "title": "Datum der Erstellung"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "title": "Datum der letzten Änderung"
+        }
+      },
+      "title": "Ein einzelner Task"
+    },
+    "packageTaskCollection": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/packageTaskEntity"
+          },
+          "title": "enthält eine liste von Tasks"
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/typeLink"
+          },
+          "title": "HATEOAS Links"
+        }
+      },
+      "title": "REST Collection von Tasks"
+    },
+    "packageTaskEntity": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/packageTask",
+          "title": "enthält einen Task"
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/typeLink"
+          },
+          "title": "HATEOAS Links"
+        }
+      },
+      "title": "REST Entität eines Tasks"
+    },
+    "typeDate": {
+      "type": "object",
+      "properties": {
+        "year": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Year of date. Must be from 1 to 9999, or 0 if specifying a date without\na year."
+        },
+        "month": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Month of year. Must be from 1 to 12."
+        },
+        "day": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Day of month. Must be from 1 to 31 and valid for the year and month, or 0\nif specifying a year/month where the day is not significant."
+        }
+      },
+      "description": "Represents a whole calendar date, e.g. date of birth. The time of day and\ntime zone are either specified elsewhere or are not significant. The date\nis relative to the Proleptic Gregorian Calendar. The day may be 0 to\nrepresent a year and month where the day is not significant, e.g. credit card\nexpiration date. The year may be 0 to represent a month and day independent\nof year, e.g. anniversary date. Related types are [google.type.TimeOfDay][google.type.TimeOfDay]\nand `google.protobuf.Timestamp`."
+    },
+    "typeLink": {
+      "type": "object",
+      "properties": {
+        "rel": {
+          "type": "string"
+        },
+        "method": {
+          "$ref": "#/definitions/LinkMethod",
+          "title": "HTTP Verb"
+        },
+        "href": {
+          "type": "string",
+          "title": "Absolute URI"
+        },
+        "type": {
+          "type": "string",
+          "description": "Der mime type des Links."
+        }
+      },
+      "title": "IANA konforme Links /\nList of official link rels:\nhttp://www.iana.org/assignments/link-relations/link-relations.xhtml"
+    }
+  }
+}
