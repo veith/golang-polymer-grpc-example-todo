@@ -9,3 +9,7 @@
 ./scripts/mid2proto.sh task
 ./scripts/build.sh task
 
+
+./scripts/mid2proto.sh tags
+./scripts/build.sh tags
+

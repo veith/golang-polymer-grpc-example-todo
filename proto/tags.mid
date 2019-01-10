@@ -1,0 +1,390 @@
+{
+  "package": "tags",
+  "major_version": "1",
+  "description": "Interface Definitonen für die Entity Tags \nVerwaltet Tags",
+  "__proto": {
+    "source_repo": "github.com/veith/golang-polymer-grpc-example-todo",
+    "imports": [
+      "google/api/annotations.proto",
+      "github.com/gogo/protobuf/gogoproto/gogo.proto",
+      "github.com/veith/protos/rest.proto"
+    ],
+    "options": [
+      {
+        "key": "go_package",
+        "value": "tag"
+      }
+    ]
+  },
+  "services": [
+    {
+      "name": "TagService",
+      "description": "Verwaltet Tags nach der Methode XY",
+      "methods": [
+        {
+          "name": "CreateTag",
+          "description": "Erstellt einen neuen Tag",
+          "input_type": "CreateTagRequest",
+          "output_type": "TagEntityResponse",
+          "options": [
+            {
+              "name": "google.api.http",
+              "vars": [
+                {
+                  "key": "post",
+                  "value": "/tags"
+                },
+                {
+                  "key": "body",
+                  "value": "item"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "GetTag",
+          "description": "Abfragen eines Tags",
+          "input_type": "GetTagRequest",
+          "output_type": "TagEntityResponse",
+          "options": [
+            {
+              "name": "google.api.http",
+              "vars": [
+                {
+                  "key": "get",
+                  "value": "/tags/{id}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "ListAllTags",
+          "description": "Abfragen aller Tags",
+          "input_type": "ListTagsRequest",
+          "output_type": "TagCollectionResponse",
+          "options": [
+            {
+              "name": "google.api.http",
+              "vars": [
+                {
+                  "key": "get",
+                  "value": "/tags"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "ListTagsFromTask",
+          "description": "Abfragen aller Tags eines Tasks",
+          "input_type": "ListTagsRequest",
+          "output_type": "TagCollectionResponse",
+          "options": [
+            {
+              "name": "google.api.http",
+              "vars": [
+                {
+                  "key": "get",
+                  "value": "/{task=tasks/*}/tags"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "DeleteTag",
+          "description": "Löschen eines Tags",
+          "input_type": "DeleteTagRequest",
+          "output_type": "TagEntityResponse",
+          "options": [
+            {
+              "name": "google.api.http",
+              "vars": [
+                {
+                  "key": "delete",
+                  "value": "/tags/{id}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "UpdateTag",
+          "description": "Aktualisert einen Tag",
+          "input_type": "UpdateTagRequest",
+          "output_type": "TagEntityResponse",
+          "options": [
+            {
+              "name": "google.api.http",
+              "vars": [
+                {
+                  "key": "put",
+                  "value": "/tags/{id}"
+                },
+                {
+                  "key": "body",
+                  "value": "item"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "enum_types": [],
+
+  "types": [
+    {
+      "name": "GetTagRequest",
+      "description": "Request Daten für die Abfrage eines einzelnen Tags",
+      "fields": [
+        {
+          "name": "id",
+          "description": "ULID vom Tag",
+          "type": "ulid",
+          "__proto": {
+            "type": "string",
+            "number": 1,
+            "options": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "DeleteTagRequest",
+      "description": "Request Daten für das Löschen eines Tasks",
+      "fields": [
+        {
+          "name": "id",
+          "description": "ULID vom Tag",
+          "type": "ulid",
+          "__proto": {
+            "type": "string",
+            "number": 1,
+            "options": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "UpdateTagRequest",
+      "description": "Request Daten für das Aktualisieren eines Tag",
+      "fields": [
+        {
+          "name": "id",
+          "description": "ULID vom Tag",
+          "type": "ulid",
+          "__proto": {
+            "type": "string",
+            "number": 1,
+            "options": []
+          }
+        },
+        {
+          "name": "item",
+          "description": "enthält einen Tag",
+          "type": "Tag",
+          "repeated": false,
+          "__proto": {
+            "type": "Tag",
+            "number": 2,
+            "options": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "CreateTagRequest",
+      "description": "Request Daten für die Erstellung eines Tags",
+      "fields": [
+        {
+          "name": "item",
+          "description": "enthält einen Tag",
+          "type": "Tag",
+          "repeated": false,
+          "__proto": {
+            "type": "Tag",
+            "number": 1,
+            "options": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tag",
+      "description": "Tag Entitytyp. Datenmodel eines Tags",
+      "fields": [
+        {
+          "name": "id",
+          "description": "für IDs werden wir intern ulid verwenden",
+          "type": "ulid",
+          "__proto": {
+            "type": "string",
+            "number": 1,
+            "options": [
+              {
+                "name": "gogoproto.moretags",
+                "key": "db",
+                "value": "id,pk,omitempty"
+              }
+            ]
+          }
+        },
+        {
+          "name": "label",
+          "description": "Taglabel wird als Standardrepräsentation verwendet.",
+          "type": "string",
+          "repeated": false,
+          "mandatory": true,
+          "__proto": {
+            "type": "string",
+            "number": 2
+          },
+          "__sqlite": {
+            "type": "TEXT"
+          }
+        },
+        {
+          "name": "brailleLabel",
+          "description": "Taglabel in der Braille-Schreibweise",
+          "type": "string",
+          "repeated": false,
+          "mandatory": true,
+          "__proto": {
+            "type": "string",
+            "number": 3
+          },
+          "__sqlite": {
+            "type": "TEXT"
+          }
+        }
+      ]
+    },
+    {
+      "name": "TagEntityResponse",
+      "description": "Response-Message einer Anfrage nach Tags",
+      "fields": [
+        {
+          "name": "item",
+          "description": "Datenmodel vom Typ Tag",
+          "type": "Tag",
+          "__proto": {
+            "type": "Tag",
+            "number": 1,
+            "options": []
+          }
+        },
+        {
+          "name": "links",
+          "description": "Hateoasinformationen",
+          "type": "link",
+          "repeated": true,
+          "__proto": {
+            "type": "furo.type.Link",
+            "number": 2,
+            "options": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "TagCollectionResponse",
+      "description": "Response-Message einer List Abfrage nach Tags",
+      "fields": [
+        {
+          "name": "data",
+          "description": "Datenmodel vom Typ TagEntityResponse",
+          "type": "TagEntityResponse",
+          "repeated": true,
+          "__proto": {
+            "type": "TagEntityResponse",
+            "number": 1,
+            "options": []
+          }
+        },
+        {
+          "name": "links",
+          "description": "Hateoasinformationen",
+          "type": "Link",
+          "repeated": true,
+          "__proto": {
+            "type": "furo.type.Link",
+            "number": 2,
+            "options": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "ListTagsRequest",
+      "description": "Request Daten für eine Liste von Tags",
+      "_interneNotiz": "//reserved \"fields\", \"expands\", \"page\", \"limit\", \"offset\",\"sort\", \"filter\",\"count\",\"sum\",\"context\";",
+      "reserved": "6 to 10",
+      "fields": [
+        {
+          "name": "fields",
+          "description": "Partielle Repräsentation fields=id,name",
+          "type": "string",
+          "__proto": {
+            "type": "string",
+            "number": 1,
+            "options": []
+          }
+        },
+        {
+          "name": "sort",
+          "description": "Sortierung nach feldern\n**?filter=-completed** um completed absteigend zu bekommen\n**?filter=completed** um completed aufsteigend zu bekommen",
+          "type": "string",
+          "__proto": {
+            "type": "string",
+            "number": 2,
+            "options": []
+          }
+        },
+        {
+          "name": "filter",
+          "description": "Filter",
+          "type": "string",
+          "__proto": {
+            "type": "string",
+            "number": 3,
+            "options": []
+          }
+        },
+        {
+          "name": "page",
+          "description": "Gewünschte Seite. Tipp: Folge dem HATEOAS next, prev,...",
+          "type": "int32",
+          "__proto": {
+            "type": "int32",
+            "number": 4,
+            "options": []
+          }
+        },
+        {
+          "name": "limit",
+          "description": "Anzahl Elemente pro Seite, maximal sind 99 erlaubt",
+          "type": "int32",
+          "__proto": {
+            "type": "int32",
+            "number": 5,
+            "options": []
+          }
+        },
+        {
+          "name": "task",
+          "description": "Die ulid vom übergeordnetem task",
+          "type": "string",
+          "__proto": {
+            "type": "string",
+            "number": 11,
+            "options": []
+          }
+        }
+      ]
+    }
+  ]
+}

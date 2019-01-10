@@ -291,7 +291,7 @@
         {
           "name": "links",
           "description": "HATEOAS Links",
-          "type": "links",
+          "type": "link",
           "repeated": true,
           "__proto": {
             "type": "furo.type.Link",
