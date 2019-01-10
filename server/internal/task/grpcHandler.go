@@ -20,7 +20,7 @@ func GetServiceServer() proto.TaskServiceServer {
 type taskServiceServer struct {
 }
 
-func (s *taskServiceServer) CompleteTask(ctx context.Context, req *proto.GetTaskRequest) (*proto.TaskEntity, error) {
+func (s *taskServiceServer) CompleteTask(ctx context.Context, req *proto.CompleteTaskRequest) (*proto.TaskEntity, error) {
 	taskID, _ := ulid.Parse(req.Id)
 	item, err := CompleteTaskItem(taskID)
 	entity := proto.TaskEntity{Data: MapTaskToProtoTask(&item), Links: GenerateEntityHateoas(item.Id.String()).Links}

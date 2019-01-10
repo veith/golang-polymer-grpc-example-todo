@@ -30,6 +30,8 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
 
+// Unkown mit 0 ist bewusst. So können wir feststellen ob ein Wert auch wirklich gesetzt wurde
+// Neue Zeile
 type Complete int32
 
 const (
@@ -53,24 +55,24 @@ func (x Complete) String() string {
 	return proto.EnumName(Complete_name, int32(x))
 }
 func (Complete) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_task_0e2277242d2e373b, []int{0}
+	return fileDescriptor_task_f3756452dc406447, []int{0}
 }
 
-// Task Entität
+// Ein einzelner Task
 type Task struct {
-	// Eine ULID
+	// ulid des Tasks
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" db:"id,pk,omitempty"`
 	// Titel des Tasks
 	Title string `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty" db:"title,omitempty"`
 	// Beschreibung des Tasks
 	Description string `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty" db:"description,omitempty"`
 	// Status des Tasks
-	Completed Complete `protobuf:"varint,4,opt,name=completed,proto3,enum=task.v1.Complete" json:"completed,omitempty" db:"completed"`
+	Completed Complete `protobuf:"varint,4,opt,name=completed,proto3,enum=task.Complete" json:"completed,omitempty" db:"completed,omitempty"`
 	// Ablaufdatum
-	Date *date.Date `protobuf:"bytes,5,opt,name=date" json:"date,omitempty" db:"date"`
+	Date *date.Date `protobuf:"bytes,5,opt,name=date" json:"date,omitempty" db:"date,omitempty"`
 	// Datum der Erstellung
 	CreatedAt *types.Timestamp `protobuf:"bytes,100,opt,name=created_at,json=createdAt" json:"created_at,omitempty"`
-	// Datum der letzen Änderung
+	// Datum der letzten Änderung
 	UpdatedAt            *types.Timestamp `protobuf:"bytes,101,opt,name=updated_at,json=updatedAt" json:"updated_at,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
 	XXX_unrecognized     []byte           `json:"-"`
@@ -81,7 +83,7 @@ func (m *Task) Reset()         { *m = Task{} }
 func (m *Task) String() string { return proto.CompactTextString(m) }
 func (*Task) ProtoMessage()    {}
 func (*Task) Descriptor() ([]byte, []int) {
-	return fileDescriptor_task_0e2277242d2e373b, []int{0}
+	return fileDescriptor_task_f3756452dc406447, []int{0}
 }
 func (m *Task) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -159,205 +161,11 @@ func (m *Task) GetUpdatedAt() *types.Timestamp {
 	return nil
 }
 
-type CreateTaskRequest struct {
-	Item                 *Task    `protobuf:"bytes,1,opt,name=item" json:"item,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *CreateTaskRequest) Reset()         { *m = CreateTaskRequest{} }
-func (m *CreateTaskRequest) String() string { return proto.CompactTextString(m) }
-func (*CreateTaskRequest) ProtoMessage()    {}
-func (*CreateTaskRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_task_0e2277242d2e373b, []int{1}
-}
-func (m *CreateTaskRequest) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *CreateTaskRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_CreateTaskRequest.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (dst *CreateTaskRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_CreateTaskRequest.Merge(dst, src)
-}
-func (m *CreateTaskRequest) XXX_Size() int {
-	return m.Size()
-}
-func (m *CreateTaskRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_CreateTaskRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_CreateTaskRequest proto.InternalMessageInfo
-
-func (m *CreateTaskRequest) GetItem() *Task {
-	if m != nil {
-		return m.Item
-	}
-	return nil
-}
-
-type GetTaskRequest struct {
-	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *GetTaskRequest) Reset()         { *m = GetTaskRequest{} }
-func (m *GetTaskRequest) String() string { return proto.CompactTextString(m) }
-func (*GetTaskRequest) ProtoMessage()    {}
-func (*GetTaskRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_task_0e2277242d2e373b, []int{2}
-}
-func (m *GetTaskRequest) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *GetTaskRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_GetTaskRequest.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (dst *GetTaskRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetTaskRequest.Merge(dst, src)
-}
-func (m *GetTaskRequest) XXX_Size() int {
-	return m.Size()
-}
-func (m *GetTaskRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetTaskRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_GetTaskRequest proto.InternalMessageInfo
-
-func (m *GetTaskRequest) GetId() string {
-	if m != nil {
-		return m.Id
-	}
-	return ""
-}
-
-type DeleteTaskRequest struct {
-	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *DeleteTaskRequest) Reset()         { *m = DeleteTaskRequest{} }
-func (m *DeleteTaskRequest) String() string { return proto.CompactTextString(m) }
-func (*DeleteTaskRequest) ProtoMessage()    {}
-func (*DeleteTaskRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_task_0e2277242d2e373b, []int{3}
-}
-func (m *DeleteTaskRequest) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *DeleteTaskRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_DeleteTaskRequest.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (dst *DeleteTaskRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_DeleteTaskRequest.Merge(dst, src)
-}
-func (m *DeleteTaskRequest) XXX_Size() int {
-	return m.Size()
-}
-func (m *DeleteTaskRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_DeleteTaskRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_DeleteTaskRequest proto.InternalMessageInfo
-
-func (m *DeleteTaskRequest) GetId() string {
-	if m != nil {
-		return m.Id
-	}
-	return ""
-}
-
-type UpdateTaskRequest struct {
-	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Item                 *Task    `protobuf:"bytes,2,opt,name=item" json:"item,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *UpdateTaskRequest) Reset()         { *m = UpdateTaskRequest{} }
-func (m *UpdateTaskRequest) String() string { return proto.CompactTextString(m) }
-func (*UpdateTaskRequest) ProtoMessage()    {}
-func (*UpdateTaskRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_task_0e2277242d2e373b, []int{4}
-}
-func (m *UpdateTaskRequest) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *UpdateTaskRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_UpdateTaskRequest.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (dst *UpdateTaskRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_UpdateTaskRequest.Merge(dst, src)
-}
-func (m *UpdateTaskRequest) XXX_Size() int {
-	return m.Size()
-}
-func (m *UpdateTaskRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_UpdateTaskRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_UpdateTaskRequest proto.InternalMessageInfo
-
-func (m *UpdateTaskRequest) GetId() string {
-	if m != nil {
-		return m.Id
-	}
-	return ""
-}
-
-func (m *UpdateTaskRequest) GetItem() *Task {
-	if m != nil {
-		return m.Item
-	}
-	return nil
-}
-
-// Eine Entität besteht aus dem Task und den HATEOAS Links
+// REST Entität eines Tasks
 type TaskEntity struct {
-	Data                 *Task        `protobuf:"bytes,1,opt,name=data" json:"data,omitempty"`
+	// enthält einen Task
+	Data *Task `protobuf:"bytes,1,opt,name=data" json:"data,omitempty"`
+	// HATEOAS Links
 	Links                []*rest.Link `protobuf:"bytes,2,rep,name=links" json:"links,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
 	XXX_unrecognized     []byte       `json:"-"`
@@ -368,7 +176,7 @@ func (m *TaskEntity) Reset()         { *m = TaskEntity{} }
 func (m *TaskEntity) String() string { return proto.CompactTextString(m) }
 func (*TaskEntity) ProtoMessage()    {}
 func (*TaskEntity) Descriptor() ([]byte, []int) {
-	return fileDescriptor_task_0e2277242d2e373b, []int{5}
+	return fileDescriptor_task_f3756452dc406447, []int{1}
 }
 func (m *TaskEntity) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -411,28 +219,378 @@ func (m *TaskEntity) GetLinks() []*rest.Link {
 	return nil
 }
 
-// ListTaskRequest
-// reserved 1 to 5;
-// reserved "fields", "expands", "page", "limit", "offset","sort", "filter","count","sum","context";
+// REST Collection von Tasks
+type TaskCollection struct {
+	// enthält eine liste von Tasks
+	Data []*TaskEntity `protobuf:"bytes,1,rep,name=data" json:"data,omitempty"`
+	// HATEOAS Links
+	Links                []*rest.Link `protobuf:"bytes,2,rep,name=links" json:"links,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
+	XXX_unrecognized     []byte       `json:"-"`
+	XXX_sizecache        int32        `json:"-"`
+}
+
+func (m *TaskCollection) Reset()         { *m = TaskCollection{} }
+func (m *TaskCollection) String() string { return proto.CompactTextString(m) }
+func (*TaskCollection) ProtoMessage()    {}
+func (*TaskCollection) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_f3756452dc406447, []int{2}
+}
+func (m *TaskCollection) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *TaskCollection) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_TaskCollection.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (dst *TaskCollection) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TaskCollection.Merge(dst, src)
+}
+func (m *TaskCollection) XXX_Size() int {
+	return m.Size()
+}
+func (m *TaskCollection) XXX_DiscardUnknown() {
+	xxx_messageInfo_TaskCollection.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_TaskCollection proto.InternalMessageInfo
+
+func (m *TaskCollection) GetData() []*TaskEntity {
+	if m != nil {
+		return m.Data
+	}
+	return nil
+}
+
+func (m *TaskCollection) GetLinks() []*rest.Link {
+	if m != nil {
+		return m.Links
+	}
+	return nil
+}
+
+// Request Daten für die Erstellung eines Tasks
+type CreateTaskRequest struct {
+	// enthält einen Task
+	Item                 *Task    `protobuf:"bytes,1,opt,name=item" json:"item,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *CreateTaskRequest) Reset()         { *m = CreateTaskRequest{} }
+func (m *CreateTaskRequest) String() string { return proto.CompactTextString(m) }
+func (*CreateTaskRequest) ProtoMessage()    {}
+func (*CreateTaskRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_f3756452dc406447, []int{3}
+}
+func (m *CreateTaskRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *CreateTaskRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_CreateTaskRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (dst *CreateTaskRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateTaskRequest.Merge(dst, src)
+}
+func (m *CreateTaskRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *CreateTaskRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateTaskRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CreateTaskRequest proto.InternalMessageInfo
+
+func (m *CreateTaskRequest) GetItem() *Task {
+	if m != nil {
+		return m.Item
+	}
+	return nil
+}
+
+// Request Daten für die Abfrage eines einzelnen Tasks
+type GetTaskRequest struct {
+	// ULID vom Task
+	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetTaskRequest) Reset()         { *m = GetTaskRequest{} }
+func (m *GetTaskRequest) String() string { return proto.CompactTextString(m) }
+func (*GetTaskRequest) ProtoMessage()    {}
+func (*GetTaskRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_f3756452dc406447, []int{4}
+}
+func (m *GetTaskRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetTaskRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetTaskRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (dst *GetTaskRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetTaskRequest.Merge(dst, src)
+}
+func (m *GetTaskRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetTaskRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetTaskRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetTaskRequest proto.InternalMessageInfo
+
+func (m *GetTaskRequest) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+// Request Daten für das Löschen eines Tasks
+type DeleteTaskRequest struct {
+	// ULID vom Task
+	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DeleteTaskRequest) Reset()         { *m = DeleteTaskRequest{} }
+func (m *DeleteTaskRequest) String() string { return proto.CompactTextString(m) }
+func (*DeleteTaskRequest) ProtoMessage()    {}
+func (*DeleteTaskRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_f3756452dc406447, []int{5}
+}
+func (m *DeleteTaskRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *DeleteTaskRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_DeleteTaskRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (dst *DeleteTaskRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteTaskRequest.Merge(dst, src)
+}
+func (m *DeleteTaskRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *DeleteTaskRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteTaskRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DeleteTaskRequest proto.InternalMessageInfo
+
+func (m *DeleteTaskRequest) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+// Request Daten für das direkte Abschliessen eines Tasks
+type CompleteTaskRequest struct {
+	// ULID vom Task
+	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *CompleteTaskRequest) Reset()         { *m = CompleteTaskRequest{} }
+func (m *CompleteTaskRequest) String() string { return proto.CompactTextString(m) }
+func (*CompleteTaskRequest) ProtoMessage()    {}
+func (*CompleteTaskRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_f3756452dc406447, []int{6}
+}
+func (m *CompleteTaskRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *CompleteTaskRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_CompleteTaskRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (dst *CompleteTaskRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CompleteTaskRequest.Merge(dst, src)
+}
+func (m *CompleteTaskRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *CompleteTaskRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_CompleteTaskRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CompleteTaskRequest proto.InternalMessageInfo
+
+func (m *CompleteTaskRequest) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+// Leere Antwort nach dem Löschen eines Tasks
+type DeleteTaskResponse struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DeleteTaskResponse) Reset()         { *m = DeleteTaskResponse{} }
+func (m *DeleteTaskResponse) String() string { return proto.CompactTextString(m) }
+func (*DeleteTaskResponse) ProtoMessage()    {}
+func (*DeleteTaskResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_f3756452dc406447, []int{7}
+}
+func (m *DeleteTaskResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *DeleteTaskResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_DeleteTaskResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (dst *DeleteTaskResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteTaskResponse.Merge(dst, src)
+}
+func (m *DeleteTaskResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *DeleteTaskResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteTaskResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DeleteTaskResponse proto.InternalMessageInfo
+
+// Request Daten für das Aktualisieren eines Tasks
+type UpdateTaskRequest struct {
+	// ULID vom Task
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// enthält einen Task
+	Item                 *Task    `protobuf:"bytes,2,opt,name=item" json:"item,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *UpdateTaskRequest) Reset()         { *m = UpdateTaskRequest{} }
+func (m *UpdateTaskRequest) String() string { return proto.CompactTextString(m) }
+func (*UpdateTaskRequest) ProtoMessage()    {}
+func (*UpdateTaskRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_f3756452dc406447, []int{8}
+}
+func (m *UpdateTaskRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *UpdateTaskRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_UpdateTaskRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (dst *UpdateTaskRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateTaskRequest.Merge(dst, src)
+}
+func (m *UpdateTaskRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *UpdateTaskRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateTaskRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateTaskRequest proto.InternalMessageInfo
+
+func (m *UpdateTaskRequest) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+func (m *UpdateTaskRequest) GetItem() *Task {
+	if m != nil {
+		return m.Item
+	}
+	return nil
+}
+
+// Request Daten für eine Liste von Tasks mit filtern
 type ListTaskRequest struct {
-	// Partielle Repräsentation
+	// Partielle Repräsentation fields=id,name
 	Fields string `protobuf:"bytes,1,opt,name=fields,proto3" json:"fields,omitempty"`
 	// Sortierung nach feldern
 	// **?filter=-completed** um completed absteigend zu bekommen
 	// **?filter=completed** um completed aufsteigend zu bekommen
 	Sort string `protobuf:"bytes,2,opt,name=sort,proto3" json:"sort,omitempty"`
-	// Filtern
+	// Filter
 	Filter string `protobuf:"bytes,3,opt,name=filter,proto3" json:"filter,omitempty"`
-	// Gewünschte Seite. Tipp: Folge dem HATEOAS
+	// Gewünschte Seite. Tipp: Folge dem HATEOAS next, prev,...
 	Page int32 `protobuf:"varint,4,opt,name=page,proto3" json:"page,omitempty"`
-	// Seitengrösse
+	// Anzahl Elemente pro Seite, maximal sind 99 erlaubt
 	Limit int32 `protobuf:"varint,5,opt,name=limit,proto3" json:"limit,omitempty"`
-	// Meta für die Anzahl der Elemente der Resource
+	// Meta für die Anzahl der Elemente der Resource, bei true ist in der Antwort Meta der count aufgeführt
 	Count bool `protobuf:"varint,6,opt,name=count,proto3" json:"count,omitempty"`
 	// not implemented
 	Sum string `protobuf:"bytes,7,opt,name=sum,proto3" json:"sum,omitempty"`
-	// not implemented -> wird auf view geändert um conform mit google specs zu sein
-	Context string `protobuf:"bytes,8,opt,name=context,proto3" json:"context,omitempty"`
+	// not implemented (ehemals context)
+	View string `protobuf:"bytes,8,opt,name=view,proto3" json:"view,omitempty"`
 	// nur abgeschlossene Tasks anzeigen
 	NotCompleted         bool     `protobuf:"varint,9,opt,name=not_completed,json=notCompleted,proto3" json:"not_completed,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -444,7 +602,7 @@ func (m *ListTaskRequest) Reset()         { *m = ListTaskRequest{} }
 func (m *ListTaskRequest) String() string { return proto.CompactTextString(m) }
 func (*ListTaskRequest) ProtoMessage()    {}
 func (*ListTaskRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_task_0e2277242d2e373b, []int{6}
+	return fileDescriptor_task_f3756452dc406447, []int{9}
 }
 func (m *ListTaskRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -522,9 +680,9 @@ func (m *ListTaskRequest) GetSum() string {
 	return ""
 }
 
-func (m *ListTaskRequest) GetContext() string {
+func (m *ListTaskRequest) GetView() string {
 	if m != nil {
-		return m.Context
+		return m.View
 	}
 	return ""
 }
@@ -536,111 +694,18 @@ func (m *ListTaskRequest) GetNotCompleted() bool {
 	return false
 }
 
-type TaskCollection struct {
-	Data                 []*TaskEntity `protobuf:"bytes,1,rep,name=data" json:"data,omitempty"`
-	Links                []*rest.Link  `protobuf:"bytes,2,rep,name=links" json:"links,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
-	XXX_unrecognized     []byte        `json:"-"`
-	XXX_sizecache        int32         `json:"-"`
-}
-
-func (m *TaskCollection) Reset()         { *m = TaskCollection{} }
-func (m *TaskCollection) String() string { return proto.CompactTextString(m) }
-func (*TaskCollection) ProtoMessage()    {}
-func (*TaskCollection) Descriptor() ([]byte, []int) {
-	return fileDescriptor_task_0e2277242d2e373b, []int{7}
-}
-func (m *TaskCollection) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *TaskCollection) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_TaskCollection.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (dst *TaskCollection) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_TaskCollection.Merge(dst, src)
-}
-func (m *TaskCollection) XXX_Size() int {
-	return m.Size()
-}
-func (m *TaskCollection) XXX_DiscardUnknown() {
-	xxx_messageInfo_TaskCollection.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_TaskCollection proto.InternalMessageInfo
-
-func (m *TaskCollection) GetData() []*TaskEntity {
-	if m != nil {
-		return m.Data
-	}
-	return nil
-}
-
-func (m *TaskCollection) GetLinks() []*rest.Link {
-	if m != nil {
-		return m.Links
-	}
-	return nil
-}
-
-type DeleteTaskResponse struct {
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *DeleteTaskResponse) Reset()         { *m = DeleteTaskResponse{} }
-func (m *DeleteTaskResponse) String() string { return proto.CompactTextString(m) }
-func (*DeleteTaskResponse) ProtoMessage()    {}
-func (*DeleteTaskResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_task_0e2277242d2e373b, []int{8}
-}
-func (m *DeleteTaskResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *DeleteTaskResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_DeleteTaskResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (dst *DeleteTaskResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_DeleteTaskResponse.Merge(dst, src)
-}
-func (m *DeleteTaskResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *DeleteTaskResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_DeleteTaskResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_DeleteTaskResponse proto.InternalMessageInfo
-
 func init() {
-	proto.RegisterType((*Task)(nil), "task.v1.Task")
-	proto.RegisterType((*CreateTaskRequest)(nil), "task.v1.CreateTaskRequest")
-	proto.RegisterType((*GetTaskRequest)(nil), "task.v1.GetTaskRequest")
-	proto.RegisterType((*DeleteTaskRequest)(nil), "task.v1.DeleteTaskRequest")
-	proto.RegisterType((*UpdateTaskRequest)(nil), "task.v1.UpdateTaskRequest")
-	proto.RegisterType((*TaskEntity)(nil), "task.v1.TaskEntity")
-	proto.RegisterType((*ListTaskRequest)(nil), "task.v1.ListTaskRequest")
-	proto.RegisterType((*TaskCollection)(nil), "task.v1.TaskCollection")
-	proto.RegisterType((*DeleteTaskResponse)(nil), "task.v1.DeleteTaskResponse")
-	proto.RegisterEnum("task.v1.Complete", Complete_name, Complete_value)
+	proto.RegisterType((*Task)(nil), "task.Task")
+	proto.RegisterType((*TaskEntity)(nil), "task.TaskEntity")
+	proto.RegisterType((*TaskCollection)(nil), "task.TaskCollection")
+	proto.RegisterType((*CreateTaskRequest)(nil), "task.CreateTaskRequest")
+	proto.RegisterType((*GetTaskRequest)(nil), "task.GetTaskRequest")
+	proto.RegisterType((*DeleteTaskRequest)(nil), "task.DeleteTaskRequest")
+	proto.RegisterType((*CompleteTaskRequest)(nil), "task.CompleteTaskRequest")
+	proto.RegisterType((*DeleteTaskResponse)(nil), "task.DeleteTaskResponse")
+	proto.RegisterType((*UpdateTaskRequest)(nil), "task.UpdateTaskRequest")
+	proto.RegisterType((*ListTaskRequest)(nil), "task.ListTaskRequest")
+	proto.RegisterEnum("task.Complete", Complete_name, Complete_value)
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -655,18 +720,19 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type TaskServiceClient interface {
-	// Erstellen eines Tasks
+	// Erstellen eines neuen Tasks
 	CreateTask(ctx context.Context, in *CreateTaskRequest, opts ...grpc.CallOption) (*TaskEntity, error)
-	// Laden eines Tasks
+	// Laden eines einzelnen Tasks
 	GetTask(ctx context.Context, in *GetTaskRequest, opts ...grpc.CallOption) (*TaskEntity, error)
 	// Laden aller Tasks. Es werden per default 23 Tasks pro Page gezeigt.
 	ListTask(ctx context.Context, in *ListTaskRequest, opts ...grpc.CallOption) (*TaskCollection, error)
-	// Einen Task löschen.
+	// Löschen eines Tasks
+	// Nicht widerrufbar
 	DeleteTask(ctx context.Context, in *DeleteTaskRequest, opts ...grpc.CallOption) (*DeleteTaskResponse, error)
-	// Inhalt eines Tasks aktualisieren. Es werden nur gelieferte Felder aktualisiert. Ist eigentlich ein PATCH
+	// Inhalt eines Tasks aktualisieren. Es werden nur gelieferte Felder aktualisiert.
 	UpdateTask(ctx context.Context, in *UpdateTaskRequest, opts ...grpc.CallOption) (*TaskEntity, error)
-	// Benutzerdefinierte Methode um einen Task als abgeschlossen zu setzen.
-	CompleteTask(ctx context.Context, in *GetTaskRequest, opts ...grpc.CallOption) (*TaskEntity, error)
+	// Benutzerdefinierte Methode um einen Task direkt als abgeschlossen zu setzen
+	CompleteTask(ctx context.Context, in *CompleteTaskRequest, opts ...grpc.CallOption) (*TaskEntity, error)
 }
 
 type taskServiceClient struct {
@@ -679,7 +745,7 @@ func NewTaskServiceClient(cc *grpc.ClientConn) TaskServiceClient {
 
 func (c *taskServiceClient) CreateTask(ctx context.Context, in *CreateTaskRequest, opts ...grpc.CallOption) (*TaskEntity, error) {
 	out := new(TaskEntity)
-	err := c.cc.Invoke(ctx, "/task.v1.TaskService/CreateTask", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/task.TaskService/CreateTask", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -688,7 +754,7 @@ func (c *taskServiceClient) CreateTask(ctx context.Context, in *CreateTaskReques
 
 func (c *taskServiceClient) GetTask(ctx context.Context, in *GetTaskRequest, opts ...grpc.CallOption) (*TaskEntity, error) {
 	out := new(TaskEntity)
-	err := c.cc.Invoke(ctx, "/task.v1.TaskService/GetTask", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/task.TaskService/GetTask", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -697,7 +763,7 @@ func (c *taskServiceClient) GetTask(ctx context.Context, in *GetTaskRequest, opt
 
 func (c *taskServiceClient) ListTask(ctx context.Context, in *ListTaskRequest, opts ...grpc.CallOption) (*TaskCollection, error) {
 	out := new(TaskCollection)
-	err := c.cc.Invoke(ctx, "/task.v1.TaskService/ListTask", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/task.TaskService/ListTask", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -706,7 +772,7 @@ func (c *taskServiceClient) ListTask(ctx context.Context, in *ListTaskRequest, o
 
 func (c *taskServiceClient) DeleteTask(ctx context.Context, in *DeleteTaskRequest, opts ...grpc.CallOption) (*DeleteTaskResponse, error) {
 	out := new(DeleteTaskResponse)
-	err := c.cc.Invoke(ctx, "/task.v1.TaskService/DeleteTask", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/task.TaskService/DeleteTask", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -715,16 +781,16 @@ func (c *taskServiceClient) DeleteTask(ctx context.Context, in *DeleteTaskReques
 
 func (c *taskServiceClient) UpdateTask(ctx context.Context, in *UpdateTaskRequest, opts ...grpc.CallOption) (*TaskEntity, error) {
 	out := new(TaskEntity)
-	err := c.cc.Invoke(ctx, "/task.v1.TaskService/UpdateTask", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/task.TaskService/UpdateTask", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *taskServiceClient) CompleteTask(ctx context.Context, in *GetTaskRequest, opts ...grpc.CallOption) (*TaskEntity, error) {
+func (c *taskServiceClient) CompleteTask(ctx context.Context, in *CompleteTaskRequest, opts ...grpc.CallOption) (*TaskEntity, error) {
 	out := new(TaskEntity)
-	err := c.cc.Invoke(ctx, "/task.v1.TaskService/CompleteTask", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/task.TaskService/CompleteTask", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -733,18 +799,19 @@ func (c *taskServiceClient) CompleteTask(ctx context.Context, in *GetTaskRequest
 
 // TaskServiceServer is the server API for TaskService service.
 type TaskServiceServer interface {
-	// Erstellen eines Tasks
+	// Erstellen eines neuen Tasks
 	CreateTask(context.Context, *CreateTaskRequest) (*TaskEntity, error)
-	// Laden eines Tasks
+	// Laden eines einzelnen Tasks
 	GetTask(context.Context, *GetTaskRequest) (*TaskEntity, error)
 	// Laden aller Tasks. Es werden per default 23 Tasks pro Page gezeigt.
 	ListTask(context.Context, *ListTaskRequest) (*TaskCollection, error)
-	// Einen Task löschen.
+	// Löschen eines Tasks
+	// Nicht widerrufbar
 	DeleteTask(context.Context, *DeleteTaskRequest) (*DeleteTaskResponse, error)
-	// Inhalt eines Tasks aktualisieren. Es werden nur gelieferte Felder aktualisiert. Ist eigentlich ein PATCH
+	// Inhalt eines Tasks aktualisieren. Es werden nur gelieferte Felder aktualisiert.
 	UpdateTask(context.Context, *UpdateTaskRequest) (*TaskEntity, error)
-	// Benutzerdefinierte Methode um einen Task als abgeschlossen zu setzen.
-	CompleteTask(context.Context, *GetTaskRequest) (*TaskEntity, error)
+	// Benutzerdefinierte Methode um einen Task direkt als abgeschlossen zu setzen
+	CompleteTask(context.Context, *CompleteTaskRequest) (*TaskEntity, error)
 }
 
 func RegisterTaskServiceServer(s *grpc.Server, srv TaskServiceServer) {
@@ -761,7 +828,7 @@ func _TaskService_CreateTask_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/task.v1.TaskService/CreateTask",
+		FullMethod: "/task.TaskService/CreateTask",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(TaskServiceServer).CreateTask(ctx, req.(*CreateTaskRequest))
@@ -779,7 +846,7 @@ func _TaskService_GetTask_Handler(srv interface{}, ctx context.Context, dec func
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/task.v1.TaskService/GetTask",
+		FullMethod: "/task.TaskService/GetTask",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(TaskServiceServer).GetTask(ctx, req.(*GetTaskRequest))
@@ -797,7 +864,7 @@ func _TaskService_ListTask_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/task.v1.TaskService/ListTask",
+		FullMethod: "/task.TaskService/ListTask",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(TaskServiceServer).ListTask(ctx, req.(*ListTaskRequest))
@@ -815,7 +882,7 @@ func _TaskService_DeleteTask_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/task.v1.TaskService/DeleteTask",
+		FullMethod: "/task.TaskService/DeleteTask",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(TaskServiceServer).DeleteTask(ctx, req.(*DeleteTaskRequest))
@@ -833,7 +900,7 @@ func _TaskService_UpdateTask_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/task.v1.TaskService/UpdateTask",
+		FullMethod: "/task.TaskService/UpdateTask",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(TaskServiceServer).UpdateTask(ctx, req.(*UpdateTaskRequest))
@@ -842,7 +909,7 @@ func _TaskService_UpdateTask_Handler(srv interface{}, ctx context.Context, dec f
 }
 
 func _TaskService_CompleteTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetTaskRequest)
+	in := new(CompleteTaskRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -851,16 +918,16 @@ func _TaskService_CompleteTask_Handler(srv interface{}, ctx context.Context, dec
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/task.v1.TaskService/CompleteTask",
+		FullMethod: "/task.TaskService/CompleteTask",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TaskServiceServer).CompleteTask(ctx, req.(*GetTaskRequest))
+		return srv.(TaskServiceServer).CompleteTask(ctx, req.(*CompleteTaskRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 var _TaskService_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "task.v1.TaskService",
+	ServiceName: "task.TaskService",
 	HandlerType: (*TaskServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -970,6 +1037,94 @@ func (m *Task) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
+func (m *TaskEntity) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TaskEntity) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.Data != nil {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintTask(dAtA, i, uint64(m.Data.Size()))
+		n4, err := m.Data.MarshalTo(dAtA[i:])
+		if err != nil {
+			return 0, err
+		}
+		i += n4
+	}
+	if len(m.Links) > 0 {
+		for _, msg := range m.Links {
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintTask(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
+		}
+	}
+	if m.XXX_unrecognized != nil {
+		i += copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	return i, nil
+}
+
+func (m *TaskCollection) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TaskCollection) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Data) > 0 {
+		for _, msg := range m.Data {
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintTask(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
+		}
+	}
+	if len(m.Links) > 0 {
+		for _, msg := range m.Links {
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintTask(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
+		}
+	}
+	if m.XXX_unrecognized != nil {
+		i += copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	return i, nil
+}
+
 func (m *CreateTaskRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -989,11 +1144,11 @@ func (m *CreateTaskRequest) MarshalTo(dAtA []byte) (int, error) {
 		dAtA[i] = 0xa
 		i++
 		i = encodeVarintTask(dAtA, i, uint64(m.Item.Size()))
-		n4, err := m.Item.MarshalTo(dAtA[i:])
+		n5, err := m.Item.MarshalTo(dAtA[i:])
 		if err != nil {
 			return 0, err
 		}
-		i += n4
+		i += n5
 	}
 	if m.XXX_unrecognized != nil {
 		i += copy(dAtA[i:], m.XXX_unrecognized)
@@ -1055,6 +1210,54 @@ func (m *DeleteTaskRequest) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
+func (m *CompleteTaskRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *CompleteTaskRequest) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Id) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintTask(dAtA, i, uint64(len(m.Id)))
+		i += copy(dAtA[i:], m.Id)
+	}
+	if m.XXX_unrecognized != nil {
+		i += copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	return i, nil
+}
+
+func (m *DeleteTaskResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *DeleteTaskResponse) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i += copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	return i, nil
+}
+
 func (m *UpdateTaskRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -1080,54 +1283,11 @@ func (m *UpdateTaskRequest) MarshalTo(dAtA []byte) (int, error) {
 		dAtA[i] = 0x12
 		i++
 		i = encodeVarintTask(dAtA, i, uint64(m.Item.Size()))
-		n5, err := m.Item.MarshalTo(dAtA[i:])
-		if err != nil {
-			return 0, err
-		}
-		i += n5
-	}
-	if m.XXX_unrecognized != nil {
-		i += copy(dAtA[i:], m.XXX_unrecognized)
-	}
-	return i, nil
-}
-
-func (m *TaskEntity) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *TaskEntity) MarshalTo(dAtA []byte) (int, error) {
-	var i int
-	_ = i
-	var l int
-	_ = l
-	if m.Data != nil {
-		dAtA[i] = 0xa
-		i++
-		i = encodeVarintTask(dAtA, i, uint64(m.Data.Size()))
-		n6, err := m.Data.MarshalTo(dAtA[i:])
+		n6, err := m.Item.MarshalTo(dAtA[i:])
 		if err != nil {
 			return 0, err
 		}
 		i += n6
-	}
-	if len(m.Links) > 0 {
-		for _, msg := range m.Links {
-			dAtA[i] = 0x12
-			i++
-			i = encodeVarintTask(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
 	}
 	if m.XXX_unrecognized != nil {
 		i += copy(dAtA[i:], m.XXX_unrecognized)
@@ -1194,11 +1354,11 @@ func (m *ListTaskRequest) MarshalTo(dAtA []byte) (int, error) {
 		i = encodeVarintTask(dAtA, i, uint64(len(m.Sum)))
 		i += copy(dAtA[i:], m.Sum)
 	}
-	if len(m.Context) > 0 {
+	if len(m.View) > 0 {
 		dAtA[i] = 0x42
 		i++
-		i = encodeVarintTask(dAtA, i, uint64(len(m.Context)))
-		i += copy(dAtA[i:], m.Context)
+		i = encodeVarintTask(dAtA, i, uint64(len(m.View)))
+		i += copy(dAtA[i:], m.View)
 	}
 	if m.NotCompleted {
 		dAtA[i] = 0x48
@@ -1210,72 +1370,6 @@ func (m *ListTaskRequest) MarshalTo(dAtA []byte) (int, error) {
 		}
 		i++
 	}
-	if m.XXX_unrecognized != nil {
-		i += copy(dAtA[i:], m.XXX_unrecognized)
-	}
-	return i, nil
-}
-
-func (m *TaskCollection) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *TaskCollection) MarshalTo(dAtA []byte) (int, error) {
-	var i int
-	_ = i
-	var l int
-	_ = l
-	if len(m.Data) > 0 {
-		for _, msg := range m.Data {
-			dAtA[i] = 0xa
-			i++
-			i = encodeVarintTask(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	if len(m.Links) > 0 {
-		for _, msg := range m.Links {
-			dAtA[i] = 0x12
-			i++
-			i = encodeVarintTask(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	if m.XXX_unrecognized != nil {
-		i += copy(dAtA[i:], m.XXX_unrecognized)
-	}
-	return i, nil
-}
-
-func (m *DeleteTaskResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *DeleteTaskResponse) MarshalTo(dAtA []byte) (int, error) {
-	var i int
-	_ = i
-	var l int
-	_ = l
 	if m.XXX_unrecognized != nil {
 		i += copy(dAtA[i:], m.XXX_unrecognized)
 	}
@@ -1323,6 +1417,52 @@ func (m *Task) Size() (n int) {
 	if m.UpdatedAt != nil {
 		l = m.UpdatedAt.Size()
 		n += 2 + l + sovTask(uint64(l))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *TaskEntity) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Data != nil {
+		l = m.Data.Size()
+		n += 1 + l + sovTask(uint64(l))
+	}
+	if len(m.Links) > 0 {
+		for _, e := range m.Links {
+			l = e.Size()
+			n += 1 + l + sovTask(uint64(l))
+		}
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *TaskCollection) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Data) > 0 {
+		for _, e := range m.Data {
+			l = e.Size()
+			n += 1 + l + sovTask(uint64(l))
+		}
+	}
+	if len(m.Links) > 0 {
+		for _, e := range m.Links {
+			l = e.Size()
+			n += 1 + l + sovTask(uint64(l))
+		}
 	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
@@ -1378,6 +1518,34 @@ func (m *DeleteTaskRequest) Size() (n int) {
 	return n
 }
 
+func (m *CompleteTaskRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Id)
+	if l > 0 {
+		n += 1 + l + sovTask(uint64(l))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *DeleteTaskResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
 func (m *UpdateTaskRequest) Size() (n int) {
 	if m == nil {
 		return 0
@@ -1391,28 +1559,6 @@ func (m *UpdateTaskRequest) Size() (n int) {
 	if m.Item != nil {
 		l = m.Item.Size()
 		n += 1 + l + sovTask(uint64(l))
-	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
-	return n
-}
-
-func (m *TaskEntity) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if m.Data != nil {
-		l = m.Data.Size()
-		n += 1 + l + sovTask(uint64(l))
-	}
-	if len(m.Links) > 0 {
-		for _, e := range m.Links {
-			l = e.Size()
-			n += 1 + l + sovTask(uint64(l))
-		}
 	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
@@ -1451,49 +1597,13 @@ func (m *ListTaskRequest) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTask(uint64(l))
 	}
-	l = len(m.Context)
+	l = len(m.View)
 	if l > 0 {
 		n += 1 + l + sovTask(uint64(l))
 	}
 	if m.NotCompleted {
 		n += 2
 	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
-	return n
-}
-
-func (m *TaskCollection) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if len(m.Data) > 0 {
-		for _, e := range m.Data {
-			l = e.Size()
-			n += 1 + l + sovTask(uint64(l))
-		}
-	}
-	if len(m.Links) > 0 {
-		for _, e := range m.Links {
-			l = e.Size()
-			n += 1 + l + sovTask(uint64(l))
-		}
-	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
-	return n
-}
-
-func (m *DeleteTaskResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
 	}
@@ -1769,6 +1879,234 @@ func (m *Task) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+func (m *TaskEntity) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTask
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: TaskEntity: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: TaskEntity: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Data", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTask
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTask
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Data == nil {
+				m.Data = &Task{}
+			}
+			if err := m.Data.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Links", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTask
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTask
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Links = append(m.Links, &rest.Link{})
+			if err := m.Links[len(m.Links)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTask(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthTask
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *TaskCollection) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTask
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: TaskCollection: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: TaskCollection: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Data", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTask
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTask
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Data = append(m.Data, &TaskEntity{})
+			if err := m.Data[len(m.Data)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Links", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTask
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTask
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Links = append(m.Links, &rest.Link{})
+			if err := m.Links[len(m.Links)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTask(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthTask
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func (m *CreateTaskRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -2013,6 +2351,137 @@ func (m *DeleteTaskRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+func (m *CompleteTaskRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTask
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: CompleteTaskRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: CompleteTaskRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTask
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTask
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Id = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTask(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthTask
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *DeleteTaskResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTask
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: DeleteTaskResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: DeleteTaskResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTask(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthTask
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func (m *UpdateTaskRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -2101,121 +2570,6 @@ func (m *UpdateTaskRequest) Unmarshal(dAtA []byte) error {
 				m.Item = &Task{}
 			}
 			if err := m.Item.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTask(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if skippy < 0 {
-				return ErrInvalidLengthTask
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *TaskEntity) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTask
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: TaskEntity: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: TaskEntity: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Data", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTask
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= (int(b) & 0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthTask
-			}
-			postIndex := iNdEx + msglen
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.Data == nil {
-				m.Data = &Task{}
-			}
-			if err := m.Data.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Links", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTask
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= (int(b) & 0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthTask
-			}
-			postIndex := iNdEx + msglen
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Links = append(m.Links, &rest.Link{})
-			if err := m.Links[len(m.Links)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -2446,7 +2800,7 @@ func (m *ListTaskRequest) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 8:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Context", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field View", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -2471,7 +2825,7 @@ func (m *ListTaskRequest) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Context = string(dAtA[iNdEx:postIndex])
+			m.View = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 9:
 			if wireType != 0 {
@@ -2493,170 +2847,6 @@ func (m *ListTaskRequest) Unmarshal(dAtA []byte) error {
 				}
 			}
 			m.NotCompleted = bool(v != 0)
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTask(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if skippy < 0 {
-				return ErrInvalidLengthTask
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *TaskCollection) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTask
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: TaskCollection: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: TaskCollection: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Data", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTask
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= (int(b) & 0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthTask
-			}
-			postIndex := iNdEx + msglen
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Data = append(m.Data, &TaskEntity{})
-			if err := m.Data[len(m.Data)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Links", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTask
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= (int(b) & 0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthTask
-			}
-			postIndex := iNdEx + msglen
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Links = append(m.Links, &rest.Link{})
-			if err := m.Links[len(m.Links)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTask(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if skippy < 0 {
-				return ErrInvalidLengthTask
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *DeleteTaskResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTask
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: DeleteTaskResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: DeleteTaskResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTask(dAtA[iNdEx:])
@@ -2784,61 +2974,61 @@ var (
 	ErrIntOverflowTask   = fmt.Errorf("proto: integer overflow")
 )
 
-func init() { proto.RegisterFile("task.proto", fileDescriptor_task_0e2277242d2e373b) }
+func init() { proto.RegisterFile("task.proto", fileDescriptor_task_f3756452dc406447) }
 
-var fileDescriptor_task_0e2277242d2e373b = []byte{
-	// 840 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x54, 0x5d, 0x6f, 0x1b, 0x45,
-	0x14, 0x65, 0x1d, 0x3b, 0xb6, 0xaf, 0x6b, 0x37, 0x9e, 0x58, 0xed, 0xb2, 0x54, 0xb1, 0xd9, 0x0a,
-	0x61, 0x55, 0x65, 0x2d, 0x5c, 0x84, 0x44, 0x9f, 0x68, 0x9c, 0x50, 0x21, 0x52, 0x17, 0x6d, 0x13,
-	0x40, 0x79, 0x29, 0x9b, 0xdd, 0x89, 0x3b, 0xf2, 0xee, 0xce, 0xb2, 0x73, 0x1d, 0x11, 0x21, 0x5e,
-	0xf8, 0x07, 0xa8, 0x7f, 0x8a, 0x47, 0x24, 0xde, 0x2d, 0x14, 0x21, 0x7e, 0x80, 0x7f, 0x01, 0x9a,
-	0xd9, 0x4f, 0xb7, 0x6e, 0x23, 0xfa, 0x36, 0x77, 0xef, 0x39, 0x47, 0x77, 0xce, 0x3d, 0xb3, 0x00,
-	0xe8, 0x88, 0xb9, 0x15, 0xc5, 0x1c, 0x39, 0xa9, 0xab, 0xf3, 0xc5, 0xa7, 0xc6, 0x9d, 0x19, 0xe7,
-	0x33, 0x9f, 0x8e, 0x9c, 0x88, 0x8d, 0x9c, 0x30, 0xe4, 0xe8, 0x20, 0xe3, 0xa1, 0x48, 0x60, 0x46,
-	0x3f, 0xed, 0xaa, 0xea, 0x6c, 0x71, 0x3e, 0x42, 0x16, 0x50, 0x81, 0x4e, 0x10, 0xa5, 0x80, 0x4f,
-	0x66, 0x0c, 0x5f, 0x2c, 0xce, 0x2c, 0x97, 0x07, 0xa3, 0x19, 0x9f, 0xf1, 0x02, 0x29, 0x2b, 0x55,
-	0xa8, 0x53, 0x0a, 0x37, 0x4b, 0xf0, 0x0b, 0xca, 0xf0, 0x45, 0x82, 0x17, 0xa3, 0x98, 0x0a, 0xbc,
-	0x0e, 0xe3, 0x39, 0x48, 0x13, 0x8c, 0xf9, 0x72, 0x0b, 0xaa, 0xc7, 0x8e, 0x98, 0x93, 0x21, 0x54,
-	0x98, 0xa7, 0x6b, 0x03, 0x6d, 0xd8, 0xdc, 0xd7, 0x57, 0xcb, 0x7e, 0xcf, 0x3b, 0x7b, 0x68, 0x32,
-	0xef, 0x7e, 0x34, 0xbf, 0xcf, 0x03, 0x86, 0x34, 0x88, 0xf0, 0xd2, 0xb4, 0x2b, 0xcc, 0x23, 0x16,
-	0xd4, 0x90, 0xa1, 0x4f, 0xf5, 0xca, 0x3a, 0x58, 0x7d, 0x2c, 0x83, 0x13, 0x18, 0xf9, 0x12, 0x5a,
-	0x1e, 0x15, 0x6e, 0xcc, 0x22, 0x69, 0x88, 0xbe, 0xa5, 0x58, 0x7b, 0xab, 0x65, 0xdf, 0x90, 0xac,
-	0x52, 0xab, 0xcc, 0x2d, 0x53, 0xc8, 0x04, 0x9a, 0x2e, 0x0f, 0x22, 0x9f, 0x22, 0xf5, 0xf4, 0xea,
-	0x40, 0x1b, 0x76, 0xc6, 0x5d, 0x2b, 0xf5, 0xdd, 0x9a, 0xa4, 0x9d, 0x7d, 0xb2, 0x5a, 0xf6, 0x3b,
-	0x52, 0x32, 0xc7, 0x9a, 0x76, 0xc1, 0x23, 0x9f, 0x41, 0x55, 0xde, 0x5b, 0xaf, 0x0d, 0xb4, 0x61,
-	0x6b, 0xdc, 0xb5, 0x92, 0x85, 0x58, 0x78, 0x19, 0x51, 0xeb, 0xc0, 0x41, 0xba, 0xdf, 0x5e, 0x2d,
-	0xfb, 0x4d, 0x35, 0x92, 0x83, 0xd4, 0xb4, 0x15, 0x9a, 0x7c, 0x01, 0xe0, 0xc6, 0xd4, 0x41, 0xea,
-	0x3d, 0x77, 0x50, 0xf7, 0x14, 0xd7, 0xc8, 0xb8, 0xd9, 0x8a, 0xac, 0xe3, 0x6c, 0x99, 0x76, 0x33,
-	0x45, 0x3f, 0x42, 0x49, 0x5d, 0x44, 0x5e, 0x46, 0xa5, 0xd7, 0x53, 0x53, 0xf4, 0x23, 0x34, 0x3f,
-	0x87, 0xee, 0x44, 0xe9, 0xc8, 0xd5, 0xd8, 0xf4, 0xa7, 0x05, 0x15, 0x48, 0x3e, 0x84, 0xaa, 0xb4,
-	0x47, 0xed, 0xa8, 0x35, 0x6e, 0xe7, 0x06, 0x28, 0x8c, 0x6a, 0x99, 0x03, 0xe8, 0x3c, 0xa6, 0x58,
-	0x26, 0x75, 0x8a, 0xb5, 0xca, 0xe5, 0x99, 0x77, 0xa1, 0x7b, 0x40, 0xa5, 0x21, 0x6f, 0x03, 0x7d,
-	0x05, 0xdd, 0x13, 0x35, 0xcb, 0x5b, 0x40, 0xf9, 0x38, 0x95, 0x37, 0x8f, 0xf3, 0x1d, 0x80, 0xac,
-	0x0e, 0x43, 0x64, 0x78, 0x29, 0x09, 0x9e, 0x83, 0xce, 0x1b, 0xe6, 0x97, 0x2d, 0xf2, 0x11, 0xd4,
-	0x7c, 0x16, 0xce, 0x85, 0x5e, 0x19, 0x6c, 0x0d, 0x5b, 0xe3, 0x9b, 0xd6, 0xf9, 0x22, 0xe6, 0xc9,
-	0x8a, 0x8e, 0x58, 0x38, 0xb7, 0x93, 0xae, 0xf9, 0xaf, 0x06, 0x37, 0x8f, 0x98, 0x58, 0xbb, 0xe8,
-	0x2d, 0xd8, 0x3e, 0x67, 0xd4, 0xf7, 0x44, 0x3a, 0x62, 0x5a, 0x11, 0x02, 0x55, 0xc1, 0x63, 0x4c,
-	0xc2, 0x6a, 0xab, 0x73, 0x82, 0xf5, 0x91, 0xc6, 0x49, 0x18, 0xed, 0xb4, 0x92, 0xd8, 0xc8, 0x99,
-	0x51, 0x15, 0xb1, 0x9a, 0xad, 0xce, 0xa4, 0x27, 0x47, 0x0a, 0x18, 0xaa, 0xdc, 0xd4, 0xec, 0xa4,
-	0x90, 0x5f, 0x5d, 0xbe, 0x08, 0x51, 0xdf, 0x1e, 0x68, 0xc3, 0x86, 0x9d, 0x14, 0x64, 0x07, 0xb6,
-	0xc4, 0x22, 0xd0, 0xeb, 0x4a, 0x54, 0x1e, 0x89, 0x0e, 0x75, 0x97, 0x87, 0x48, 0x7f, 0x46, 0xbd,
-	0xa1, 0xbe, 0x66, 0x25, 0xb9, 0x0b, 0xed, 0x90, 0xe3, 0xf3, 0x22, 0xd7, 0x4d, 0xa5, 0x74, 0x23,
-	0xe4, 0x38, 0xc9, 0xf3, 0xfb, 0x23, 0x74, 0xe4, 0x1d, 0x27, 0xdc, 0xf7, 0xa9, 0xab, 0x9e, 0xc2,
-	0xc7, 0xb9, 0x89, 0xd2, 0xa0, 0xdd, 0x35, 0x13, 0x13, 0x9f, 0xff, 0x9f, 0x95, 0x3d, 0x20, 0xe5,
-	0x3c, 0x88, 0x88, 0x87, 0x82, 0xde, 0x7b, 0x00, 0x8d, 0x6c, 0x08, 0xd2, 0x82, 0xfa, 0xc9, 0xf4,
-	0x9b, 0xe9, 0xd3, 0xef, 0xa7, 0x3b, 0xef, 0xc9, 0xc2, 0x3e, 0x99, 0x4e, 0xbf, 0x9e, 0x3e, 0xde,
-	0xd1, 0x48, 0x1b, 0x9a, 0x93, 0xa7, 0x4f, 0xbe, 0x3d, 0x3a, 0x3c, 0x3e, 0x3c, 0xd8, 0xa9, 0x8c,
-	0x7f, 0xaf, 0x42, 0x4b, 0xaa, 0x3c, 0xa3, 0xf1, 0x05, 0x73, 0x29, 0x79, 0x06, 0x50, 0x84, 0x98,
-	0x18, 0xc5, 0x83, 0x7d, 0x35, 0xd9, 0xc6, 0xa6, 0x6b, 0x98, 0xbd, 0xdf, 0xfe, 0xfa, 0xe7, 0x65,
-	0xa5, 0x63, 0x6e, 0x8f, 0x64, 0x53, 0x3c, 0x54, 0x91, 0x22, 0x47, 0x50, 0x4f, 0x13, 0x4e, 0x6e,
-	0xe7, 0xac, 0xf5, 0xcc, 0x6f, 0x96, 0xdb, 0x55, 0x72, 0x6d, 0xd2, 0x4a, 0xe4, 0x46, 0xbf, 0x30,
-	0xef, 0x57, 0xf2, 0x04, 0x1a, 0x59, 0x8e, 0x88, 0x9e, 0xb3, 0x5e, 0x89, 0x96, 0x71, 0x7b, 0x4d,
-	0xaf, 0x58, 0x86, 0xd9, 0x51, 0x9a, 0x0d, 0x92, 0x8e, 0x48, 0x4e, 0x01, 0x0a, 0x33, 0x4b, 0x37,
-	0x7e, 0xed, 0xc5, 0x19, 0x1f, 0x6c, 0xec, 0x25, 0xee, 0x67, 0xa3, 0xde, 0x5b, 0x1b, 0xf5, 0x07,
-	0x80, 0xe2, 0x4d, 0x96, 0xb4, 0x5f, 0x7b, 0xa8, 0x9b, 0xaf, 0xff, 0xbe, 0xd2, 0xdc, 0x35, 0xca,
-	0x9a, 0xa9, 0xa5, 0xa7, 0x70, 0x23, 0x5b, 0xf6, 0x3b, 0xf8, 0x7a, 0x47, 0x09, 0xdf, 0x32, 0x7b,
-	0x65, 0x61, 0x37, 0xff, 0x27, 0xff, 0x71, 0xb5, 0xa7, 0xfd, 0x79, 0xb5, 0xa7, 0xfd, 0x7d, 0xb5,
-	0xa7, 0x9d, 0x56, 0x25, 0xe4, 0x6c, 0x5b, 0xfd, 0xfb, 0x1e, 0xfc, 0x17, 0x00, 0x00, 0xff, 0xff,
-	0xd4, 0x2b, 0x40, 0x7e, 0x46, 0x07, 0x00, 0x00,
+var fileDescriptor_task_f3756452dc406447 = []byte{
+	// 844 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x55, 0xdd, 0x6e, 0x1b, 0x45,
+	0x14, 0x66, 0xfd, 0x93, 0xd8, 0xc7, 0x8d, 0xeb, 0x4c, 0x4c, 0xbb, 0xb5, 0x22, 0xdb, 0xda, 0x52,
+	0xc9, 0xaa, 0xca, 0x5a, 0x72, 0xae, 0xe8, 0x05, 0xa2, 0x71, 0x42, 0x04, 0xa4, 0x2e, 0xda, 0x3a,
+	0x42, 0x20, 0xa1, 0x6a, 0xed, 0x9d, 0xb8, 0x23, 0xef, 0xee, 0x2c, 0x3b, 0xc7, 0x41, 0x11, 0xe2,
+	0x86, 0x57, 0xe0, 0x15, 0x78, 0x18, 0x2e, 0x91, 0xb8, 0xb7, 0xaa, 0x88, 0x27, 0xf0, 0x13, 0xa0,
+	0x99, 0xd9, 0xcd, 0xae, 0xeb, 0xe0, 0x8a, 0xbb, 0x39, 0x33, 0xdf, 0xf7, 0xf9, 0xfc, 0x7c, 0x67,
+	0x0d, 0x80, 0xae, 0x98, 0xdb, 0x51, 0xcc, 0x91, 0x93, 0x92, 0x3c, 0xb7, 0x0e, 0x67, 0x9c, 0xcf,
+	0x7c, 0xda, 0x77, 0x23, 0xd6, 0x77, 0xc3, 0x90, 0xa3, 0x8b, 0x8c, 0x87, 0x42, 0x63, 0x5a, 0x9d,
+	0xe4, 0x55, 0x45, 0x93, 0xc5, 0x65, 0x1f, 0x59, 0x40, 0x05, 0xba, 0x41, 0x94, 0x00, 0x3e, 0x9d,
+	0x31, 0x7c, 0xbb, 0x98, 0xd8, 0x53, 0x1e, 0xf4, 0x67, 0x7c, 0xc6, 0x33, 0xa4, 0x8c, 0x54, 0xa0,
+	0x4e, 0x09, 0xdc, 0xca, 0xc1, 0xaf, 0x28, 0xc3, 0xb7, 0x1a, 0x2f, 0xfa, 0x31, 0x15, 0xf8, 0x21,
+	0x8c, 0xe7, 0x22, 0xd5, 0x18, 0xeb, 0x8f, 0x22, 0x94, 0xc6, 0xae, 0x98, 0x93, 0x1e, 0x14, 0x98,
+	0x67, 0x1a, 0x5d, 0xa3, 0x57, 0x3d, 0x36, 0x57, 0xcb, 0x4e, 0xd3, 0x9b, 0x3c, 0xb7, 0x98, 0xf7,
+	0x2c, 0x9a, 0x3f, 0xe3, 0x01, 0x43, 0x1a, 0x44, 0x78, 0x6d, 0x39, 0x05, 0xe6, 0x11, 0x1b, 0xca,
+	0xc8, 0xd0, 0xa7, 0x66, 0x61, 0x1d, 0xac, 0x2e, 0xf3, 0x60, 0x0d, 0x23, 0x5f, 0x40, 0xcd, 0xa3,
+	0x62, 0x1a, 0xb3, 0x48, 0x36, 0xc4, 0x2c, 0x2a, 0x56, 0x7b, 0xb5, 0xec, 0xb4, 0x24, 0x2b, 0xf7,
+	0x94, 0xe7, 0xe6, 0x29, 0xe4, 0x6b, 0xa8, 0x4e, 0x79, 0x10, 0xf9, 0x14, 0xa9, 0x67, 0x96, 0xba,
+	0x46, 0xaf, 0x3e, 0xa8, 0xdb, 0x6a, 0x00, 0xc3, 0xe4, 0xfa, 0xf8, 0x70, 0xb5, 0xec, 0x98, 0x52,
+	0xef, 0x16, 0x98, 0x57, 0xcb, 0xe8, 0xe4, 0x73, 0x28, 0xc9, 0xf2, 0xcd, 0x72, 0xd7, 0xe8, 0xd5,
+	0x06, 0xfb, 0xb6, 0x9e, 0x8b, 0x8d, 0xd7, 0x11, 0xb5, 0x4f, 0x5c, 0xa4, 0xc7, 0x0f, 0x57, 0xcb,
+	0xce, 0x81, 0xca, 0xcc, 0xc5, 0xb5, 0x72, 0x14, 0x8f, 0x7c, 0x06, 0x30, 0x8d, 0xa9, 0x8b, 0xd4,
+	0x7b, 0xe3, 0xa2, 0xe9, 0x29, 0x95, 0x56, 0xaa, 0x92, 0xce, 0xcc, 0x1e, 0xa7, 0xd3, 0x75, 0xaa,
+	0x09, 0xfa, 0x05, 0x4a, 0xea, 0x22, 0xf2, 0x52, 0x2a, 0xfd, 0x30, 0x35, 0x41, 0xbf, 0x40, 0xeb,
+	0x35, 0x80, 0x9c, 0xd2, 0x69, 0x88, 0x0c, 0xaf, 0x49, 0x5b, 0xd5, 0xe0, 0xaa, 0x69, 0xd5, 0x06,
+	0xa0, 0x5b, 0x21, 0xdf, 0x55, 0x8e, 0x2e, 0x79, 0x02, 0x65, 0x9f, 0x85, 0x73, 0x61, 0x16, 0xba,
+	0xc5, 0x5e, 0x6d, 0x70, 0xdf, 0xbe, 0x5c, 0xc4, 0x5c, 0x97, 0x78, 0xce, 0xc2, 0xb9, 0xa3, 0x5f,
+	0xad, 0x1f, 0xa1, 0x2e, 0x49, 0x43, 0xee, 0xfb, 0x74, 0xaa, 0x1a, 0xfd, 0xc9, 0xad, 0xb0, 0xe4,
+	0x35, 0x32, 0x61, 0xfd, 0xc3, 0xff, 0x4f, 0xfe, 0x08, 0xf6, 0x87, 0xaa, 0x76, 0x95, 0x19, 0xfd,
+	0x69, 0x41, 0x05, 0xca, 0xd4, 0x65, 0x43, 0xef, 0x4a, 0x5d, 0xde, 0x5b, 0x5d, 0xa8, 0x9f, 0x51,
+	0xcc, 0x33, 0xea, 0x99, 0x31, 0xa5, 0xfd, 0xac, 0xc7, 0xb0, 0x7f, 0x42, 0xe5, 0x2c, 0xb7, 0x81,
+	0x9e, 0xc0, 0x41, 0x6a, 0x8d, 0x6d, 0xb0, 0x26, 0x90, 0xbc, 0x96, 0x88, 0x78, 0x28, 0xa8, 0x35,
+	0x84, 0xfd, 0x0b, 0xd5, 0xf9, 0x2d, 0xd4, 0xdb, 0x42, 0x0a, 0xff, 0x51, 0xc8, 0x3b, 0x03, 0xee,
+	0x9f, 0x33, 0xb1, 0x56, 0xca, 0x03, 0xd8, 0xb9, 0x64, 0xd4, 0xf7, 0x44, 0xa2, 0x93, 0x44, 0x84,
+	0x40, 0x49, 0xf0, 0x18, 0xf5, 0x42, 0x39, 0xea, 0xac, 0xb1, 0x3e, 0xd2, 0x58, 0x2f, 0x8c, 0x93,
+	0x44, 0x12, 0x1b, 0xb9, 0x33, 0xaa, 0xd6, 0xa0, 0xec, 0xa8, 0x33, 0x69, 0xca, 0x81, 0x04, 0x0c,
+	0x95, 0xa9, 0xcb, 0x8e, 0x0e, 0xe4, 0xed, 0x94, 0x2f, 0x42, 0x34, 0x77, 0xba, 0x46, 0xaf, 0xe2,
+	0xe8, 0x80, 0x34, 0xa0, 0x28, 0x16, 0x81, 0xb9, 0xab, 0x44, 0xe5, 0x51, 0x2a, 0x5e, 0x31, 0xfa,
+	0xb3, 0x59, 0xd1, 0xbf, 0x2e, 0xcf, 0xe4, 0x31, 0xec, 0x85, 0x1c, 0xdf, 0x64, 0x5b, 0x57, 0x55,
+	0x1a, 0xf7, 0x42, 0x8e, 0x69, 0x5f, 0xbd, 0xa7, 0x47, 0x50, 0x49, 0x03, 0x52, 0x83, 0xdd, 0x8b,
+	0xd1, 0x37, 0xa3, 0x57, 0xdf, 0x8d, 0x1a, 0x1f, 0xc9, 0xc0, 0xb9, 0x18, 0x8d, 0xbe, 0x1a, 0x9d,
+	0x35, 0x0c, 0xb2, 0x07, 0xd5, 0xe1, 0xab, 0x97, 0xdf, 0x9e, 0x9f, 0x8e, 0x4f, 0x4f, 0x1a, 0x85,
+	0xc1, 0xaa, 0x08, 0x35, 0xd9, 0x93, 0xd7, 0x34, 0xbe, 0x62, 0x53, 0x4a, 0x5e, 0x02, 0x64, 0x2e,
+	0x21, 0x0f, 0x93, 0xb5, 0x7e, 0xdf, 0x37, 0xad, 0x0d, 0x2f, 0x5a, 0xcd, 0xdf, 0xfe, 0xfe, 0xe7,
+	0xf7, 0x42, 0xdd, 0xda, 0xe9, 0xcb, 0x17, 0xf1, 0x5c, 0xb5, 0x9d, 0x7c, 0x09, 0xbb, 0x89, 0x7f,
+	0x48, 0x53, 0x53, 0xd6, 0xed, 0x74, 0x87, 0xd0, 0x81, 0x12, 0xda, 0x23, 0x35, 0x2d, 0xd4, 0xff,
+	0x85, 0x79, 0xbf, 0x92, 0x33, 0xa8, 0xa4, 0xd3, 0x23, 0x1f, 0x6b, 0xca, 0x7b, 0xd3, 0x6c, 0x35,
+	0x33, 0xa5, 0x6c, 0x85, 0xac, 0xba, 0x52, 0xab, 0x90, 0x24, 0x2d, 0x32, 0x06, 0xc8, 0x2c, 0x96,
+	0xd6, 0xb7, 0x61, 0xe0, 0x96, 0xb9, 0xf9, 0x90, 0xb8, 0x31, 0x49, 0xef, 0xe9, 0x5a, 0x7a, 0x0e,
+	0x40, 0x66, 0xd1, 0x54, 0x75, 0xc3, 0xb4, 0x77, 0x14, 0xfb, 0x48, 0xa9, 0x1d, 0x0c, 0xf2, 0x6a,
+	0x49, 0xeb, 0xbe, 0x87, 0x7b, 0xf9, 0x9d, 0x21, 0x8f, 0xd6, 0x3f, 0xb1, 0xdb, 0x75, 0x0f, 0x95,
+	0xee, 0x03, 0xab, 0x99, 0xd7, 0x4d, 0xed, 0x73, 0x4c, 0xfe, 0xbc, 0x69, 0x1b, 0x7f, 0xdd, 0xb4,
+	0x8d, 0x77, 0x37, 0x6d, 0xe3, 0x07, 0xf5, 0x7f, 0x39, 0xd9, 0x51, 0x5f, 0xbc, 0xa3, 0x7f, 0x03,
+	0x00, 0x00, 0xff, 0xff, 0x0b, 0x03, 0xb5, 0xc9, 0x4a, 0x07, 0x00, 0x00,
 }

@@ -23,14 +23,14 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1TaskCollection"
+              "$ref": "#/definitions/taskTaskCollection"
             }
           }
         },
         "parameters": [
           {
             "name": "fields",
-            "description": "Partielle Repräsentation.",
+            "description": "Partielle Repräsentation fields=id,name.",
             "in": "query",
             "required": false,
             "type": "string"
@@ -44,14 +44,14 @@
           },
           {
             "name": "filter",
-            "description": "Filtern.",
+            "description": "Filter.",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
             "name": "page",
-            "description": "Gewünschte Seite. Tipp: Folge dem HATEOAS.",
+            "description": "Gewünschte Seite. Tipp: Folge dem HATEOAS next, prev,...",
             "in": "query",
             "required": false,
             "type": "integer",
@@ -59,7 +59,7 @@
           },
           {
             "name": "limit",
-            "description": "Seitengrösse.",
+            "description": "Anzahl Elemente pro Seite, maximal sind 99 erlaubt.",
             "in": "query",
             "required": false,
             "type": "integer",
@@ -67,7 +67,7 @@
           },
           {
             "name": "count",
-            "description": "Meta für die Anzahl der Elemente der Resource.",
+            "description": "Meta für die Anzahl der Elemente der Resource, bei true ist in der Antwort Meta der count aufgeführt.",
             "in": "query",
             "required": false,
             "type": "boolean",
@@ -81,8 +81,8 @@
             "type": "string"
           },
           {
-            "name": "context",
-            "description": "not implemented -\u003e wird auf view geändert um conform mit google specs zu sein.",
+            "name": "view",
+            "description": "not implemented (ehemals context).",
             "in": "query",
             "required": false,
             "type": "string"
@@ -101,23 +101,24 @@
         ]
       },
       "post": {
-        "summary": "Erstellen eines Tasks",
+        "summary": "Erstellen eines neuen Tasks",
         "operationId": "CreateTask",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1TaskEntity"
+              "$ref": "#/definitions/taskTaskEntity"
             }
           }
         },
         "parameters": [
           {
             "name": "body",
+            "description": "enthält einen Task",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1Task"
+              "$ref": "#/definitions/taskTask"
             }
           }
         ],
@@ -128,19 +129,20 @@
     },
     "/tasks/{id}": {
       "get": {
-        "summary": "Laden eines Tasks",
+        "summary": "Laden eines einzelnen Tasks",
         "operationId": "GetTask",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1TaskEntity"
+              "$ref": "#/definitions/taskTaskEntity"
             }
           }
         },
         "parameters": [
           {
             "name": "id",
+            "description": "ULID vom Task",
             "in": "path",
             "required": true,
             "type": "string"
@@ -151,19 +153,20 @@
         ]
       },
       "delete": {
-        "summary": "Einen Task löschen.",
+        "summary": "Löschen eines Tasks \nNicht widerrufbar",
         "operationId": "DeleteTask",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1DeleteTaskResponse"
+              "$ref": "#/definitions/taskDeleteTaskResponse"
             }
           }
         },
         "parameters": [
           {
             "name": "id",
+            "description": "ULID vom Task",
             "in": "path",
             "required": true,
             "type": "string"
@@ -173,30 +176,32 @@
           "TaskService"
         ]
       },
-      "put": {
-        "summary": "Inhalt eines Tasks aktualisieren. Es werden nur gelieferte Felder aktualisiert. Ist eigentlich ein PATCH",
+      "patch": {
+        "summary": "Inhalt eines Tasks aktualisieren. Es werden nur gelieferte Felder aktualisiert.",
         "operationId": "UpdateTask",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1TaskEntity"
+              "$ref": "#/definitions/taskTaskEntity"
             }
           }
         },
         "parameters": [
           {
             "name": "id",
+            "description": "ULID vom Task",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
             "name": "body",
+            "description": "enthält einen Task",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1Task"
+              "$ref": "#/definitions/taskTask"
             }
           }
         ],
@@ -207,19 +212,20 @@
     },
     "/tasks/{id}:complete": {
       "post": {
-        "summary": "Benutzerdefinierte Methode um einen Task als abgeschlossen zu setzen.",
+        "summary": "Benutzerdefinierte Methode um einen Task direkt als abgeschlossen zu setzen",
         "operationId": "CompleteTask",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1TaskEntity"
+              "$ref": "#/definitions/taskTaskEntity"
             }
           }
         },
         "parameters": [
           {
             "name": "id",
+            "description": "ULID vom Task",
             "in": "path",
             "required": true,
             "type": "string"
@@ -246,6 +252,93 @@
       ],
       "default": "PUT",
       "title": "Set der REST Verben\nhttps://tools.ietf.org/html/rfc7231#section-4"
+    },
+    "taskComplete": {
+      "type": "string",
+      "enum": [
+        "UNKNOWN",
+        "RUNNING",
+        "COMPLETED"
+      ],
+      "default": "UNKNOWN",
+      "title": "Unkown mit 0 ist bewusst. So können wir feststellen ob ein Wert auch wirklich gesetzt wurde \nNeue Zeile"
+    },
+    "taskDeleteTaskResponse": {
+      "type": "object",
+      "title": "Leere Antwort nach dem Löschen eines Tasks"
+    },
+    "taskTask": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "ulid des Tasks"
+        },
+        "title": {
+          "type": "string",
+          "title": "Titel des Tasks"
+        },
+        "description": {
+          "type": "string",
+          "title": "Beschreibung des Tasks"
+        },
+        "completed": {
+          "$ref": "#/definitions/taskComplete",
+          "title": "Status des Tasks"
+        },
+        "date": {
+          "$ref": "#/definitions/typeDate",
+          "title": "Ablaufdatum"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "title": "Datum der Erstellung"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "title": "Datum der letzten Änderung"
+        }
+      },
+      "title": "Ein einzelner Task"
+    },
+    "taskTaskCollection": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/taskTaskEntity"
+          },
+          "title": "enthält eine liste von Tasks"
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/typeLink"
+          },
+          "title": "HATEOAS Links"
+        }
+      },
+      "title": "REST Collection von Tasks"
+    },
+    "taskTaskEntity": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/taskTask",
+          "title": "enthält einen Task"
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/typeLink"
+          },
+          "title": "HATEOAS Links"
+        }
+      },
+      "title": "REST Entität eines Tasks"
     },
     "typeDate": {
       "type": "object",
@@ -288,86 +381,6 @@
         }
       },
       "title": "IANA konforme Links /\nList of official link rels:\nhttp://www.iana.org/assignments/link-relations/link-relations.xhtml"
-    },
-    "v1Complete": {
-      "type": "string",
-      "enum": [
-        "UNKNOWN",
-        "RUNNING",
-        "COMPLETED"
-      ],
-      "default": "UNKNOWN"
-    },
-    "v1DeleteTaskResponse": {
-      "type": "object"
-    },
-    "v1Task": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "title": "Eine ULID"
-        },
-        "title": {
-          "type": "string",
-          "title": "Titel des Tasks"
-        },
-        "description": {
-          "type": "string",
-          "title": "Beschreibung des Tasks"
-        },
-        "completed": {
-          "$ref": "#/definitions/v1Complete",
-          "title": "Status des Tasks"
-        },
-        "date": {
-          "$ref": "#/definitions/typeDate",
-          "title": "Ablaufdatum"
-        },
-        "created_at": {
-          "type": "string",
-          "format": "date-time",
-          "title": "Datum der Erstellung"
-        },
-        "updated_at": {
-          "type": "string",
-          "format": "date-time",
-          "title": "Datum der letzen Änderung"
-        }
-      },
-      "title": "Task Entität"
-    },
-    "v1TaskCollection": {
-      "type": "object",
-      "properties": {
-        "data": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/v1TaskEntity"
-          }
-        },
-        "links": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/typeLink"
-          }
-        }
-      }
-    },
-    "v1TaskEntity": {
-      "type": "object",
-      "properties": {
-        "data": {
-          "$ref": "#/definitions/v1Task"
-        },
-        "links": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/typeLink"
-          }
-        }
-      },
-      "title": "Eine Entität besteht aus dem Task und den HATEOAS Links"
     }
   }
 }
