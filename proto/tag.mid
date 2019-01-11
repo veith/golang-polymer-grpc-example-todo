@@ -246,20 +246,6 @@
           "__sqlite": {
             "type": "TEXT"
           }
-        },
-        {
-          "name": "brailleLabel",
-          "description": "Taglabel in der Braille-Schreibweise",
-          "type": "string",
-          "repeated": false,
-          "mandatory": true,
-          "__proto": {
-            "type": "string",
-            "number": 3
-          },
-          "__sqlite": {
-            "type": "TEXT"
-          }
         }
       ]
     },

@@ -13,6 +13,10 @@ func GetServiceServer() proto.TagServiceServer {
 	return &s
 }
 
+func NewProtoTags() *proto.Tag {
+	return &proto.Tag{}
+}
+
 // taskServiceServer is used to implement taskServiceServer.
 type serviceServer struct {
 }
@@ -26,11 +30,22 @@ func (serviceServer) GetTag(ctx context.Context, req *proto.GetTagRequest) (*pro
 }
 
 func (serviceServer) ListAllTags(ctx context.Context, req *proto.ListTagsRequest) (*proto.TagCollectionResponse, error) {
-	panic("implement me")
+	res := tags.Find()
+
+	var tagItems []Tag
+	err := res.All(&tagItems)
+
+	return &proto.TagCollectionResponse{}, err
+
 }
 
 func (serviceServer) ListTagsFromTask(ctx context.Context, req *proto.ListTagsRequest) (*proto.TagCollectionResponse, error) {
-	panic("implement me")
+	res := tags.Find()
+
+	var tagItems []Tag
+	err := res.All(&tagItems)
+
+	return &proto.TagCollectionResponse{}, err
 }
 
 func (serviceServer) DeleteTag(ctx context.Context, req *proto.DeleteTagRequest) (*proto.TagEntityResponse, error) {

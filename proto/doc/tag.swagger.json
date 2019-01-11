@@ -277,10 +277,6 @@
         "label": {
           "type": "string",
           "description": "Taglabel wird als Standardrepräsentation verwendet."
-        },
-        "brailleLabel": {
-          "type": "string",
-          "title": "Taglabel in der Braille-Schreibweise"
         }
       },
       "title": "Tag Entitytyp. Datenmodel eines Tags"

@@ -1,31 +1,13 @@
-package task
+package hateoas
 
 import (
-	"../../../proto/task"
-	"encoding/json"
-	"github.com/gogo/protobuf/types"
-	"github.com/oklog/ulid"
-	"github.com/veith/protos/date"
+	"../query"
 	"github.com/veith/protos/rest"
-	//"google.golang.org/genproto/googleapis/type/date"
 	"strconv"
 )
 
 type Hateoas struct {
 	Links []*rest.Link
-}
-
-func MapTaskToProtoTask(ob1 *Task) *task.Task {
-	var t types.Timestamp
-	var date date.Date
-	var q struct{}
-	ob2 := task.Task{ob1.Id.String(), ob1.Title, ob1.Description, task.Complete(ob1.Completed), &date, &t, &t, q, []byte{}, 0}
-	return &ob2
-}
-func MapProtoTaskToTask(ob1 *task.Task) *Task {
-	id, _ := ulid.Parse(ob1.Id)
-	ob2 := Task{id, ob1.Title, ob1.Description, int32(ob1.Completed)}
-	return &ob2
 }
 
 // links einem HTS hinzufügen
@@ -34,17 +16,8 @@ func (h *Hateoas) AddLink(rel, contenttype, href string, method rest.Link_Method
 	h.Links = append(h.Links, &link)
 }
 
-// Optionen für Listenelemente kommen aus dem proto als beliebiger Typ daher, jedoch immer in der gleichen nummerierung
-// diese werden in die QueryOptions Form gebracht, damit upper sauber damit umgehen kann.
-func GetListOptionsFromRequest(options interface{}) QueryOptions {
-	tmp, _ := json.Marshal(options)
-	var opts QueryOptions
-	json.Unmarshal(tmp, &opts)
-	return opts
-}
-
 // hateoas anhand DBMEta für eine Collection erzeugen
-func GenerateCollectionHATEOAS(dbMeta DBMeta) Hateoas {
+func GenerateCollectionHATEOAS(dbMeta query.DBMeta) Hateoas {
 	//todo Link_Get,.. nach REST schieben
 	var h Hateoas
 	h.AddLink("self", "application/json", "http://localhost:8888/tasks?page="+strconv.FormatUint(uint64(dbMeta.CurrentPage), 10), rest.Link_GET)

@@ -2,22 +2,31 @@ package task
 
 import (
 	"../_env"
+	"../pkg/query"
+	"../pkg/uid"
 	"github.com/oklog/ulid"
 	"upper.io/db.v3"
 )
 
 // Interface zur DB
 var tasks db.Collection
-var paginationDefault uint
 
 func InitEnvironment(env *environment.Env) {
 	tasks = env.DB.Collection("task")
-	paginationDefault = 23
+
+}
+
+// Task
+type Task struct {
+	Id          ulid.ULID `json:"id,omitempty" db:"id,pk,omitempty"`
+	Title       string    `json:"title,omitempty" db:"title,omitempty"`
+	Description string    `json:"description,omitempty" db:"description,omitempty"`
+	Completed   int32     `json:"completed,omitempty" db:"completed,omitempty"`
 }
 
 func CreateTaskItem(data *Task) (Task, error) {
 	var item Task
-	item.Id = GenerateULID()
+	item.Id = uid.GenerateULID()
 	item.Title = data.Title
 	item.Description = data.Description
 	if data.Completed != 0 {
@@ -31,11 +40,11 @@ func CreateTaskItem(data *Task) (Task, error) {
 	return item, err
 }
 
-func ListTaskItems(options QueryOptions) ([]Task, DBMeta, error) {
+func ListTaskItems(options query.QueryOptions) ([]Task, query.DBMeta, error) {
 
 	res := tasks.Find()
-	var meta DBMeta
-	res, meta = ApplyRequestOptionsToQuery(res, options)
+	var meta query.DBMeta
+	res, meta = query.ApplyRequestOptionsToQuery(res, options)
 	var items []Task
 	err := res.All(&items)
 

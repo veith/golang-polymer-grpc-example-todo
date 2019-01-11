@@ -1,10 +1,8 @@
-package task
+package query
 
 import (
-	"github.com/oklog/ulid"
-	"math/rand"
+	"encoding/json"
 	"strings"
-	"time"
 	"upper.io/db.v3"
 )
 
@@ -30,20 +28,19 @@ type DBMeta struct {
 	LastPage    uint
 }
 
-// Task
-type Task struct {
-	Id          ulid.ULID `json:"id,omitempty" db:"id,pk,omitempty"`
-	Title       string    `json:"title,omitempty" db:"title,omitempty"`
-	Description string    `json:"description,omitempty" db:"description,omitempty"`
-	Completed   int32     `json:"completed,omitempty" db:"completed,omitempty"`
+var PaginationDefault uint
+
+func init() {
+	PaginationDefault = 23
 }
 
-// Erzeuge eine ULID
-func GenerateULID() ulid.ULID {
-	t := time.Now().UTC()
-	entropy := rand.New(rand.NewSource(t.UnixNano()))
-	newID, _ := ulid.New(ulid.Timestamp(t), entropy)
-	return newID
+// Optionen für Listenelemente kommen aus dem proto als beliebiger Typ daher, jedoch immer in der gleichen nummerierung
+// diese werden in die QueryOptions Form gebracht, damit upper sauber damit umgehen kann.
+func GetListOptionsFromRequest(options interface{}) QueryOptions {
+	tmp, _ := json.Marshal(options)
+	var opts QueryOptions
+	json.Unmarshal(tmp, &opts)
+	return opts
 }
 
 // Query Options für auf das db.Result anwenden.
@@ -54,7 +51,7 @@ func ApplyRequestOptionsToQuery(res db.Result, options QueryOptions) (db.Result,
 	if options.Limit != 0 {
 		res = res.Paginate(options.Limit)
 	} else {
-		res = res.Paginate(paginationDefault)
+		res = res.Paginate(PaginationDefault)
 	}
 
 	if options.Fields != "" {
