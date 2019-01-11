@@ -4,6 +4,7 @@ import (
 	proto "../../../proto/tag"
 	"../pkg/hateoas"
 	"../pkg/query"
+	"context"
 	"github.com/oklog/ulid"
 )
 
@@ -14,22 +15,22 @@ func mapProtoTagToTag(pbTag *proto.Tag) *Tag {
 }
 
 // Array mit Tags in eine Collection mappen
-func mapTagListToTagCollection(tagList []*Tag, dbMeta query.DBMeta) *proto.TagCollection {
+func mapTagListToTagCollection(ctx context.Context, tagList []*Tag, dbMeta query.DBMeta) *proto.TagCollection {
 	var tags []*proto.TagEntity
 	for _, tag := range tagList {
-		tagEntity := mapTagToTagEntity(tag)
+		tagEntity := mapTagToTagEntity(ctx, tag)
 		tags = append(tags, tagEntity)
 	}
 
-	tagCollection := &proto.TagCollection{Data: tags, Links: hateoas.GenerateCollectionHATEOAS(dbMeta).Links}
+	tagCollection := &proto.TagCollection{Data: tags, Links: hateoas.GenerateCollectionHATEOAS(ctx, "/tags", dbMeta).Links}
 	return tagCollection
 }
 
 // Tag in eine TagEntity mappen
-func mapTagToTagEntity(tag *Tag) *proto.TagEntity {
+func mapTagToTagEntity(ctx context.Context, tag *Tag) *proto.TagEntity {
 	tagEntity := &proto.TagEntity{}
 	tagEntity.Data = mapTagToProto(tag)
-	tagEntity.Links = hateoas.GenerateEntityHateoas(tag.Id.String()).Links
+	tagEntity.Links = hateoas.GenerateEntityHateoas(ctx, "/tags", tag.Id.String()).Links
 	return tagEntity
 }
 

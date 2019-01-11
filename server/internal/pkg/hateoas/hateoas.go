@@ -2,8 +2,11 @@ package hateoas
 
 import (
 	"../query"
+	"context"
 	"github.com/veith/protos/rest"
+	"google.golang.org/grpc/metadata"
 	"strconv"
+	"strings"
 )
 
 type Hateoas struct {
@@ -17,29 +20,34 @@ func (h *Hateoas) AddLink(rel, contenttype, href string, method rest.Link_Method
 }
 
 // hateoas anhand DBMEta für eine Collection erzeugen
-func GenerateCollectionHATEOAS(dbMeta query.DBMeta) Hateoas {
-	//todo Link_Get,.. nach REST schieben
+func GenerateCollectionHATEOAS(ctx context.Context, path string, dbMeta query.DBMeta) Hateoas {
+	md, _ := metadata.FromIncomingContext(ctx)
+	baseURL := strings.Join(md["api-base-url"], "")
+
 	var h Hateoas
-	h.AddLink("self", "application/json", "http://localhost:8888/tasks?page="+strconv.FormatUint(uint64(dbMeta.CurrentPage), 10), rest.Link_GET)
+	h.AddLink("self", "application/json", baseURL+path+"?page="+strconv.FormatUint(uint64(dbMeta.CurrentPage), 10), rest.Link_GET)
 	if dbMeta.PrevPage != 0 {
-		h.AddLink("prev", "application/json", "http://localhost:8888/tasks?page="+strconv.FormatUint(uint64(dbMeta.CurrentPage-1), 10), rest.Link_GET)
+		h.AddLink("prev", "application/json", baseURL+path+"?page="+strconv.FormatUint(uint64(dbMeta.CurrentPage-1), 10), rest.Link_GET)
 	}
 	if dbMeta.NextPage != 0 {
-		h.AddLink("next", "application/json", "http://localhost:8888/tasks?page="+strconv.FormatUint(uint64(dbMeta.CurrentPage+1), 10), rest.Link_GET)
+		h.AddLink("next", "application/json", baseURL+path+"?page="+strconv.FormatUint(uint64(dbMeta.CurrentPage+1), 10), rest.Link_GET)
 	}
-	h.AddLink("first", "application/json", "http://localhost:8888/tasks?page="+strconv.FormatUint(uint64(dbMeta.FirstPage), 10), rest.Link_GET)
-	h.AddLink("last", "application/json", "http://localhost:8888/tasks?page="+strconv.FormatUint(uint64(dbMeta.LastPage), 10), rest.Link_GET)
-	h.AddLink("create", "application/json", "http://localhost:8888/tasks", rest.Link_POST)
+	h.AddLink("first", "application/json", baseURL+path+"?page="+strconv.FormatUint(uint64(dbMeta.FirstPage), 10), rest.Link_GET)
+	h.AddLink("last", "application/json", baseURL+path+"?page="+strconv.FormatUint(uint64(dbMeta.LastPage), 10), rest.Link_GET)
+	h.AddLink("create", "application/json", baseURL+path, rest.Link_POST)
 	return h
 }
 
-func GenerateEntityHateoas(id string) Hateoas {
+func GenerateEntityHateoas(ctx context.Context, path string, id string) Hateoas {
 	//todo check gegen spec machen
+	md, _ := metadata.FromIncomingContext(ctx)
+	baseURL := strings.Join(md["api-base-url"], "")
+
 	var h Hateoas
-	h.AddLink("self", "application/json", "http://localhost:8888/tasks/"+id, rest.Link_GET)
-	h.AddLink("delete", "application/json", "http://localhost:8888/tasks/"+id, rest.Link_DELETE)
-	h.AddLink("update", "application/json", "http://localhost:8888/tasks/"+id, rest.Link_PATCH)
-	h.AddLink("parent", "application/json", "http://localhost:8888/tasks", rest.Link_GET)
-	h.AddLink("complete", "application/json", "http://localhost:8888/tasks"+id+":complete", rest.Link_POST)
+	h.AddLink("self", "application/json", baseURL+path+"/"+id, rest.Link_GET)
+	h.AddLink("delete", "application/json", baseURL+path+"/"+id, rest.Link_DELETE)
+	h.AddLink("update", "application/json", baseURL+path+"/"+id, rest.Link_PATCH)
+	h.AddLink("parent", "application/json", baseURL+path, rest.Link_GET)
+	h.AddLink("complete", "application/json", baseURL+path+"/"+id+":complete", rest.Link_POST)
 	return h
 }

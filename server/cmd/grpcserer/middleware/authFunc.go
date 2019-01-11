@@ -25,7 +25,9 @@ var JWTAuthFunc = func(ctx context.Context) (context.Context, error) {
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "invalid auth token: %v", err)
 	}
+
 	newCtx := context.WithValue(ctx, "tokenInfo", tokenInfo)
+
 	return newCtx, nil
 }
 
