@@ -4,6 +4,7 @@ import (
 	proto "../../../proto/task"
 	"../pkg/hateoas"
 	"../pkg/query"
+	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/oklog/ulid"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc/codes"
@@ -36,13 +37,13 @@ func (s *serviceServer) CreateTask(ctx context.Context, req *proto.CreateTaskReq
 	return &entity, err
 }
 
-func (s *serviceServer) DeleteTask(ctx context.Context, req *proto.DeleteTaskRequest) (*proto.DeleteTaskResponse, error) {
+func (s *serviceServer) DeleteTask(ctx context.Context, req *proto.DeleteTaskRequest) (*empty.Empty, error) {
 	taskID, _ := ulid.Parse(req.Id)
 	err := DeleteTaskItem(taskID)
 	if err != nil {
 		return nil, status.Errorf(codes.NotFound, "Could not retrieve entity from the database: %s", err)
 	}
-	return nil, nil
+	return &empty.Empty{}, nil
 }
 
 func (s *serviceServer) UpdateTask(ctx context.Context, req *proto.UpdateTaskRequest) (*proto.TaskEntity, error) {

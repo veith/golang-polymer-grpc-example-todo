@@ -7,6 +7,7 @@ import proto "github.com/gogo/protobuf/proto"
 import fmt "fmt"
 import math "math"
 import _ "github.com/gogo/protobuf/gogoproto"
+import empty "github.com/golang/protobuf/ptypes/empty"
 import rest "github.com/veith/protos/rest"
 import _ "google.golang.org/genproto/googleapis/api/annotations"
 
@@ -41,7 +42,7 @@ func (m *GetTagRequest) Reset()         { *m = GetTagRequest{} }
 func (m *GetTagRequest) String() string { return proto.CompactTextString(m) }
 func (*GetTagRequest) ProtoMessage()    {}
 func (*GetTagRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_tag_cb9bd24d8939352a, []int{0}
+	return fileDescriptor_tag_55c83229060bccce, []int{0}
 }
 func (m *GetTagRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -90,7 +91,7 @@ func (m *DeleteTagRequest) Reset()         { *m = DeleteTagRequest{} }
 func (m *DeleteTagRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteTagRequest) ProtoMessage()    {}
 func (*DeleteTagRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_tag_cb9bd24d8939352a, []int{1}
+	return fileDescriptor_tag_55c83229060bccce, []int{1}
 }
 func (m *DeleteTagRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -141,7 +142,7 @@ func (m *UpdateTagRequest) Reset()         { *m = UpdateTagRequest{} }
 func (m *UpdateTagRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateTagRequest) ProtoMessage()    {}
 func (*UpdateTagRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_tag_cb9bd24d8939352a, []int{2}
+	return fileDescriptor_tag_55c83229060bccce, []int{2}
 }
 func (m *UpdateTagRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -197,7 +198,7 @@ func (m *CreateTagRequest) Reset()         { *m = CreateTagRequest{} }
 func (m *CreateTagRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateTagRequest) ProtoMessage()    {}
 func (*CreateTagRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_tag_cb9bd24d8939352a, []int{3}
+	return fileDescriptor_tag_55c83229060bccce, []int{3}
 }
 func (m *CreateTagRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -238,7 +239,7 @@ type Tag struct {
 	// für IDs werden wir intern ulid verwenden
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" db:"id,pk,omitempty"`
 	// Taglabel wird als Standardrepräsentation verwendet.
-	Label                string   `protobuf:"bytes,2,opt,name=label,proto3" json:"label,omitempty"`
+	Label                string   `protobuf:"bytes,2,opt,name=label,proto3" json:"label,omitempty" db:"label,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -248,7 +249,7 @@ func (m *Tag) Reset()         { *m = Tag{} }
 func (m *Tag) String() string { return proto.CompactTextString(m) }
 func (*Tag) ProtoMessage()    {}
 func (*Tag) Descriptor() ([]byte, []int) {
-	return fileDescriptor_tag_cb9bd24d8939352a, []int{4}
+	return fileDescriptor_tag_55c83229060bccce, []int{4}
 }
 func (m *Tag) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -292,9 +293,9 @@ func (m *Tag) GetLabel() string {
 }
 
 // Response-Message einer Anfrage nach Tags
-type TagEntityResponse struct {
+type TagEntity struct {
 	// Datenmodel vom Typ Tag
-	Item *Tag `protobuf:"bytes,1,opt,name=item" json:"item,omitempty"`
+	Data *Tag `protobuf:"bytes,1,opt,name=data" json:"data,omitempty"`
 	// Hateoasinformationen
 	Links                []*rest.Link `protobuf:"bytes,2,rep,name=links" json:"links,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
@@ -302,18 +303,18 @@ type TagEntityResponse struct {
 	XXX_sizecache        int32        `json:"-"`
 }
 
-func (m *TagEntityResponse) Reset()         { *m = TagEntityResponse{} }
-func (m *TagEntityResponse) String() string { return proto.CompactTextString(m) }
-func (*TagEntityResponse) ProtoMessage()    {}
-func (*TagEntityResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_tag_cb9bd24d8939352a, []int{5}
+func (m *TagEntity) Reset()         { *m = TagEntity{} }
+func (m *TagEntity) String() string { return proto.CompactTextString(m) }
+func (*TagEntity) ProtoMessage()    {}
+func (*TagEntity) Descriptor() ([]byte, []int) {
+	return fileDescriptor_tag_55c83229060bccce, []int{5}
 }
-func (m *TagEntityResponse) XXX_Unmarshal(b []byte) error {
+func (m *TagEntity) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *TagEntityResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *TagEntity) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_TagEntityResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_TagEntity.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalTo(b)
@@ -323,26 +324,26 @@ func (m *TagEntityResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return b[:n], nil
 	}
 }
-func (dst *TagEntityResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_TagEntityResponse.Merge(dst, src)
+func (dst *TagEntity) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TagEntity.Merge(dst, src)
 }
-func (m *TagEntityResponse) XXX_Size() int {
+func (m *TagEntity) XXX_Size() int {
 	return m.Size()
 }
-func (m *TagEntityResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_TagEntityResponse.DiscardUnknown(m)
+func (m *TagEntity) XXX_DiscardUnknown() {
+	xxx_messageInfo_TagEntity.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_TagEntityResponse proto.InternalMessageInfo
+var xxx_messageInfo_TagEntity proto.InternalMessageInfo
 
-func (m *TagEntityResponse) GetItem() *Tag {
+func (m *TagEntity) GetData() *Tag {
 	if m != nil {
-		return m.Item
+		return m.Data
 	}
 	return nil
 }
 
-func (m *TagEntityResponse) GetLinks() []*rest.Link {
+func (m *TagEntity) GetLinks() []*rest.Link {
 	if m != nil {
 		return m.Links
 	}
@@ -350,9 +351,9 @@ func (m *TagEntityResponse) GetLinks() []*rest.Link {
 }
 
 // Response-Message einer List Abfrage nach Tags
-type TagCollectionResponse struct {
-	// Datenmodel vom Typ TagEntityResponse
-	Data []*TagEntityResponse `protobuf:"bytes,1,rep,name=data" json:"data,omitempty"`
+type TagCollection struct {
+	// Datenmodel vom Typ TagEntity
+	Data []*TagEntity `protobuf:"bytes,1,rep,name=data" json:"data,omitempty"`
 	// Hateoasinformationen
 	Links                []*rest.Link `protobuf:"bytes,2,rep,name=links" json:"links,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
@@ -360,18 +361,18 @@ type TagCollectionResponse struct {
 	XXX_sizecache        int32        `json:"-"`
 }
 
-func (m *TagCollectionResponse) Reset()         { *m = TagCollectionResponse{} }
-func (m *TagCollectionResponse) String() string { return proto.CompactTextString(m) }
-func (*TagCollectionResponse) ProtoMessage()    {}
-func (*TagCollectionResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_tag_cb9bd24d8939352a, []int{6}
+func (m *TagCollection) Reset()         { *m = TagCollection{} }
+func (m *TagCollection) String() string { return proto.CompactTextString(m) }
+func (*TagCollection) ProtoMessage()    {}
+func (*TagCollection) Descriptor() ([]byte, []int) {
+	return fileDescriptor_tag_55c83229060bccce, []int{6}
 }
-func (m *TagCollectionResponse) XXX_Unmarshal(b []byte) error {
+func (m *TagCollection) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *TagCollectionResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *TagCollection) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_TagCollectionResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_TagCollection.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalTo(b)
@@ -381,26 +382,26 @@ func (m *TagCollectionResponse) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return b[:n], nil
 	}
 }
-func (dst *TagCollectionResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_TagCollectionResponse.Merge(dst, src)
+func (dst *TagCollection) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TagCollection.Merge(dst, src)
 }
-func (m *TagCollectionResponse) XXX_Size() int {
+func (m *TagCollection) XXX_Size() int {
 	return m.Size()
 }
-func (m *TagCollectionResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_TagCollectionResponse.DiscardUnknown(m)
+func (m *TagCollection) XXX_DiscardUnknown() {
+	xxx_messageInfo_TagCollection.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_TagCollectionResponse proto.InternalMessageInfo
+var xxx_messageInfo_TagCollection proto.InternalMessageInfo
 
-func (m *TagCollectionResponse) GetData() []*TagEntityResponse {
+func (m *TagCollection) GetData() []*TagEntity {
 	if m != nil {
 		return m.Data
 	}
 	return nil
 }
 
-func (m *TagCollectionResponse) GetLinks() []*rest.Link {
+func (m *TagCollection) GetLinks() []*rest.Link {
 	if m != nil {
 		return m.Links
 	}
@@ -432,7 +433,7 @@ func (m *ListTagsRequest) Reset()         { *m = ListTagsRequest{} }
 func (m *ListTagsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListTagsRequest) ProtoMessage()    {}
 func (*ListTagsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_tag_cb9bd24d8939352a, []int{7}
+	return fileDescriptor_tag_55c83229060bccce, []int{7}
 }
 func (m *ListTagsRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -509,8 +510,8 @@ func init() {
 	proto.RegisterType((*UpdateTagRequest)(nil), "example.package.UpdateTagRequest")
 	proto.RegisterType((*CreateTagRequest)(nil), "example.package.CreateTagRequest")
 	proto.RegisterType((*Tag)(nil), "example.package.Tag")
-	proto.RegisterType((*TagEntityResponse)(nil), "example.package.TagEntityResponse")
-	proto.RegisterType((*TagCollectionResponse)(nil), "example.package.TagCollectionResponse")
+	proto.RegisterType((*TagEntity)(nil), "example.package.TagEntity")
+	proto.RegisterType((*TagCollection)(nil), "example.package.TagCollection")
 	proto.RegisterType((*ListTagsRequest)(nil), "example.package.ListTagsRequest")
 }
 
@@ -527,17 +528,17 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type TagServiceClient interface {
 	// Erstellt einen neuen Tag
-	CreateTag(ctx context.Context, in *CreateTagRequest, opts ...grpc.CallOption) (*TagEntityResponse, error)
+	CreateTag(ctx context.Context, in *CreateTagRequest, opts ...grpc.CallOption) (*TagEntity, error)
 	// Abfragen eines Tags
-	GetTag(ctx context.Context, in *GetTagRequest, opts ...grpc.CallOption) (*TagEntityResponse, error)
+	GetTag(ctx context.Context, in *GetTagRequest, opts ...grpc.CallOption) (*TagEntity, error)
 	// Abfragen aller Tags
-	ListAllTags(ctx context.Context, in *ListTagsRequest, opts ...grpc.CallOption) (*TagCollectionResponse, error)
+	ListAllTags(ctx context.Context, in *ListTagsRequest, opts ...grpc.CallOption) (*TagCollection, error)
 	// Abfragen aller Tags eines Tasks
-	ListTagsFromTask(ctx context.Context, in *ListTagsRequest, opts ...grpc.CallOption) (*TagCollectionResponse, error)
+	ListTagsFromTask(ctx context.Context, in *ListTagsRequest, opts ...grpc.CallOption) (*TagCollection, error)
 	// Löschen eines Tags
-	DeleteTag(ctx context.Context, in *DeleteTagRequest, opts ...grpc.CallOption) (*TagEntityResponse, error)
-	// Aktualisert einen Tag
-	UpdateTag(ctx context.Context, in *UpdateTagRequest, opts ...grpc.CallOption) (*TagEntityResponse, error)
+	DeleteTag(ctx context.Context, in *DeleteTagRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Aktualisert einen Tag partiell
+	UpdateTag(ctx context.Context, in *UpdateTagRequest, opts ...grpc.CallOption) (*TagEntity, error)
 }
 
 type tagServiceClient struct {
@@ -548,8 +549,8 @@ func NewTagServiceClient(cc *grpc.ClientConn) TagServiceClient {
 	return &tagServiceClient{cc}
 }
 
-func (c *tagServiceClient) CreateTag(ctx context.Context, in *CreateTagRequest, opts ...grpc.CallOption) (*TagEntityResponse, error) {
-	out := new(TagEntityResponse)
+func (c *tagServiceClient) CreateTag(ctx context.Context, in *CreateTagRequest, opts ...grpc.CallOption) (*TagEntity, error) {
+	out := new(TagEntity)
 	err := c.cc.Invoke(ctx, "/example.package.TagService/CreateTag", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -557,8 +558,8 @@ func (c *tagServiceClient) CreateTag(ctx context.Context, in *CreateTagRequest, 
 	return out, nil
 }
 
-func (c *tagServiceClient) GetTag(ctx context.Context, in *GetTagRequest, opts ...grpc.CallOption) (*TagEntityResponse, error) {
-	out := new(TagEntityResponse)
+func (c *tagServiceClient) GetTag(ctx context.Context, in *GetTagRequest, opts ...grpc.CallOption) (*TagEntity, error) {
+	out := new(TagEntity)
 	err := c.cc.Invoke(ctx, "/example.package.TagService/GetTag", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -566,8 +567,8 @@ func (c *tagServiceClient) GetTag(ctx context.Context, in *GetTagRequest, opts .
 	return out, nil
 }
 
-func (c *tagServiceClient) ListAllTags(ctx context.Context, in *ListTagsRequest, opts ...grpc.CallOption) (*TagCollectionResponse, error) {
-	out := new(TagCollectionResponse)
+func (c *tagServiceClient) ListAllTags(ctx context.Context, in *ListTagsRequest, opts ...grpc.CallOption) (*TagCollection, error) {
+	out := new(TagCollection)
 	err := c.cc.Invoke(ctx, "/example.package.TagService/ListAllTags", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -575,8 +576,8 @@ func (c *tagServiceClient) ListAllTags(ctx context.Context, in *ListTagsRequest,
 	return out, nil
 }
 
-func (c *tagServiceClient) ListTagsFromTask(ctx context.Context, in *ListTagsRequest, opts ...grpc.CallOption) (*TagCollectionResponse, error) {
-	out := new(TagCollectionResponse)
+func (c *tagServiceClient) ListTagsFromTask(ctx context.Context, in *ListTagsRequest, opts ...grpc.CallOption) (*TagCollection, error) {
+	out := new(TagCollection)
 	err := c.cc.Invoke(ctx, "/example.package.TagService/ListTagsFromTask", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -584,8 +585,8 @@ func (c *tagServiceClient) ListTagsFromTask(ctx context.Context, in *ListTagsReq
 	return out, nil
 }
 
-func (c *tagServiceClient) DeleteTag(ctx context.Context, in *DeleteTagRequest, opts ...grpc.CallOption) (*TagEntityResponse, error) {
-	out := new(TagEntityResponse)
+func (c *tagServiceClient) DeleteTag(ctx context.Context, in *DeleteTagRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
 	err := c.cc.Invoke(ctx, "/example.package.TagService/DeleteTag", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -593,8 +594,8 @@ func (c *tagServiceClient) DeleteTag(ctx context.Context, in *DeleteTagRequest, 
 	return out, nil
 }
 
-func (c *tagServiceClient) UpdateTag(ctx context.Context, in *UpdateTagRequest, opts ...grpc.CallOption) (*TagEntityResponse, error) {
-	out := new(TagEntityResponse)
+func (c *tagServiceClient) UpdateTag(ctx context.Context, in *UpdateTagRequest, opts ...grpc.CallOption) (*TagEntity, error) {
+	out := new(TagEntity)
 	err := c.cc.Invoke(ctx, "/example.package.TagService/UpdateTag", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -605,17 +606,17 @@ func (c *tagServiceClient) UpdateTag(ctx context.Context, in *UpdateTagRequest, 
 // TagServiceServer is the server API for TagService service.
 type TagServiceServer interface {
 	// Erstellt einen neuen Tag
-	CreateTag(context.Context, *CreateTagRequest) (*TagEntityResponse, error)
+	CreateTag(context.Context, *CreateTagRequest) (*TagEntity, error)
 	// Abfragen eines Tags
-	GetTag(context.Context, *GetTagRequest) (*TagEntityResponse, error)
+	GetTag(context.Context, *GetTagRequest) (*TagEntity, error)
 	// Abfragen aller Tags
-	ListAllTags(context.Context, *ListTagsRequest) (*TagCollectionResponse, error)
+	ListAllTags(context.Context, *ListTagsRequest) (*TagCollection, error)
 	// Abfragen aller Tags eines Tasks
-	ListTagsFromTask(context.Context, *ListTagsRequest) (*TagCollectionResponse, error)
+	ListTagsFromTask(context.Context, *ListTagsRequest) (*TagCollection, error)
 	// Löschen eines Tags
-	DeleteTag(context.Context, *DeleteTagRequest) (*TagEntityResponse, error)
-	// Aktualisert einen Tag
-	UpdateTag(context.Context, *UpdateTagRequest) (*TagEntityResponse, error)
+	DeleteTag(context.Context, *DeleteTagRequest) (*empty.Empty, error)
+	// Aktualisert einen Tag partiell
+	UpdateTag(context.Context, *UpdateTagRequest) (*TagEntity, error)
 }
 
 func RegisterTagServiceServer(s *grpc.Server, srv TagServiceServer) {
@@ -918,7 +919,7 @@ func (m *Tag) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
-func (m *TagEntityResponse) Marshal() (dAtA []byte, err error) {
+func (m *TagEntity) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalTo(dAtA)
@@ -928,16 +929,16 @@ func (m *TagEntityResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *TagEntityResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *TagEntity) MarshalTo(dAtA []byte) (int, error) {
 	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.Item != nil {
+	if m.Data != nil {
 		dAtA[i] = 0xa
 		i++
-		i = encodeVarintTag(dAtA, i, uint64(m.Item.Size()))
-		n3, err := m.Item.MarshalTo(dAtA[i:])
+		i = encodeVarintTag(dAtA, i, uint64(m.Data.Size()))
+		n3, err := m.Data.MarshalTo(dAtA[i:])
 		if err != nil {
 			return 0, err
 		}
@@ -961,7 +962,7 @@ func (m *TagEntityResponse) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
-func (m *TagCollectionResponse) Marshal() (dAtA []byte, err error) {
+func (m *TagCollection) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalTo(dAtA)
@@ -971,7 +972,7 @@ func (m *TagCollectionResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *TagCollectionResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *TagCollection) MarshalTo(dAtA []byte) (int, error) {
 	var i int
 	_ = i
 	var l int
@@ -1158,14 +1159,14 @@ func (m *Tag) Size() (n int) {
 	return n
 }
 
-func (m *TagEntityResponse) Size() (n int) {
+func (m *TagEntity) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.Item != nil {
-		l = m.Item.Size()
+	if m.Data != nil {
+		l = m.Data.Size()
 		n += 1 + l + sovTag(uint64(l))
 	}
 	if len(m.Links) > 0 {
@@ -1180,7 +1181,7 @@ func (m *TagEntityResponse) Size() (n int) {
 	return n
 }
 
-func (m *TagCollectionResponse) Size() (n int) {
+func (m *TagCollection) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1717,7 +1718,7 @@ func (m *Tag) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *TagEntityResponse) Unmarshal(dAtA []byte) error {
+func (m *TagEntity) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1740,15 +1741,15 @@ func (m *TagEntityResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: TagEntityResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: TagEntity: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: TagEntityResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: TagEntity: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Item", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Data", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -1772,10 +1773,10 @@ func (m *TagEntityResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.Item == nil {
-				m.Item = &Tag{}
+			if m.Data == nil {
+				m.Data = &Tag{}
 			}
-			if err := m.Item.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.Data.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -1832,7 +1833,7 @@ func (m *TagEntityResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *TagCollectionResponse) Unmarshal(dAtA []byte) error {
+func (m *TagCollection) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1855,10 +1856,10 @@ func (m *TagCollectionResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: TagCollectionResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: TagCollection: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: TagCollectionResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: TagCollection: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -1887,7 +1888,7 @@ func (m *TagCollectionResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Data = append(m.Data, &TagEntityResponse{})
+			m.Data = append(m.Data, &TagEntity{})
 			if err := m.Data[len(m.Data)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -2255,47 +2256,48 @@ var (
 	ErrIntOverflowTag   = fmt.Errorf("proto: integer overflow")
 )
 
-func init() { proto.RegisterFile("tag.proto", fileDescriptor_tag_cb9bd24d8939352a) }
+func init() { proto.RegisterFile("tag.proto", fileDescriptor_tag_55c83229060bccce) }
 
-var fileDescriptor_tag_cb9bd24d8939352a = []byte{
-	// 622 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x94, 0xcf, 0x6e, 0xd3, 0x40,
-	0x10, 0xc6, 0xe5, 0xfc, 0x29, 0xca, 0x84, 0xd2, 0x74, 0x09, 0x95, 0x15, 0x55, 0x69, 0x58, 0x09,
-	0x14, 0x55, 0xc5, 0x96, 0x8a, 0xc4, 0xa1, 0x82, 0x03, 0x2d, 0x85, 0x4b, 0x4f, 0x26, 0x5c, 0x38,
-	0xb1, 0x89, 0x27, 0xdb, 0x55, 0x36, 0x5e, 0xe3, 0xdd, 0x54, 0x94, 0xaa, 0x17, 0xde, 0x00, 0xf5,
-	0xa5, 0x38, 0x22, 0x71, 0x47, 0xa8, 0xe2, 0x09, 0x78, 0x02, 0xe4, 0xdd, 0x24, 0xb4, 0x49, 0x54,
-	0x82, 0xc4, 0x29, 0x3b, 0xce, 0xb7, 0xf3, 0x1b, 0x7f, 0x33, 0x1e, 0xa8, 0x18, 0xc6, 0x83, 0x34,
-	0x53, 0x46, 0x91, 0x35, 0xfc, 0xc0, 0x86, 0xa9, 0xc4, 0x20, 0x65, 0xbd, 0x01, 0xe3, 0xd8, 0xd8,
-	0xe4, 0x4a, 0x71, 0x89, 0x21, 0x4b, 0x45, 0xc8, 0x92, 0x44, 0x19, 0x66, 0x84, 0x4a, 0xb4, 0x93,
-	0x37, 0x1e, 0x71, 0x61, 0x8e, 0x47, 0xdd, 0xa0, 0xa7, 0x86, 0x21, 0x57, 0x5c, 0x85, 0xf6, 0x71,
-	0x77, 0xd4, 0xb7, 0x91, 0x0d, 0xec, 0x69, 0x2c, 0xa7, 0x57, 0xe4, 0x27, 0x28, 0xcc, 0xb1, 0xd3,
-	0xeb, 0x30, 0x43, 0x6d, 0x9c, 0x86, 0x6e, 0xc1, 0xea, 0x2b, 0x34, 0x1d, 0xc6, 0x23, 0x7c, 0x3f,
-	0x42, 0x6d, 0xc8, 0x1d, 0x28, 0x88, 0xd8, 0xf7, 0x5a, 0x5e, 0xbb, 0x12, 0x15, 0x44, 0x4c, 0x29,
-	0xd4, 0x5e, 0xa0, 0x44, 0x83, 0x37, 0x68, 0x8e, 0xa0, 0xf6, 0x26, 0x8d, 0xd9, 0x4d, 0x1a, 0xd2,
-	0x86, 0x92, 0x30, 0x38, 0xf4, 0x0b, 0x2d, 0xaf, 0x5d, 0xdd, 0xad, 0x07, 0x33, 0x6f, 0x1e, 0xe4,
-	0x57, 0xad, 0x82, 0x3e, 0x85, 0xda, 0x41, 0x86, 0xd7, 0xb3, 0x4d, 0x6e, 0x7b, 0x7f, 0xbd, 0x7d,
-	0x08, 0xc5, 0x0e, 0xe3, 0xa4, 0xfd, 0x07, 0xbf, 0xef, 0xff, 0xfa, 0xbe, 0x55, 0x8f, 0xbb, 0x7b,
-	0x54, 0xc4, 0x3b, 0xe9, 0x60, 0x47, 0x0d, 0x73, 0x61, 0x6a, 0x4e, 0xa9, 0x2d, 0xac, 0x0e, 0x65,
-	0xc9, 0xba, 0x28, 0x6d, 0x65, 0x95, 0xc8, 0x05, 0x34, 0x86, 0xf5, 0x0e, 0xe3, 0x87, 0x89, 0x11,
-	0xe6, 0x34, 0x42, 0x9d, 0xaa, 0x44, 0xe3, 0xf2, 0x55, 0x90, 0x07, 0x50, 0x96, 0x22, 0x19, 0x68,
-	0xbf, 0xd0, 0x2a, 0xb6, 0xab, 0xbb, 0x6b, 0x41, 0x7f, 0x94, 0xa9, 0xc0, 0x9c, 0xa6, 0x18, 0x1c,
-	0x89, 0x64, 0x10, 0xb9, 0x7f, 0xe9, 0x09, 0xdc, 0xeb, 0x30, 0x7e, 0xa0, 0xa4, 0xc4, 0x5e, 0xde,
-	0xe8, 0x29, 0xe9, 0x09, 0x94, 0x62, 0x66, 0x98, 0xef, 0xd9, 0xeb, 0x74, 0x11, 0xe9, 0x7a, 0x6d,
-	0x91, 0xd5, 0x2f, 0xcb, 0xbd, 0xf0, 0x60, 0xed, 0x48, 0xe8, 0xbc, 0xef, 0x7a, 0x62, 0xf1, 0x06,
-	0xac, 0xf4, 0x05, 0xca, 0x58, 0x8f, 0x9b, 0x36, 0x8e, 0x08, 0x81, 0x92, 0x56, 0x99, 0x19, 0xdb,
-	0x63, 0xcf, 0x4e, 0x2b, 0x0d, 0x66, 0x7e, 0x71, 0xa2, 0xcd, 0xa3, 0x5c, 0x9b, 0x32, 0x8e, 0x7e,
-	0xa9, 0xe5, 0xb5, 0xcb, 0x91, 0x3d, 0x5b, 0x7f, 0xc5, 0x50, 0x18, 0xbf, 0x6c, 0x1f, 0xba, 0x20,
-	0x57, 0x1a, 0xa6, 0x07, 0x7e, 0xd5, 0x65, 0xcd, 0xcf, 0xbb, 0x9f, 0xcb, 0x00, 0x1d, 0xc6, 0x5f,
-	0x63, 0x76, 0x22, 0x7a, 0x48, 0x38, 0x54, 0xa6, 0x73, 0x40, 0xee, 0xcf, 0x59, 0x30, 0x3b, 0x23,
-	0x8d, 0x25, 0x5c, 0xa2, 0x77, 0x3f, 0x7d, 0xfb, 0x79, 0x51, 0x58, 0xa5, 0xe5, 0xd0, 0x30, 0xae,
-	0xf7, 0x5c, 0xb3, 0xde, 0xc1, 0x8a, 0xfb, 0x06, 0x48, 0x73, 0x2e, 0xc5, 0xb5, 0x8f, 0x63, 0x29,
-	0x04, 0xb1, 0x88, 0xdb, 0x04, 0x2c, 0x22, 0x3c, 0x13, 0xf1, 0x39, 0xe9, 0x43, 0x35, 0xb7, 0xfb,
-	0xb9, 0x94, 0xb9, 0xe3, 0xa4, 0x35, 0x97, 0x66, 0xa6, 0x19, 0x8d, 0x87, 0x8b, 0x40, 0xf3, 0x73,
-	0x42, 0x57, 0x2d, 0xec, 0x16, 0x71, 0xef, 0x43, 0x3e, 0x42, 0x6d, 0x92, 0xe9, 0x65, 0xa6, 0x86,
-	0x1d, 0xa6, 0x07, 0xff, 0x11, 0xb6, 0x69, 0x61, 0x1b, 0xa4, 0x1e, 0xe6, 0xed, 0xd2, 0xe1, 0x59,
-	0xfe, 0xf3, 0x6c, 0xfb, 0xdc, 0xb1, 0xfb, 0x50, 0x99, 0x2e, 0x8a, 0x05, 0xed, 0x9a, 0x5d, 0x22,
-	0xff, 0xe2, 0xe5, 0xf6, 0x55, 0x2f, 0x25, 0x54, 0xa6, 0xcb, 0x66, 0x01, 0x67, 0x76, 0x11, 0x2d,
-	0xc5, 0xf1, 0x2d, 0x87, 0x34, 0xae, 0x70, 0xdc, 0x6c, 0xec, 0xaf, 0x7f, 0xb9, 0x6c, 0x7a, 0x5f,
-	0x2f, 0x9b, 0xde, 0x8f, 0xcb, 0xa6, 0xf7, 0xb6, 0x68, 0x18, 0xef, 0xae, 0xd8, 0xcd, 0xf9, 0xf8,
-	0x77, 0x00, 0x00, 0x00, 0xff, 0xff, 0x2d, 0xef, 0x23, 0xfb, 0xc8, 0x05, 0x00, 0x00,
+var fileDescriptor_tag_55c83229060bccce = []byte{
+	// 640 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x54, 0xdd, 0x6a, 0x13, 0x41,
+	0x14, 0x66, 0xf3, 0x53, 0xc9, 0x89, 0xb1, 0x71, 0x0c, 0x65, 0x89, 0x25, 0x8d, 0x0b, 0x42, 0x28,
+	0x75, 0x16, 0xe2, 0x5d, 0xd1, 0x0b, 0x5b, 0xab, 0x37, 0xbd, 0x8a, 0x11, 0xa4, 0x88, 0x65, 0x92,
+	0x9d, 0x4c, 0x87, 0xcc, 0x66, 0xd6, 0x9d, 0x49, 0x31, 0x94, 0xde, 0xf8, 0x0a, 0x7d, 0x29, 0x2f,
+	0x05, 0xaf, 0x15, 0x29, 0x3e, 0x81, 0x4f, 0x20, 0x33, 0x93, 0xa4, 0x69, 0x12, 0x56, 0x04, 0xaf,
+	0x32, 0x67, 0xf6, 0x3b, 0xdf, 0x77, 0xf2, 0x9d, 0x33, 0x07, 0x4a, 0x9a, 0x30, 0x9c, 0xa4, 0x52,
+	0x4b, 0xb4, 0x49, 0x3f, 0x91, 0x38, 0x11, 0x14, 0x27, 0xa4, 0x3f, 0x24, 0x8c, 0xd6, 0xb7, 0x99,
+	0x94, 0x4c, 0xd0, 0x90, 0x24, 0x3c, 0x24, 0xa3, 0x91, 0xd4, 0x44, 0x73, 0x39, 0x52, 0x0e, 0x5e,
+	0x7f, 0xc2, 0xb8, 0x3e, 0x1b, 0xf7, 0x70, 0x5f, 0xc6, 0x21, 0x93, 0x4c, 0x86, 0xf6, 0xba, 0x37,
+	0x1e, 0xd8, 0xc8, 0x06, 0xf6, 0x34, 0x85, 0x07, 0x0b, 0xf0, 0x73, 0xca, 0xf5, 0x99, 0xc3, 0xab,
+	0x30, 0xa5, 0x4a, 0x4f, 0x31, 0x0f, 0xa7, 0x82, 0x73, 0x26, 0x1a, 0x27, 0x7a, 0xe2, 0x3e, 0x06,
+	0x3b, 0x50, 0x79, 0x4d, 0x75, 0x97, 0xb0, 0x0e, 0xfd, 0x38, 0xa6, 0x4a, 0xa3, 0x7b, 0x90, 0xe3,
+	0x91, 0xef, 0x35, 0xbd, 0x56, 0xa9, 0x93, 0xe3, 0x51, 0x10, 0x40, 0xf5, 0x25, 0x15, 0x54, 0xd3,
+	0x0c, 0xcc, 0x31, 0x54, 0xdf, 0x26, 0x11, 0xc9, 0xc2, 0xa0, 0x16, 0x14, 0xb8, 0xa6, 0xb1, 0x9f,
+	0x6b, 0x7a, 0xad, 0x72, 0xbb, 0x86, 0x97, 0x6c, 0xc1, 0x26, 0xd5, 0x22, 0x82, 0x67, 0x50, 0x3d,
+	0x4c, 0xe9, 0x6d, 0xb6, 0x59, 0xb6, 0xf7, 0xd7, 0xec, 0x53, 0xc8, 0x77, 0x09, 0x43, 0xad, 0x1b,
+	0xf9, 0x03, 0xff, 0xf7, 0x8f, 0x9d, 0x5a, 0xd4, 0xdb, 0x0f, 0x78, 0xb4, 0x97, 0x0c, 0xf7, 0x64,
+	0x6c, 0x80, 0x89, 0x9e, 0x04, 0xb6, 0x30, 0x0c, 0x45, 0x41, 0x7a, 0x54, 0xd8, 0xca, 0x16, 0xc0,
+	0xf6, 0x72, 0x11, 0xec, 0x60, 0xc1, 0x7b, 0x28, 0x75, 0x09, 0x3b, 0x1a, 0x69, 0xae, 0x27, 0xa6,
+	0xae, 0x88, 0x68, 0x92, 0x5d, 0x97, 0x41, 0xa0, 0xc7, 0x50, 0x14, 0x7c, 0x34, 0x54, 0x7e, 0xae,
+	0x99, 0x6f, 0x95, 0xdb, 0x9b, 0x78, 0x30, 0x4e, 0x25, 0xd6, 0x93, 0x84, 0xe2, 0x63, 0x3e, 0x1a,
+	0x76, 0xdc, 0xd7, 0x60, 0x00, 0x95, 0x2e, 0x61, 0x87, 0x52, 0x08, 0xda, 0x37, 0x73, 0x81, 0xf0,
+	0x5c, 0xc1, 0xa4, 0xd5, 0xd7, 0x29, 0xb8, 0x5a, 0xfe, 0x4d, 0xe7, 0xca, 0x83, 0xcd, 0x63, 0xae,
+	0x4c, 0xe7, 0xd5, 0xcc, 0xe4, 0x2d, 0xd8, 0x18, 0x70, 0x2a, 0x22, 0x35, 0x6d, 0xdb, 0x34, 0x42,
+	0x08, 0x0a, 0x4a, 0xa6, 0xda, 0x19, 0xd4, 0xb1, 0x67, 0x87, 0x15, 0x9a, 0xa6, 0x7e, 0x7e, 0x86,
+	0x35, 0x91, 0xc1, 0x26, 0x84, 0x51, 0xbf, 0xd0, 0xf4, 0x5a, 0xc5, 0x8e, 0x3d, 0xa3, 0x9a, 0x29,
+	0x29, 0xe6, 0xda, 0x2f, 0xda, 0x4b, 0x17, 0x18, 0xa4, 0x26, 0x6a, 0xe8, 0x97, 0x1d, 0xab, 0x39,
+	0xb7, 0xbf, 0x17, 0x00, 0xba, 0x84, 0xbd, 0xa1, 0xe9, 0x39, 0xef, 0x53, 0x74, 0x0a, 0xa5, 0xf9,
+	0x24, 0xa0, 0x47, 0x2b, 0x7f, 0x7d, 0x79, 0x4a, 0xea, 0x19, 0xee, 0x04, 0x0f, 0x3e, 0x7f, 0xfb,
+	0x75, 0x95, 0xab, 0x04, 0xc5, 0x50, 0x13, 0xa6, 0xf6, 0xed, 0xb0, 0xa0, 0x77, 0xb0, 0xe1, 0xa6,
+	0x1f, 0x35, 0x56, 0x52, 0x6f, 0x3d, 0x8b, 0x4c, 0x6a, 0x64, 0xa9, 0xef, 0x22, 0xb0, 0xd4, 0xe1,
+	0x05, 0x8f, 0x2e, 0xd1, 0x07, 0x28, 0x1b, 0x7b, 0x5f, 0x08, 0x61, 0x1c, 0x46, 0xcd, 0x95, 0xf4,
+	0x25, 0xf3, 0xeb, 0x8d, 0x75, 0x02, 0x37, 0x73, 0x10, 0x54, 0xac, 0xc8, 0x1d, 0xe4, 0xea, 0x47,
+	0x29, 0x54, 0x67, 0x0c, 0xaf, 0x52, 0x19, 0x77, 0x89, 0x1a, 0xfe, 0x07, 0x91, 0x6d, 0x2b, 0xb2,
+	0x85, 0x6a, 0xa1, 0x69, 0x87, 0x0a, 0x2f, 0xcc, 0xcf, 0xf3, 0xdd, 0x4b, 0xa7, 0x79, 0x02, 0xa5,
+	0xf9, 0x2a, 0x58, 0xd3, 0x8e, 0xe5, 0x35, 0x51, 0xdf, 0xc2, 0x6e, 0xf3, 0xe0, 0xd9, 0xe6, 0xc1,
+	0x47, 0xf6, 0x25, 0x4d, 0xfd, 0xda, 0x5d, 0xf4, 0x2b, 0x82, 0xd2, 0x7c, 0x85, 0xac, 0xe1, 0x5e,
+	0x5e, 0x2f, 0x99, 0xfd, 0xf0, 0x2d, 0x3f, 0x6a, 0x2f, 0xf0, 0xbb, 0x7e, 0x1f, 0xdc, 0xff, 0x72,
+	0xdd, 0xf0, 0xbe, 0x5e, 0x37, 0xbc, 0x9f, 0xd7, 0x0d, 0xef, 0x24, 0xaf, 0x09, 0xeb, 0x6d, 0xd8,
+	0xe2, 0x9e, 0xfe, 0x09, 0x00, 0x00, 0xff, 0xff, 0x56, 0x4f, 0x92, 0xbf, 0xb3, 0x05, 0x00, 0x00,
 }

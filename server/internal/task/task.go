@@ -8,12 +8,15 @@ import (
 	"upper.io/db.v3"
 )
 
-// Interface zur DB
+// Interface zur Env
+var env *environment.Environment
+
+// tasks collection
 var tasks db.Collection
 
-func InitEnvironment(env *environment.Env) {
+func Register() {
+	env = environment.Env
 	tasks = env.DB.Collection("task")
-
 }
 
 // Task

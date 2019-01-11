@@ -4,8 +4,8 @@ import (
 	"../../internal/_env"
 	"../../internal/_healthcheck"
 	"../../internal/auth"
-	"../../internal/task"
 	"../../internal/tag"
+	"../../internal/task"
 	"./middleware"
 	"github.com/grpc-ecosystem/go-grpc-middleware"
 	"github.com/grpc-ecosystem/go-grpc-middleware/auth"
@@ -13,8 +13,6 @@ import (
 	"google.golang.org/grpc/reflection"
 	"log"
 	"net"
-	"upper.io/db.v3/lib/sqlbuilder"
-	"upper.io/db.v3/sqlite"
 )
 
 const (
@@ -22,11 +20,9 @@ const (
 )
 
 func main() {
-	dbSession, err := configureDB()
-	defer dbSession.Close()
 
-	// config kann hier nachher an env angehängt werden
-	env := &environment.Env{DB: dbSession}
+	environment.InitEnv()
+	defer environment.Env.DB.Close()
 
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
@@ -35,18 +31,19 @@ func main() {
 	grpcServer := grpc.NewServer(grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(grpc_auth.UnaryServerInterceptor(middleware.JWTAuthFunc))))
 
 	// Auth
-	auth.InitEnvironment(env)
+	auth.Register()
 	auth.RegisterAuthServiceServer(grpcServer, auth.GetServiceServer())
 
 	// Healthcheck
+	//_healthcheck.Register()
 	_healthcheck.RegisterHealthCheckServer(grpcServer, _healthcheck.GetServiceServer())
 
 	// Task
-	task.InitEnvironment(env)
+	task.Register()
 	task.RegisterServiceServer(grpcServer, task.GetServiceServer())
 
 	// Tag
-	tag.InitEnvironment(env)
+	tag.Register()
 	tag.RegisterServiceServer(grpcServer, tag.GetServiceServer())
 
 	// weitere Services kann man hier registrieren
@@ -56,15 +53,4 @@ func main() {
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
-}
-
-func configureDB() (sqlbuilder.Database, error) {
-	var settings = sqlite.ConnectionURL{
-		Database: `data/data.db`, // Path to database file.
-	}
-	dbSession, err := sqlite.Open(settings)
-	if err != nil {
-		log.Fatalf("db.Open(): %q\n", err)
-	}
-	return dbSession, err
 }

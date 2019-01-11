@@ -159,7 +159,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/packageDeleteTaskResponse"
+              "$ref": "#/definitions/protobufEmpty"
             }
           }
         },
@@ -263,10 +263,6 @@
       "default": "UNKNOWN",
       "title": "Unkown mit 0 ist bewusst. So können wir feststellen ob ein Wert auch wirklich gesetzt wurde \nNeue Zeile"
     },
-    "packageDeleteTaskResponse": {
-      "type": "object",
-      "title": "Leere Antwort nach dem Löschen eines Tasks"
-    },
     "packageTask": {
       "type": "object",
       "properties": {
@@ -339,6 +335,11 @@
         }
       },
       "title": "REST Entität eines Tasks"
+    },
+    "protobufEmpty": {
+      "type": "object",
+      "description": "service Foo {\n      rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);\n    }\n\nThe JSON representation for `Empty` is empty JSON object `{}`.",
+      "title": "A generic empty message that you can re-use to avoid defining duplicated\nempty messages in your APIs. A typical example is to use it as the request\nor the response type of an API method. For instance:"
     },
     "typeDate": {
       "type": "object",

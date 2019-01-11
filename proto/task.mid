@@ -13,7 +13,8 @@
       "google/protobuf/timestamp.proto",
       "github.com/gogo/protobuf/gogoproto/gogo.proto",
       "github.com/veith/protos/rest.proto",
-      "github.com/veith/protos/date.proto"
+      "github.com/veith/protos/date.proto",
+      "google/protobuf/empty.proto"
     ],
     "options": [
       {
@@ -89,7 +90,7 @@
           "name": "DeleteTask",
           "description": "Löschen eines Tasks \nNicht widerrufbar",
           "input_type": "DeleteTaskRequest",
-          "output_type": "DeleteTaskResponse",
+          "output_type": "google.protobuf.Empty",
           "options": [
             {
               "name": "google.api.http",
@@ -394,11 +395,7 @@
         }
       ]
     },
-    {
-      "name": "DeleteTaskResponse",
-      "description": "Leere Antwort nach dem Löschen eines Tasks",
-      "fields": []
-    },
+
     {
       "name": "UpdateTaskRequest",
       "description": "Request Daten für das Aktualisieren eines Tasks",

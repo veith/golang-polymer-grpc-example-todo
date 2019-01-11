@@ -2,7 +2,12 @@ package tag
 
 import (
 	proto "../../../proto/tag"
+	"../pkg/query"
 	"context"
+	"github.com/golang/protobuf/ptypes/empty"
+	"github.com/oklog/ulid"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 var RegisterServiceServer = proto.RegisterTagServiceServer
@@ -21,37 +26,58 @@ func NewProtoTags() *proto.Tag {
 type serviceServer struct {
 }
 
-func (serviceServer) CreateTag(ctx context.Context, req *proto.CreateTagRequest) (*proto.TagEntityResponse, error) {
-	panic("implement me")
+func (serviceServer) CreateTag(ctx context.Context, req *proto.CreateTagRequest) (*proto.TagEntity, error) {
+	tag, err := CreateTag(mapProtoTagToTag(req.Item))
+	if err != nil {
+		return nil, err
+	}
+	return mapTagToTagEntity(tag), nil
 }
 
-func (serviceServer) GetTag(ctx context.Context, req *proto.GetTagRequest) (*proto.TagEntityResponse, error) {
-	panic("implement me")
+func (serviceServer) GetTag(ctx context.Context, req *proto.GetTagRequest) (*proto.TagEntity, error) {
+	tagID, _ := ulid.Parse(req.Id)
+	item, err := GetTag(tagID)
+	if err != nil {
+		return nil, status.Errorf(codes.NotFound, "Tag not Found: %s", err)
+	}
+	return mapTagToTagEntity(item), nil
 }
 
-func (serviceServer) ListAllTags(ctx context.Context, req *proto.ListTagsRequest) (*proto.TagCollectionResponse, error) {
-	res := tags.Find()
+func (serviceServer) ListAllTags(ctx context.Context, req *proto.ListTagsRequest) (*proto.TagCollection, error) {
+	queryOptions := query.GetListOptionsFromRequest(req)
+	tagList, dbMeta, err := ListTags(queryOptions)
 
-	var tagItems []Tag
-	err := res.All(&tagItems)
+	if err != nil {
+		return nil, status.Errorf(codes.Unavailable, "Data Error: %s", err)
+	}
 
-	return &proto.TagCollectionResponse{}, err
-
+	return mapTagListToTagCollection(tagList, dbMeta), nil
 }
 
-func (serviceServer) ListTagsFromTask(ctx context.Context, req *proto.ListTagsRequest) (*proto.TagCollectionResponse, error) {
-	res := tags.Find()
+func (serviceServer) ListTagsFromTask(ctx context.Context, req *proto.ListTagsRequest) (*proto.TagCollection, error) {
+	queryOptions := query.GetListOptionsFromRequest(req)
+	tagList, dbMeta, err := ListTags(queryOptions)
+	if err != nil {
+		return nil, status.Errorf(codes.Unavailable, "Data Error: %s", err)
+	}
 
-	var tagItems []Tag
-	err := res.All(&tagItems)
-
-	return &proto.TagCollectionResponse{}, err
+	return mapTagListToTagCollection(tagList, dbMeta), nil
 }
 
-func (serviceServer) DeleteTag(ctx context.Context, req *proto.DeleteTagRequest) (*proto.TagEntityResponse, error) {
-	panic("implement me")
+func (serviceServer) DeleteTag(ctx context.Context, req *proto.DeleteTagRequest) (*empty.Empty, error) {
+	tagID, _ := ulid.Parse(req.Id)
+	err := DeleteTag(tagID)
+	if err != nil {
+		return nil, status.Errorf(codes.NotFound, "Tag not Found: %s", err)
+	}
+	return &empty.Empty{}, nil
 }
 
-func (serviceServer) UpdateTag(ctx context.Context, req *proto.UpdateTagRequest) (*proto.TagEntityResponse, error) {
-	panic("implement me")
+func (serviceServer) UpdateTag(ctx context.Context, req *proto.UpdateTagRequest) (*proto.TagEntity, error) {
+	tagID, _ := ulid.Parse(req.Id)
+	tag, err := UpdateTag(tagID, mapProtoTagToTag(req.Item))
+	if err != nil {
+		return nil, status.Errorf(codes.NotFound, "Tag not Found: %s", err)
+	}
+	return mapTagToTagEntity(tag), nil
 }

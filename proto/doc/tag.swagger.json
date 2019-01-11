@@ -23,7 +23,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/packageTagCollectionResponse"
+              "$ref": "#/definitions/packageTagCollection"
             }
           }
         },
@@ -84,7 +84,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/packageTagEntityResponse"
+              "$ref": "#/definitions/packageTagEntity"
             }
           }
         },
@@ -112,7 +112,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/packageTagEntityResponse"
+              "$ref": "#/definitions/packageTagEntity"
             }
           }
         },
@@ -136,7 +136,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/packageTagEntityResponse"
+              "$ref": "#/definitions/protobufEmpty"
             }
           }
         },
@@ -153,14 +153,14 @@
           "TagService"
         ]
       },
-      "put": {
-        "summary": "Aktualisert einen Tag",
+      "patch": {
+        "summary": "Aktualisert einen Tag partiell",
         "operationId": "UpdateTag",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/packageTagEntityResponse"
+              "$ref": "#/definitions/packageTagEntity"
             }
           }
         },
@@ -195,7 +195,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/packageTagCollectionResponse"
+              "$ref": "#/definitions/packageTagCollection"
             }
           }
         },
@@ -281,15 +281,15 @@
       },
       "title": "Tag Entitytyp. Datenmodel eines Tags"
     },
-    "packageTagCollectionResponse": {
+    "packageTagCollection": {
       "type": "object",
       "properties": {
         "data": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/packageTagEntityResponse"
+            "$ref": "#/definitions/packageTagEntity"
           },
-          "title": "Datenmodel vom Typ TagEntityResponse"
+          "title": "Datenmodel vom Typ TagEntity"
         },
         "links": {
           "type": "array",
@@ -301,10 +301,10 @@
       },
       "title": "Response-Message einer List Abfrage nach Tags"
     },
-    "packageTagEntityResponse": {
+    "packageTagEntity": {
       "type": "object",
       "properties": {
-        "item": {
+        "data": {
           "$ref": "#/definitions/packageTag",
           "title": "Datenmodel vom Typ Tag"
         },
@@ -317,6 +317,11 @@
         }
       },
       "title": "Response-Message einer Anfrage nach Tags"
+    },
+    "protobufEmpty": {
+      "type": "object",
+      "description": "service Foo {\n      rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);\n    }\n\nThe JSON representation for `Empty` is empty JSON object `{}`.",
+      "title": "A generic empty message that you can re-use to avoid defining duplicated\nempty messages in your APIs. A typical example is to use it as the request\nor the response type of an API method. For instance:"
     },
     "typeLink": {
       "type": "object",

@@ -7,7 +7,8 @@
     "imports": [
       "google/api/annotations.proto",
       "github.com/gogo/protobuf/gogoproto/gogo.proto",
-      "github.com/veith/protos/rest.proto"
+      "github.com/veith/protos/rest.proto",
+      "google/protobuf/empty.proto"
     ],
     "options": [
       {
@@ -25,7 +26,7 @@
           "name": "CreateTag",
           "description": "Erstellt einen neuen Tag",
           "input_type": "CreateTagRequest",
-          "output_type": "TagEntityResponse",
+          "output_type": "TagEntity",
           "options": [
             {
               "name": "google.api.http",
@@ -46,7 +47,7 @@
           "name": "GetTag",
           "description": "Abfragen eines Tags",
           "input_type": "GetTagRequest",
-          "output_type": "TagEntityResponse",
+          "output_type": "TagEntity",
           "options": [
             {
               "name": "google.api.http",
@@ -63,7 +64,7 @@
           "name": "ListAllTags",
           "description": "Abfragen aller Tags",
           "input_type": "ListTagsRequest",
-          "output_type": "TagCollectionResponse",
+          "output_type": "TagCollection",
           "options": [
             {
               "name": "google.api.http",
@@ -80,7 +81,7 @@
           "name": "ListTagsFromTask",
           "description": "Abfragen aller Tags eines Tasks",
           "input_type": "ListTagsRequest",
-          "output_type": "TagCollectionResponse",
+          "output_type": "TagCollection",
           "options": [
             {
               "name": "google.api.http",
@@ -97,7 +98,7 @@
           "name": "DeleteTag",
           "description": "Löschen eines Tags",
           "input_type": "DeleteTagRequest",
-          "output_type": "TagEntityResponse",
+          "output_type": "google.protobuf.Empty",
           "options": [
             {
               "name": "google.api.http",
@@ -112,15 +113,15 @@
         },
         {
           "name": "UpdateTag",
-          "description": "Aktualisert einen Tag",
+          "description": "Aktualisert einen Tag partiell",
           "input_type": "UpdateTagRequest",
-          "output_type": "TagEntityResponse",
+          "output_type": "TagEntity",
           "options": [
             {
               "name": "google.api.http",
               "vars": [
                 {
-                  "key": "put",
+                  "key": "patch",
                   "value": "/tags/{id}"
                 },
                 {
@@ -241,20 +242,24 @@
           "mandatory": true,
           "__proto": {
             "type": "string",
-            "number": 2
-          },
-          "__sqlite": {
-            "type": "TEXT"
+            "number": 2,
+            "options": [
+              {
+                "name": "gogoproto.moretags",
+                "key": "db",
+                "value": "label,omitempty"
+              }
+            ]
           }
         }
       ]
     },
     {
-      "name": "TagEntityResponse",
+      "name": "TagEntity",
       "description": "Response-Message einer Anfrage nach Tags",
       "fields": [
         {
-          "name": "item",
+          "name": "data",
           "description": "Datenmodel vom Typ Tag",
           "type": "Tag",
           "__proto": {
@@ -277,16 +282,16 @@
       ]
     },
     {
-      "name": "TagCollectionResponse",
+      "name": "TagCollection",
       "description": "Response-Message einer List Abfrage nach Tags",
       "fields": [
         {
           "name": "data",
-          "description": "Datenmodel vom Typ TagEntityResponse",
-          "type": "TagEntityResponse",
+          "description": "Datenmodel vom Typ TagEntity",
+          "type": "TagEntity",
           "repeated": true,
           "__proto": {
-            "type": "TagEntityResponse",
+            "type": "TagEntity",
             "number": 1,
             "options": []
           }

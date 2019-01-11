@@ -8,13 +8,15 @@ import (
 	"upper.io/db.v3"
 )
 
-// Interface zur DB
-var users db.Collection
-var paginationDefault uint
+// Interface zur Env
+var env *environment.Environment
 
-func InitEnvironment(env *environment.Env) {
+// User collection
+var users db.Collection
+
+func Register() {
+	env = environment.Env
 	users = env.DB.Collection("user")
-	paginationDefault = 23
 }
 
 // Passwort Username mit gespeicherten Werten vergleichen
