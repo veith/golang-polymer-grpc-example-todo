@@ -18,11 +18,6 @@ func GetServiceServer() proto.TagServiceServer {
 	return &s
 }
 
-func NewProtoTags() *proto.Tag {
-	return &proto.Tag{}
-}
-
-// taskServiceServer is used to implement taskServiceServer.
 type serviceServer struct {
 }
 
