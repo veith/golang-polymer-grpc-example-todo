@@ -13,14 +13,17 @@ type Hateoas struct {
 	Links []*rest.Link
 }
 
-// links einem HTS hinzufügen
+// Add HATEOAS links
 func (h *Hateoas) AddLink(rel, contenttype, href string, method rest.Link_Method) {
 	link := rest.Link{Rel: rel, Href: href, Type: contenttype, Method: method}
 	h.Links = append(h.Links, &link)
 }
 
-// hateoas anhand DBMEta für eine Collection erzeugen
+// Create base HATEOAS from dbMeta information
 func GenerateCollectionHATEOAS(ctx context.Context, path string, dbMeta query.DBMeta) Hateoas {
+	// Context api-base-url is provided from grpc-server which get it from grpc-gateway
+	// we use it to have absolute hrefs for the HATEOAS
+	// if api-base-url header was not set, we provide relative paths to the client
 	md, _ := metadata.FromIncomingContext(ctx)
 	baseURL := strings.Join(md["api-base-url"], "")
 
@@ -38,8 +41,11 @@ func GenerateCollectionHATEOAS(ctx context.Context, path string, dbMeta query.DB
 	return h
 }
 
+// Creeate HATEOAS for an entity todo:check with spec
 func GenerateEntityHateoas(ctx context.Context, path string, id string) Hateoas {
-	//todo check gegen spec machen
+	// Context api-base-url is provided from grpc-server which get it from grpc-gateway
+	// we use it to have absolute hrefs for the HATEOAS
+	// if api-base-url header was not set, we provide relative paths to the client
 	md, _ := metadata.FromIncomingContext(ctx)
 	baseURL := strings.Join(md["api-base-url"], "")
 
