@@ -1,7 +1,7 @@
 package tag
 
 import (
-	"../_env"
+	"../pkg/environment"
 	"../pkg/query"
 	"../pkg/uid"
 	"context"
@@ -10,12 +10,11 @@ import (
 	"upper.io/db.v3/lib/sqlbuilder"
 )
 
-// Interface zur Env
 var env *environment.Environment
 
 func Register() {
+	// Env provides the DB Session and maybe some config
 	env = environment.Env
-
 }
 
 type Tag struct {
@@ -24,15 +23,14 @@ type Tag struct {
 }
 
 func CreateTag(newTag *Tag) (*Tag, error) {
-	tag := &Tag{}
-	tag.Id = uid.GenerateULID()
-	tag.Label = newTag.Label
+	// generate an id
+	newTag.Id = uid.GenerateULID()
 
 	err := env.DB.Tx(context.Background(), func(tx sqlbuilder.Tx) error {
 		// Use `tx` like you would normally use `sess` (Env.DB is sess).
 		tags := tx.Collection("tag")
 		// id interface not needed, we create the ids ourself
-		_, err := tags.Insert(tag)
+		_, err := tags.Insert(newTag)
 		if err != nil {
 			// Rollback the transaction by returning any error.
 			return err
@@ -41,7 +39,7 @@ func CreateTag(newTag *Tag) (*Tag, error) {
 		return nil
 	})
 
-	return tag, err
+	return newTag, err
 }
 
 func DeleteTag(id ulid.ULID) error {

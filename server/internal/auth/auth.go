@@ -2,7 +2,7 @@ package auth
 
 import (
 	proto "../../../proto/auth"
-	"../_env"
+	"../pkg/environment"
 	"errors"
 	"golang.org/x/crypto/bcrypt"
 	"upper.io/db.v3"

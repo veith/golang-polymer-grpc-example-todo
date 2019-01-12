@@ -1,7 +1,10 @@
+// In this file are the grpc handlers. Our API talks grpc...
+
 package tag
 
 import (
 	proto "../../../proto/tag"
+	"../pkg/dberrors"
 	"../pkg/query"
 	"context"
 	"github.com/golang/protobuf/ptypes/empty"
@@ -12,7 +15,6 @@ import (
 
 var RegisterServiceServer = proto.RegisterTagServiceServer
 
-// Gibt den grpc ServiceServer zurück
 func GetServiceServer() proto.TagServiceServer {
 	var s serviceServer
 	return &s
@@ -24,9 +26,12 @@ type serviceServer struct {
 func (serviceServer) CreateTag(ctx context.Context, req *proto.CreateTagRequest) (*proto.TagEntity, error) {
 	tag, err := CreateTag(mapProtoTagToTag(req.Item))
 	if err != nil {
+		if dberrors.FindErrorByMessageString(err, "uniq") {
+			return nil, status.Errorf(codes.AlreadyExists, "Constraint violation: %s", err)
+		}
 		return nil, err
 	}
-	return mapTagToTagEntity(ctx, tag), nil
+	return mapTagToProtoTagEntity(ctx, tag), nil
 }
 
 func (serviceServer) GetTag(ctx context.Context, req *proto.GetTagRequest) (*proto.TagEntity, error) {
@@ -35,7 +40,7 @@ func (serviceServer) GetTag(ctx context.Context, req *proto.GetTagRequest) (*pro
 	if err != nil {
 		return nil, status.Errorf(codes.NotFound, "Tag not Found: %s", err)
 	}
-	return mapTagToTagEntity(ctx, item), nil
+	return mapTagToProtoTagEntity(ctx, item), nil
 }
 
 func (serviceServer) ListAllTags(ctx context.Context, req *proto.ListTagsRequest) (*proto.TagCollection, error) {
@@ -46,7 +51,7 @@ func (serviceServer) ListAllTags(ctx context.Context, req *proto.ListTagsRequest
 		return nil, status.Errorf(codes.Unavailable, "Data Error: %s", err)
 	}
 
-	return mapTagListToTagCollection(ctx, tagList, dbMeta), nil
+	return mapTagListToProtoTagCollection(ctx, tagList, dbMeta), nil
 }
 
 func (serviceServer) ListTagsFromTask(ctx context.Context, req *proto.ListTagsRequest) (*proto.TagCollection, error) {
@@ -56,7 +61,7 @@ func (serviceServer) ListTagsFromTask(ctx context.Context, req *proto.ListTagsRe
 		return nil, status.Errorf(codes.Unavailable, "Data Error: %s", err)
 	}
 
-	return mapTagListToTagCollection(ctx, tagList, dbMeta), nil
+	return mapTagListToProtoTagCollection(ctx, tagList, dbMeta), nil
 }
 
 func (serviceServer) DeleteTag(ctx context.Context, req *proto.DeleteTagRequest) (*empty.Empty, error) {
@@ -74,5 +79,5 @@ func (serviceServer) UpdateTag(ctx context.Context, req *proto.UpdateTagRequest)
 	if err != nil {
 		return nil, status.Errorf(codes.NotFound, "Tag not Found: %s", err)
 	}
-	return mapTagToTagEntity(ctx, tag), nil
+	return mapTagToProtoTagEntity(ctx, tag), nil
 }
