@@ -36,7 +36,7 @@ func (s *authServiceServer) AuthFuncOverride(ctx context.Context, fullMethodName
 }
 
 func (authServiceServer) Login(ctx context.Context, req *proto.CredentialsRequest) (*empty.Empty, error) {
-	_, err := login(req.Credentials.Username, req.Credentials.Password)
+	_, err := login(req.Body.Username, req.Body.Password)
 	if err == nil {
 		// erfolg
 		d := time.Now().Add(expiresDuration)

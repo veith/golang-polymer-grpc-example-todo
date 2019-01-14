@@ -32,7 +32,7 @@ func (s *serviceServer) CompleteTask(ctx context.Context, req *proto.CompleteTas
 }
 
 func (s *serviceServer) CreateTask(ctx context.Context, req *proto.CreateTaskRequest) (*proto.TaskEntity, error) {
-	item, err := CreateTaskItem(MapProtoTaskToTask(req.Item))
+	item, err := CreateTaskItem(MapProtoTaskToTask(req.Body))
 	entity := proto.TaskEntity{Data: MapTaskToProtoTask(&item), Links: hateoas.GenerateEntityHateoas(ctx, "/tasks", item.Id.String()).Links}
 	return &entity, err
 }
@@ -49,7 +49,7 @@ func (s *serviceServer) DeleteTask(ctx context.Context, req *proto.DeleteTaskReq
 func (s *serviceServer) UpdateTask(ctx context.Context, req *proto.UpdateTaskRequest) (*proto.TaskEntity, error) {
 	taskID, _ := ulid.Parse(req.Id)
 
-	item, err := UpdateTaskItem(taskID, MapProtoTaskToTask(req.Item))
+	item, err := UpdateTaskItem(taskID, MapProtoTaskToTask(req.Body))
 	if err != nil {
 		return nil, status.Errorf(codes.NotFound, "Could not update entity: %s", err)
 	}

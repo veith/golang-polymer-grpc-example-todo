@@ -32,7 +32,7 @@ func (serviceServer) AddTagToTask(ctx context.Context, req *proto.AddTagToTaskRe
 
 // [POST] ~/tags
 func (serviceServer) CreateTag(ctx context.Context, req *proto.CreateTagRequest) (*proto.TagEntity, error) {
-	tag, err := CreateTag(mapProtoTagToTag(req.Item))
+	tag, err := CreateTag(mapProtoTagToTag(req.Body))
 	if err != nil {
 		if dberrors.FindErrorByMessageString(err, "uniq") {
 			return nil, status.Errorf(codes.AlreadyExists, "Constraint violation: %s", err)
@@ -51,6 +51,7 @@ func (serviceServer) GetTag(ctx context.Context, req *proto.GetTagRequest) (*pro
 	}
 	return mapTagToProtoTagEntity(ctx, item), nil
 }
+
 // [GET] ~/tags
 func (serviceServer) ListAllTags(ctx context.Context, req *proto.ListTagsRequest) (*proto.TagCollection, error) {
 	queryOptions := query.GetListOptionsFromRequest(req)
@@ -87,7 +88,7 @@ func (serviceServer) DeleteTag(ctx context.Context, req *proto.DeleteTagRequest)
 // [PATCH] ~/tags/{id}
 func (serviceServer) UpdateTag(ctx context.Context, req *proto.UpdateTagRequest) (*proto.TagEntity, error) {
 	tagID, _ := ulid.Parse(req.Id)
-	tag, err := UpdateTag(tagID, mapProtoTagToTag(req.Item))
+	tag, err := UpdateTag(tagID, mapProtoTagToTag(req.Body))
 	if err != nil {
 		return nil, status.Errorf(codes.NotFound, "Tag not Found: %s", err)
 	}
