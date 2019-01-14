@@ -37,7 +37,7 @@
                 },
                 {
                   "key": "body",
-                  "value": "item"
+                  "value": "body"
                 }
               ]
             }
@@ -95,6 +95,27 @@
           ]
         },
         {
+          "name": "AddTagToTask",
+          "description": "Tag einem Task hinzufügen",
+          "input_type": "AddTagToTaskRequest",
+          "output_type": "TagEntity",
+          "options": [
+            {
+              "name": "google.api.http",
+              "vars": [
+                {
+                  "key": "post",
+                  "value": "/tasks/{task=*}/tags"
+                },
+                {
+                  "key": "body",
+                  "value": "body"
+                }
+              ]
+            }
+          ]
+        },
+        {
           "name": "DeleteTag",
           "description": "Löschen eines Tags",
           "input_type": "DeleteTagRequest",
@@ -126,7 +147,7 @@
                 },
                 {
                   "key": "body",
-                  "value": "item"
+                  "value": "body"
                 }
               ]
             }
@@ -136,7 +157,6 @@
     }
   ],
   "enum_types": [],
-
   "types": [
     {
       "name": "GetTagRequest",
@@ -149,6 +169,48 @@
           "__proto": {
             "type": "string",
             "number": 1,
+            "options": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "tagID",
+      "description": "Request um Tags einem Task zuzuweisen",
+      "fields": [
+        {
+          "name": "tagID",
+          "description": "ULID vom Tag",
+          "type": "ulid",
+          "repeated": true,
+          "__proto": {
+            "type": "string",
+            "number": 1,
+            "options": []
+          }
+        }
+        ]},
+    {
+      "name": "AddTagToTaskRequest",
+      "description": "Request um Tags einem Task zuzuweisen",
+      "fields": [
+        {
+          "name": "body",
+          "description": "ULID vom Tag",
+          "type": "tagID",
+          "__proto": {
+            "type": "tagID",
+            "number": 1,
+            "options": []
+          }
+        },
+        {
+          "name": "task",
+          "description": "ULID vom Task",
+          "type": "ulid",
+          "__proto": {
+            "type": "string",
+            "number": 2,
             "options": []
           }
         }
@@ -185,7 +247,7 @@
           }
         },
         {
-          "name": "item",
+          "name": "body",
           "description": "enthält einen Tag",
           "type": "Tag",
           "repeated": false,
@@ -202,7 +264,7 @@
       "description": "Request Daten für die Erstellung eines Tags",
       "fields": [
         {
-          "name": "item",
+          "name": "body",
           "description": "enthält einen Tag",
           "type": "Tag",
           "repeated": false,

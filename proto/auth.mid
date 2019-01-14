@@ -57,7 +57,7 @@
                 },
                 {
                   "key": "body",
-                  "value": "credentials"
+                  "value": "body"
                 }
               ]
             }
@@ -163,7 +163,7 @@
       "description": "Request Daten für die Anmeldung",
       "fields": [
         {
-          "name": "credentials",
+          "name": "body",
           "description": "enthält im mindesten:  username && (password || secondFactor)",
           "type": "Credentials",
           "repeated": false,

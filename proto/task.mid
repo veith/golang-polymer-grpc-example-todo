@@ -43,7 +43,7 @@
                 },
                 {
                   "key": "body",
-                  "value": "item"
+                  "value": "body"
                 }
               ]
             }
@@ -118,7 +118,7 @@
                 },
                 {
                   "key": "body",
-                  "value": "item"
+                  "value": "body"
                 }
               ]
             }
@@ -335,7 +335,7 @@
       "description": "Request Daten für die Erstellung eines Tasks",
       "fields": [
         {
-          "name": "item",
+          "name": "body",
           "description": "enthält einen Task",
           "type": "Task",
           "repeated": false,
@@ -411,7 +411,7 @@
           }
         },
         {
-          "name": "item",
+          "name": "body",
           "description": "enthält einen Task",
           "type": "Task",
           "repeated": false,

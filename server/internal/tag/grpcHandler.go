@@ -23,6 +23,14 @@ func GetServiceServer() proto.TagServiceServer {
 type serviceServer struct {
 }
 
+// [POST] ~/tasks/{task=*}/tags
+// Body geht in den Tag (repeated)
+func (serviceServer) AddTagToTask(ctx context.Context, req *proto.AddTagToTaskRequest) (*proto.TagEntity, error) {
+
+	return &proto.TagEntity{}, nil
+}
+
+// [POST] ~/tags
 func (serviceServer) CreateTag(ctx context.Context, req *proto.CreateTagRequest) (*proto.TagEntity, error) {
 	tag, err := CreateTag(mapProtoTagToTag(req.Item))
 	if err != nil {
@@ -34,6 +42,7 @@ func (serviceServer) CreateTag(ctx context.Context, req *proto.CreateTagRequest)
 	return mapTagToProtoTagEntity(ctx, tag), nil
 }
 
+// [GET] ~/tags/{id}
 func (serviceServer) GetTag(ctx context.Context, req *proto.GetTagRequest) (*proto.TagEntity, error) {
 	tagID, _ := ulid.Parse(req.Id)
 	item, err := GetTag(tagID)
@@ -42,7 +51,7 @@ func (serviceServer) GetTag(ctx context.Context, req *proto.GetTagRequest) (*pro
 	}
 	return mapTagToProtoTagEntity(ctx, item), nil
 }
-
+// [GET] ~/tags
 func (serviceServer) ListAllTags(ctx context.Context, req *proto.ListTagsRequest) (*proto.TagCollection, error) {
 	queryOptions := query.GetListOptionsFromRequest(req)
 	tagList, dbMeta, err := ListTags(queryOptions)
@@ -54,6 +63,7 @@ func (serviceServer) ListAllTags(ctx context.Context, req *proto.ListTagsRequest
 	return mapTagListToProtoTagCollection(ctx, tagList, dbMeta), nil
 }
 
+// [GET] ~/tasks/{task=*}/tags
 func (serviceServer) ListTagsFromTask(ctx context.Context, req *proto.ListTagsRequest) (*proto.TagCollection, error) {
 	queryOptions := query.GetListOptionsFromRequest(req)
 	tagList, dbMeta, err := ListTags(queryOptions)
@@ -64,6 +74,7 @@ func (serviceServer) ListTagsFromTask(ctx context.Context, req *proto.ListTagsRe
 	return mapTagListToProtoTagCollection(ctx, tagList, dbMeta), nil
 }
 
+// [DELETE] /tags/{id}
 func (serviceServer) DeleteTag(ctx context.Context, req *proto.DeleteTagRequest) (*empty.Empty, error) {
 	tagID, _ := ulid.Parse(req.Id)
 	err := DeleteTag(tagID)
@@ -73,6 +84,7 @@ func (serviceServer) DeleteTag(ctx context.Context, req *proto.DeleteTagRequest)
 	return &empty.Empty{}, nil
 }
 
+// [PATCH] ~/tags/{id}
 func (serviceServer) UpdateTag(ctx context.Context, req *proto.UpdateTagRequest) (*proto.TagEntity, error) {
 	tagID, _ := ulid.Parse(req.Id)
 	tag, err := UpdateTag(tagID, mapProtoTagToTag(req.Item))
