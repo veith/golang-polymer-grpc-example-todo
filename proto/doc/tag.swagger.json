@@ -1,0 +1,394 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "tag.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/tags": {
+      "get": {
+        "summary": "Abfragen aller Tags",
+        "operationId": "ListAllTags",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/packageTagCollection"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "fields",
+            "description": "Partielle Repräsentation fields=id,name.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "description": "Sortierung nach feldern\n**?filter=-completed** um completed absteigend zu bekommen\n**?filter=completed** um completed aufsteigend zu bekommen.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "filter",
+            "description": "Filter.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "description": "Gewünschte Seite. Tipp: Folge dem HATEOAS next, prev,...",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "limit",
+            "description": "Anzahl Elemente pro Seite, maximal sind 99 erlaubt.",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "task",
+            "description": "Die ulid vom übergeordnetem task.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TagService"
+        ]
+      },
+      "post": {
+        "summary": "Erstellt einen neuen Tag",
+        "operationId": "CreateTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/packageTagEntity"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "enthält einen Tag",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/packageTag"
+            }
+          }
+        ],
+        "tags": [
+          "TagService"
+        ]
+      }
+    },
+    "/tags/{id}": {
+      "get": {
+        "summary": "Abfragen eines Tags",
+        "operationId": "GetTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/packageTagEntity"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "ULID vom Tag",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TagService"
+        ]
+      },
+      "delete": {
+        "summary": "Löschen eines Tags",
+        "operationId": "DeleteTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protobufEmpty"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "ULID vom Tag",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TagService"
+        ]
+      },
+      "patch": {
+        "summary": "Aktualisert einen Tag partiell",
+        "operationId": "UpdateTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/packageTagEntity"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "ULID vom Tag",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "description": "enthält einen Tag",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/packageTag"
+            }
+          }
+        ],
+        "tags": [
+          "TagService"
+        ]
+      }
+    },
+    "/tasks/{task}/tags": {
+      "get": {
+        "summary": "Abfragen aller Tags eines Tasks",
+        "operationId": "ListTagsFromTask",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/packageTagCollection"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "task",
+            "description": "Die ulid vom übergeordnetem task",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "fields",
+            "description": "Partielle Repräsentation fields=id,name.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "description": "Sortierung nach feldern\n**?filter=-completed** um completed absteigend zu bekommen\n**?filter=completed** um completed aufsteigend zu bekommen.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "filter",
+            "description": "Filter.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "description": "Gewünschte Seite. Tipp: Folge dem HATEOAS next, prev,...",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "limit",
+            "description": "Anzahl Elemente pro Seite, maximal sind 99 erlaubt.",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "TagService"
+        ]
+      },
+      "post": {
+        "summary": "Tag einem Task hinzufügen",
+        "operationId": "AddTagToTask",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/packageTagEntity"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "task",
+            "description": "ULID vom Task",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "description": "ULID vom Tag",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/packagetagID"
+            }
+          }
+        ],
+        "tags": [
+          "TagService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "LinkMethod": {
+      "type": "string",
+      "enum": [
+        "PUT",
+        "GET",
+        "HEAD",
+        "POST",
+        "PATCH",
+        "DELETE",
+        "TRACE",
+        "OPTIONS"
+      ],
+      "default": "PUT",
+      "title": "Set der REST Verben\nhttps://tools.ietf.org/html/rfc7231#section-4"
+    },
+    "packageTag": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "für IDs werden wir intern ulid verwenden"
+        },
+        "label": {
+          "type": "string",
+          "description": "Taglabel wird als Standardrepräsentation verwendet."
+        }
+      },
+      "title": "Tag Entitytyp. Datenmodel eines Tags"
+    },
+    "packageTagCollection": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/packageTagEntity"
+          },
+          "title": "Datenmodel vom Typ TagEntity"
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/typeLink"
+          },
+          "title": "Hateoasinformationen"
+        }
+      },
+      "title": "Response-Message einer List Abfrage nach Tags"
+    },
+    "packageTagEntity": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/packageTag",
+          "title": "Datenmodel vom Typ Tag"
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/typeLink"
+          },
+          "title": "Hateoasinformationen"
+        }
+      },
+      "title": "Response-Message einer Anfrage nach Tags"
+    },
+    "packagetagID": {
+      "type": "object",
+      "properties": {
+        "tagID": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "ULID vom Tag"
+        }
+      },
+      "title": "Request um Tags einem Task zuzuweisen"
+    },
+    "protobufEmpty": {
+      "type": "object",
+      "description": "service Foo {\n      rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);\n    }\n\nThe JSON representation for `Empty` is empty JSON object `{}`.",
+      "title": "A generic empty message that you can re-use to avoid defining duplicated\nempty messages in your APIs. A typical example is to use it as the request\nor the response type of an API method. For instance:"
+    },
+    "typeLink": {
+      "type": "object",
+      "properties": {
+        "rel": {
+          "type": "string"
+        },
+        "method": {
+          "$ref": "#/definitions/LinkMethod",
+          "title": "HTTP Verb"
+        },
+        "href": {
+          "type": "string",
+          "title": "Absolute URI"
+        },
+        "type": {
+          "type": "string",
+          "description": "Der mime type des Links."
+        }
+      },
+      "title": "IANA konforme Links /\nList of official link rels:\nhttp://www.iana.org/assignments/link-relations/link-relations.xhtml"
+    }
+  }
+}
