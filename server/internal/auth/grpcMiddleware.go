@@ -1,4 +1,4 @@
-package middleware
+package auth
 
 import (
 	"github.com/SermoDigital/jose/crypto"
@@ -21,14 +21,25 @@ var JWTAuthFunc = func(ctx context.Context) (context.Context, error) {
 		return nil, err
 	}
 
-	tokenInfo, err := parseToken(token)
+	parsedToken, err := parseToken(token)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "invalid auth token: %v", err)
 	}
 
-	newCtx := context.WithValue(ctx, "tokenInfo", tokenInfo)
+	newCtx := context.WithValue(ctx, tokenInfo{}, parsedToken)
 
 	return newCtx, nil
+}
+
+type tokenInfo struct{}
+type Claims map[string]interface{}
+
+// GetTokenFromContext returns the parsed token in ctx if it exists.  The
+// returned Claim should not be modified. Writing to it may cause races.
+// Modification should be made to copies of the returned Claim.
+func GetTokenFromContext(ctx context.Context) (token Claims, ok bool) {
+	token, ok = ctx.Value(tokenInfo{}).(map[string]interface{})
+	return
 }
 
 func parseToken(token string) (map[string]interface{}, error) {
@@ -47,6 +58,7 @@ func parseToken(token string) (map[string]interface{}, error) {
 	if err = jwt.Validate(rsaPublic, crypto.SigningMethodRS256); err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "invalid auth token: %v", err)
 	}
+
 	return jwt.Claims(), nil
 }
 

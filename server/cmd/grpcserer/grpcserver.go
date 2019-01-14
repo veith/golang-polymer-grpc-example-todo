@@ -6,7 +6,7 @@ import (
 	"../../internal/pkg/environment"
 	"../../internal/tag"
 	"../../internal/task"
-	"./middleware"
+
 	"github.com/grpc-ecosystem/go-grpc-middleware"
 	"github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	"google.golang.org/grpc"
@@ -28,7 +28,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
-	grpcServer := grpc.NewServer(grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(grpc_auth.UnaryServerInterceptor(middleware.JWTAuthFunc))))
+	grpcServer := grpc.NewServer(grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(grpc_auth.UnaryServerInterceptor(auth.JWTAuthFunc))))
 
 	// Auth
 	auth.Register()
