@@ -15,7 +15,6 @@ var env *environment.Environment
 func Register() {
 	// Env provides the DB Session and maybe some config
 	env = environment.Env
-	env.DB.SetLogging(true)
 }
 
 type Tag struct {

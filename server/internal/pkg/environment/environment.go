@@ -18,6 +18,8 @@ func InitEnv() {
 	dbSession, _ := connectDB()
 	Env.DB = dbSession
 	// config kann hier nachher an env angehängt werden
+	Env.DB.SetLogging(true)
+
 }
 
 func connectDB() (sqlbuilder.Database, error) {
