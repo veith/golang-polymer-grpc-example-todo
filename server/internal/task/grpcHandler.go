@@ -2,7 +2,6 @@ package task
 
 import (
 	proto "../../../proto/task"
-	"../pkg/hateoas"
 	"../pkg/query"
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/oklog/ulid"
@@ -23,20 +22,21 @@ func GetServiceServer() proto.TaskServiceServer {
 type serviceServer struct {
 }
 
+// [POST] ~/tasks:complete
 func (s *serviceServer) CompleteTask(ctx context.Context, req *proto.CompleteTaskRequest) (*proto.TaskEntity, error) {
 	taskID, _ := ulid.Parse(req.Id)
 	item, err := CompleteTaskItem(taskID)
-	entity := proto.TaskEntity{Data: MapTaskToProtoTask(&item), Links: hateoas.GenerateEntityHateoas(ctx, "/tasks", item.Id.String()).Links}
 
-	return &entity, err
+	return mapTaskToProtoTaskEntity(ctx, item), err
 }
 
+// [POST] ~/task
 func (s *serviceServer) CreateTask(ctx context.Context, req *proto.CreateTaskRequest) (*proto.TaskEntity, error) {
-	item, err := CreateTaskItem(MapProtoTaskToTask(req.Body))
-	entity := proto.TaskEntity{Data: MapTaskToProtoTask(&item), Links: hateoas.GenerateEntityHateoas(ctx, "/tasks", item.Id.String()).Links}
-	return &entity, err
+	item, err := CreateTaskItem(mapProtoTaskToTask(req.Body))
+	return mapTaskToProtoTaskEntity(ctx, item), err
 }
 
+// [DELETE] ~/task/{id}
 func (s *serviceServer) DeleteTask(ctx context.Context, req *proto.DeleteTaskRequest) (*empty.Empty, error) {
 	taskID, _ := ulid.Parse(req.Id)
 	err := DeleteTaskItem(taskID)
@@ -46,41 +46,36 @@ func (s *serviceServer) DeleteTask(ctx context.Context, req *proto.DeleteTaskReq
 	return &empty.Empty{}, nil
 }
 
+// [PATCH] ~/task/{id}
 func (s *serviceServer) UpdateTask(ctx context.Context, req *proto.UpdateTaskRequest) (*proto.TaskEntity, error) {
 	taskID, _ := ulid.Parse(req.Id)
 
-	item, err := UpdateTaskItem(taskID, MapProtoTaskToTask(req.Body))
+	item, err := UpdateTaskItem(taskID, mapProtoTaskToTask(req.Body))
 	if err != nil {
 		return nil, status.Errorf(codes.NotFound, "Could not update entity: %s", err)
 	}
-	entity := proto.TaskEntity{Data: MapTaskToProtoTask(&item), Links: hateoas.GenerateEntityHateoas(ctx, "/tasks", item.Id.String()).Links}
-	return &entity, nil
+
+	return mapTaskToProtoTaskEntity(ctx, item), nil
 }
 
+// [GET] ~/task/{id}
 func (s *serviceServer) GetTask(ctx context.Context, req *proto.GetTaskRequest) (*proto.TaskEntity, error) {
 	taskID, _ := ulid.Parse(req.Id)
 	item, err := GetTaskItem(taskID)
 	if err != nil {
 		return nil, status.Errorf(codes.NotFound, "Task not Found: %s", err)
 	}
-	entity := proto.TaskEntity{Data: MapTaskToProtoTask(&item), Links: hateoas.GenerateEntityHateoas(ctx, "/tasks", item.Id.String()).Links}
-	return &entity, nil
+	return mapTaskToProtoTaskEntity(ctx, item), nil
 }
 
-func (s *serviceServer) ListTask(ctx context.Context, req *proto.ListTaskRequest) (*proto.TaskCollection, error) {
-	//token := ctx.Value("tokenInfo")
+// [GET] ~/tasks
+func (serviceServer) ListTask(ctx context.Context, req *proto.ListTaskRequest) (*proto.TaskCollection, error) {
+	queryOptions := query.GetListOptionsFromRequest(req)
+	taskList, dbMeta, err := ListTasks(queryOptions)
 
-	opts := query.GetListOptionsFromRequest(req)
-	items, dbMeta, err := ListTaskItems(opts)
 	if err != nil {
 		return nil, status.Errorf(codes.Unavailable, "Data Error: %s", err)
 	}
 
-	var collection []*proto.TaskEntity
-	for _, item := range items {
-		entity := proto.TaskEntity{Data: MapTaskToProtoTask(&item), Links: hateoas.GenerateEntityHateoas(ctx, "/tasks", item.Id.String()).Links}
-		collection = append(collection, &entity)
-	}
-
-	return &proto.TaskCollection{Data: collection, Links: hateoas.GenerateCollectionHATEOAS(ctx, "/tasks", dbMeta).Links}, nil
+	return mapTaskListToProtoTaskCollection(ctx, taskList, dbMeta), nil
 }

@@ -4,8 +4,10 @@ import (
 	"../pkg/environment"
 	"../pkg/query"
 	"../pkg/uid"
+	"context"
 	"github.com/oklog/ulid"
 	"upper.io/db.v3"
+	"upper.io/db.v3/lib/sqlbuilder"
 )
 
 // Interface zur Env
@@ -27,8 +29,8 @@ type Task struct {
 	Completed   int32     `json:"completed,omitempty" db:"completed,omitempty"`
 }
 
-func CreateTaskItem(data *Task) (Task, error) {
-	var item Task
+func CreateTaskItem(data *Task) (*Task, error) {
+	item := &Task{}
 	item.Id = uid.GenerateULID()
 	item.Title = data.Title
 	item.Description = data.Description
@@ -38,58 +40,67 @@ func CreateTaskItem(data *Task) (Task, error) {
 		item.Completed = 1
 	}
 	// id interface not needed, we create the ids ourself
-	_, err := tasks.Insert(&item)
+	_, err := tasks.Insert(item)
 	//fire("item.generated",&item)
 	return item, err
 }
 
-func ListTaskItems(options query.QueryOptions) ([]Task, query.DBMeta, error) {
+func ListTasks(options query.QueryOptions) ([]*Task, query.DBMeta, error) {
 
 	res := tasks.Find()
 	var meta query.DBMeta
 	res, meta = query.ApplyRequestOptionsToQuery(res, options)
-	var items []Task
+	var items []*Task
 	err := res.All(&items)
 
 	return items, meta, err
 }
 
-func CompleteTaskItem(id ulid.ULID) (Task, error) {
-	var item Task
+func CompleteTaskItem(id ulid.ULID) (*Task, error) {
+	item := &Task{}
 	item.Completed = 2
-	return UpdateTaskItem(id, &item)
+	return UpdateTaskItem(id, item)
 }
 
 func DeleteTaskItem(id ulid.ULID) error {
-	var item Task
+	item := &Task{}
 	res := tasks.Find(db.Cond{"id": id})
-	if err := res.One(&item); err != nil {
+	if err := res.One(item); err != nil {
 		return err
 	}
 	err := res.Delete()
 	return err
 }
 
-func GetTaskItem(id ulid.ULID) (Task, error) {
-	var item Task
+func GetTaskItem(id ulid.ULID) (*Task, error) {
+	item := &Task{}
 	res := tasks.Find(db.Cond{"id": id})
-	err := res.One(&item)
+	err := res.One(item)
 	return item, err
 }
 
-func UpdateTaskItem(id ulid.ULID, data *Task) (Task, error) {
-	var item Task
-	res := tasks.Find(db.Cond{"id": id})
-	// fields to update
-	item.Id = id
-	item.Title = data.Title
-	item.Description = data.Description
-	item.Completed = data.Completed
+func UpdateTaskItem(id ulid.ULID, data *Task) (*Task, error) {
+	task := &Task{}
+	err := env.DB.Tx(context.Background(), func(tx sqlbuilder.Tx) error {
 
-	if err := res.Update(&item); err != nil {
-		return Task{}, err
-	}
+		// fields to update
+		task.Id = id
+
+		task.Title = data.Title
+		task.Description = data.Description
+		task.Completed = data.Completed
+
+		tasks := tx.Collection("task")
+		res := tasks.Find(db.Cond{"id": id})
+
+		err := res.Update(task)
+		if err != nil {
+			return err
+		}
+		// Commit the transaction by returning nil.
+		return err
+	})
 	// read your write
-	err := res.One(&item)
-	return item, err
+	task, err = GetTaskItem(id)
+	return task, err
 }

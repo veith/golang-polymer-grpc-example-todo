@@ -10,12 +10,19 @@ import (
 )
 
 type Hateoas struct {
-	Links []*rest.Link
+	Links      []*rest.Link
+	entityself string
 }
 
 // Add HATEOAS links
 func (h *Hateoas) AddLink(rel, contenttype, href string, method rest.Link_Method) {
 	link := rest.Link{Rel: rel, Href: href, Type: contenttype, Method: method}
+	h.Links = append(h.Links, &link)
+}
+
+// Add HATEOAS links
+func (h *Hateoas) AddSubresource(subresource string) {
+	link := rest.Link{Rel: "subresource", Href: h.entityself + "/" + subresource, Type: "application/json", Method: rest.Link_GET}
 	h.Links = append(h.Links, &link)
 }
 
@@ -50,10 +57,12 @@ func GenerateEntityHateoas(ctx context.Context, path string, id string) Hateoas 
 	baseURL := strings.Join(md["api-base-url"], "")
 
 	var h Hateoas
-	h.AddLink("self", "application/json", baseURL+path+"/"+id, rest.Link_GET)
-	h.AddLink("delete", "application/json", baseURL+path+"/"+id, rest.Link_DELETE)
-	h.AddLink("update", "application/json", baseURL+path+"/"+id, rest.Link_PATCH)
+	h.entityself = baseURL + path + "/" + id
+
+	h.AddLink("self", "application/json", h.entityself, rest.Link_GET)
+	h.AddLink("delete", "application/json", h.entityself, rest.Link_DELETE)
+	h.AddLink("update", "application/json", h.entityself, rest.Link_PATCH)
 	h.AddLink("parent", "application/json", baseURL+path, rest.Link_GET)
-	h.AddLink("complete", "application/json", baseURL+path+"/"+id+":complete", rest.Link_POST)
+	h.AddLink("complete", "application/json", h.entityself+":complete", rest.Link_POST)
 	return h
 }
