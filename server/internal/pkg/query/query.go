@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"strings"
 	"upper.io/db.v3"
+	"upper.io/db.v3/lib/sqlbuilder"
 )
 
 // Anfrageoptionen für upper
@@ -20,7 +21,7 @@ type QueryOptions struct {
 }
 
 type DBMeta struct {
-	Count       uint64
+	Count       uint64 `db:"c,pk,omitempty"`
 	CurrentPage uint
 	NextPage    uint
 	PrevPage    uint
@@ -28,10 +29,28 @@ type DBMeta struct {
 	LastPage    uint
 }
 
+type FieldSet struct {
+	fields map[string]string
+}
+
+// Makes an empty fieldSet
+func GetFieldSet() FieldSet {
+	set := FieldSet{}
+	set.fields = make(map[string]string)
+	return set
+}
+
+// add something that matches your select query:  tag.id, id
+func (set FieldSet) AddField(dbField string, structField string) {
+	set.fields[structField] = dbField
+	return
+}
+
 var PaginationDefault uint
 
 func init() {
 	PaginationDefault = 23
+
 }
 
 // Optionen für Listenelemente kommen aus dem proto als beliebiger Typ daher, jedoch immer in der gleichen nummerierung
@@ -41,6 +60,73 @@ func GetListOptionsFromRequest(options interface{}) QueryOptions {
 	var opts QueryOptions
 	json.Unmarshal(tmp, &opts)
 	return opts
+}
+
+// Query Options for select statements
+// fields, sort, limit, page, sind implementiert
+// mit der dbMeta kann man sich eine Pagination bauen...
+func ApplyRequestOptionsToSelect(q sqlbuilder.Selector, fieldSet FieldSet, options QueryOptions) (sqlbuilder.Selector, DBMeta) {
+	type cnt struct {
+		Count uint8 `db:"c,pk,omitempty"`
+	}
+
+	metaQ := q
+
+	var requestedFields []interface{}
+	if options.Fields != "" {
+		fields := strings.Split(options.Fields, ",")
+
+		for _, field := range fields {
+			requestedFields = append(requestedFields, fieldSet.fields[field]+" as "+field)
+		}
+	} else {
+		//append complete fieldset
+		for field, dbfield := range fieldSet.fields {
+			requestedFields = append(requestedFields, dbfield+" as "+field)
+		}
+	}
+
+	q = q.Columns(requestedFields...)
+
+	q = q.OrderBy(options.Sort)
+
+	limit := int(PaginationDefault)
+	if options.Limit != 0 {
+		limit = int(options.Limit)
+	}
+	q = q.Limit(limit)
+	if options.Page != 0 {
+		q = q.Offset(limit*int(options.Page) - 1)
+	}
+
+	if options.Sort != "" {
+		q = q.OrderBy(options.Sort)
+	}
+
+	// build meta
+	metaQ = metaQ.Columns(db.Raw("COUNT(*) as c"))
+	var meta DBMeta
+	err := metaQ.One(&meta)
+
+	meta.CurrentPage = 1
+	if options.Page > 1 {
+		meta.CurrentPage = options.Page
+	}
+	if err == nil {
+		if 0 == limit {
+			limit = 1
+		}
+		meta.LastPage = uint(int(meta.Count) / limit)
+		meta.FirstPage = 1
+		if meta.CurrentPage < meta.LastPage {
+			meta.NextPage = meta.CurrentPage + 1
+		}
+		if meta.CurrentPage > 1 {
+			meta.PrevPage = meta.CurrentPage - 1
+		}
+	}
+
+	return q, meta
 }
 
 // Query Options für auf das db.Result anwenden.

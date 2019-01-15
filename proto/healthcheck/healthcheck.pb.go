@@ -101,9 +101,9 @@ var _HealthCheck_serviceDesc = grpc.ServiceDesc{
 	Metadata: "healthcheck.proto",
 }
 
-func init() { proto.RegisterFile("healthcheck.proto", fileDescriptor_healthcheck_dde5610c9f72728a) }
+func init() { proto.RegisterFile("healthcheck.proto", fileDescriptor_healthcheck_5728893e4a2a1ac0) }
 
-var fileDescriptor_healthcheck_dde5610c9f72728a = []byte{
+var fileDescriptor_healthcheck_5728893e4a2a1ac0 = []byte{
 	// 171 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0xcc, 0x48, 0x4d, 0xcc,
 	0x29, 0xc9, 0x48, 0xce, 0x48, 0x4d, 0xce, 0xd6, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0xe2, 0x4f,

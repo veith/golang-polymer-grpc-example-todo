@@ -26,19 +26,19 @@ var JWTAuthFunc = func(ctx context.Context) (context.Context, error) {
 		return nil, status.Errorf(codes.Unauthenticated, "invalid auth token: %v", err)
 	}
 
-	newCtx := context.WithValue(ctx, tokenInfo{}, parsedToken)
+	newCtx := context.WithValue(ctx, authTokenCTX{}, parsedToken)
 
 	return newCtx, nil
 }
 
-type tokenInfo struct{}
+type authTokenCTX struct{}
 type Claims map[string]interface{}
 
 // GetTokenFromContext returns the parsed token in ctx if it exists.  The
 // returned Claim should not be modified. Writing to it may cause races.
 // Modification should be made to copies of the returned Claim.
-func GetTokenFromContext(ctx context.Context) (token Claims, ok bool) {
-	token, ok = ctx.Value(tokenInfo{}).(map[string]interface{})
+func GetClaimsFromContext(ctx context.Context) (token Claims, ok bool) {
+	token, ok = ctx.Value(authTokenCTX{}).(map[string]interface{})
 	return
 }
 

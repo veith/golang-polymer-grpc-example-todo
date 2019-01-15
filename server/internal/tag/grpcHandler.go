@@ -25,9 +25,16 @@ type serviceServer struct {
 
 // [POST] ~/tasks/{task=*}/tags
 // Body geht in den Tag (repeated)
-func (serviceServer) AddTagToTask(ctx context.Context, req *proto.AddTagToTaskRequest) (*proto.TagEntity, error) {
+func (serviceServer) AddTagToTask(ctx context.Context, req *proto.AddTagToTaskRequest) (*proto.TagCollection, error) {
 
-	return &proto.TagEntity{}, nil
+	var tagIds []ulid.ULID
+	for _, tagId := range req.Body.TagID {
+		tagUlid, _ := ulid.Parse(tagId)
+		tagIds = append(tagIds, tagUlid)
+	}
+	taskUlid, _ := ulid.Parse(req.Task)
+	tagList, dbMeta, err := AddTagsToTask(tagIds, taskUlid)
+	return mapTagListToProtoTagCollection(ctx, tagList, dbMeta), err
 }
 
 // [POST] ~/tags
@@ -67,7 +74,8 @@ func (serviceServer) ListAllTags(ctx context.Context, req *proto.ListTagsRequest
 // [GET] ~/tasks/{task=*}/tags
 func (serviceServer) ListTagsFromTask(ctx context.Context, req *proto.ListTagsRequest) (*proto.TagCollection, error) {
 	queryOptions := query.GetListOptionsFromRequest(req)
-	tagList, dbMeta, err := ListTags(queryOptions)
+	taskIDulid, _ := ulid.Parse(req.Task)
+	tagList, dbMeta, err := ListTagsForTask(taskIDulid, queryOptions)
 	if err != nil {
 		return nil, status.Errorf(codes.Unavailable, "Data Error: %s", err)
 	}

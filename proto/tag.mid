@@ -98,7 +98,7 @@
           "name": "AddTagToTask",
           "description": "Tag einem Task hinzufügen",
           "input_type": "AddTagToTaskRequest",
-          "output_type": "TagEntity",
+          "output_type": "TagCollection",
           "options": [
             {
               "name": "google.api.http",

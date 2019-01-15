@@ -15,6 +15,7 @@ var env *environment.Environment
 func Register() {
 	// Env provides the DB Session and maybe some config
 	env = environment.Env
+	env.DB.SetLogging(true)
 }
 
 type Tag struct {
@@ -22,10 +23,54 @@ type Tag struct {
 	Label string    `json:"label,omitempty" db:"label,omitempty"`
 }
 
+type Label struct {
+	TaskId ulid.ULID `json:"id,omitempty" db:"task_id"`
+	TagId  ulid.ULID `json:"id,omitempty" db:"tag_id"`
+}
+
+func AddTagsToTask(tagIds []ulid.ULID, taskId ulid.ULID) ([]*Tag, query.DBMeta, error) {
+	var err error
+	for _, tagID := range tagIds {
+		// add tag task pairs to the labels table
+		err = env.DB.Tx(context.Background(), func(tx sqlbuilder.Tx) error {
+			// tag to tasc assoc table is called labels
+			labels := tx.Collection("labels")
+			label := Label{TaskId: taskId, TagId: tagID}
+			_, err := labels.Insert(label)
+
+			if err != nil {
+				// Rollback the transaction by returning any error.
+				return err
+			}
+			// Commit the transaction by returning nil.
+			return nil
+		})
+	}
+	tagList, dbMeta, err := ListTagsForTask(taskId, query.QueryOptions{})
+	return tagList, dbMeta, err
+}
+
+func ListTagsForTask(taskID ulid.ULID, options query.QueryOptions) ([]*Tag, query.DBMeta, error) {
+
+	fieldSet := query.GetFieldSet()
+	fieldSet.AddField("tag.id", "id")
+	fieldSet.AddField("tag.label", "label")
+
+	q := env.DB.SelectFrom("tag")
+	q = q.Join("labels as l")
+	q = q.On("tag.id = l.tag_id")
+	q = q.Where(db.Cond{"l.task_id": taskID})
+
+	q, meta := query.ApplyRequestOptionsToSelect(q, fieldSet, options)
+
+	var tagList []*Tag
+	err := q.All(&tagList)
+	return tagList, meta, err
+}
+
 func CreateTag(newTag *Tag) (*Tag, error) {
 	// generate an id
 	newTag.Id = uid.GenerateULID()
-
 	err := env.DB.Tx(context.Background(), func(tx sqlbuilder.Tx) error {
 		// Use `tx` like you would normally use `sess` (Env.DB is sess).
 		tags := tx.Collection("tag")

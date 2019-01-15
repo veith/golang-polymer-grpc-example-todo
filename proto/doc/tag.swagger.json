@@ -256,7 +256,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/packageTagEntity"
+              "$ref": "#/definitions/packageTagCollection"
             }
           }
         },

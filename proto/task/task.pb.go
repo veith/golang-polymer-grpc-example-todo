@@ -56,7 +56,7 @@ func (x Complete) String() string {
 	return proto.EnumName(Complete_name, int32(x))
 }
 func (Complete) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_task_a0af0f1564605938, []int{0}
+	return fileDescriptor_task_c5e814f7036d68f8, []int{0}
 }
 
 // Ein einzelner Task
@@ -84,7 +84,7 @@ func (m *Task) Reset()         { *m = Task{} }
 func (m *Task) String() string { return proto.CompactTextString(m) }
 func (*Task) ProtoMessage()    {}
 func (*Task) Descriptor() ([]byte, []int) {
-	return fileDescriptor_task_a0af0f1564605938, []int{0}
+	return fileDescriptor_task_c5e814f7036d68f8, []int{0}
 }
 func (m *Task) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -177,7 +177,7 @@ func (m *TaskEntity) Reset()         { *m = TaskEntity{} }
 func (m *TaskEntity) String() string { return proto.CompactTextString(m) }
 func (*TaskEntity) ProtoMessage()    {}
 func (*TaskEntity) Descriptor() ([]byte, []int) {
-	return fileDescriptor_task_a0af0f1564605938, []int{1}
+	return fileDescriptor_task_c5e814f7036d68f8, []int{1}
 }
 func (m *TaskEntity) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -235,7 +235,7 @@ func (m *TaskCollection) Reset()         { *m = TaskCollection{} }
 func (m *TaskCollection) String() string { return proto.CompactTextString(m) }
 func (*TaskCollection) ProtoMessage()    {}
 func (*TaskCollection) Descriptor() ([]byte, []int) {
-	return fileDescriptor_task_a0af0f1564605938, []int{2}
+	return fileDescriptor_task_c5e814f7036d68f8, []int{2}
 }
 func (m *TaskCollection) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -291,7 +291,7 @@ func (m *CreateTaskRequest) Reset()         { *m = CreateTaskRequest{} }
 func (m *CreateTaskRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateTaskRequest) ProtoMessage()    {}
 func (*CreateTaskRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_task_a0af0f1564605938, []int{3}
+	return fileDescriptor_task_c5e814f7036d68f8, []int{3}
 }
 func (m *CreateTaskRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -340,7 +340,7 @@ func (m *GetTaskRequest) Reset()         { *m = GetTaskRequest{} }
 func (m *GetTaskRequest) String() string { return proto.CompactTextString(m) }
 func (*GetTaskRequest) ProtoMessage()    {}
 func (*GetTaskRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_task_a0af0f1564605938, []int{4}
+	return fileDescriptor_task_c5e814f7036d68f8, []int{4}
 }
 func (m *GetTaskRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -389,7 +389,7 @@ func (m *DeleteTaskRequest) Reset()         { *m = DeleteTaskRequest{} }
 func (m *DeleteTaskRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteTaskRequest) ProtoMessage()    {}
 func (*DeleteTaskRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_task_a0af0f1564605938, []int{5}
+	return fileDescriptor_task_c5e814f7036d68f8, []int{5}
 }
 func (m *DeleteTaskRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -438,7 +438,7 @@ func (m *CompleteTaskRequest) Reset()         { *m = CompleteTaskRequest{} }
 func (m *CompleteTaskRequest) String() string { return proto.CompactTextString(m) }
 func (*CompleteTaskRequest) ProtoMessage()    {}
 func (*CompleteTaskRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_task_a0af0f1564605938, []int{6}
+	return fileDescriptor_task_c5e814f7036d68f8, []int{6}
 }
 func (m *CompleteTaskRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -489,7 +489,7 @@ func (m *UpdateTaskRequest) Reset()         { *m = UpdateTaskRequest{} }
 func (m *UpdateTaskRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateTaskRequest) ProtoMessage()    {}
 func (*UpdateTaskRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_task_a0af0f1564605938, []int{7}
+	return fileDescriptor_task_c5e814f7036d68f8, []int{7}
 }
 func (m *UpdateTaskRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -563,7 +563,7 @@ func (m *ListTaskRequest) Reset()         { *m = ListTaskRequest{} }
 func (m *ListTaskRequest) String() string { return proto.CompactTextString(m) }
 func (*ListTaskRequest) ProtoMessage()    {}
 func (*ListTaskRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_task_a0af0f1564605938, []int{8}
+	return fileDescriptor_task_c5e814f7036d68f8, []int{8}
 }
 func (m *ListTaskRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -2850,9 +2850,9 @@ var (
 	ErrIntOverflowTask   = fmt.Errorf("proto: integer overflow")
 )
 
-func init() { proto.RegisterFile("task.proto", fileDescriptor_task_a0af0f1564605938) }
+func init() { proto.RegisterFile("task.proto", fileDescriptor_task_c5e814f7036d68f8) }
 
-var fileDescriptor_task_a0af0f1564605938 = []byte{
+var fileDescriptor_task_c5e814f7036d68f8 = []byte{
 	// 864 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x54, 0xdd, 0x6e, 0xe3, 0x44,
 	0x14, 0xc6, 0x69, 0xd2, 0x26, 0x27, 0xdb, 0xb4, 0x9d, 0x96, 0xe2, 0xcd, 0x56, 0x4d, 0xe4, 0x65,
