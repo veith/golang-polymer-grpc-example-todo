@@ -98,7 +98,7 @@ func DeleteTag(id ulid.ULID) error {
 }
 
 func GetTag(id ulid.ULID) (*Tag, error) {
-	var tag *Tag
+	tag := &Tag{}
 	tags := env.DB.Collection("tag")
 	res := tags.Find(db.Cond{"id": id})
 	err := res.One(tag)
