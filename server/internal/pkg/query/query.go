@@ -88,8 +88,6 @@ func ApplyRequestOptionsToSelect(q sqlbuilder.Selector, fieldSet FieldSet, optio
 
 	q = q.Columns(requestedFields...)
 
-	q = q.OrderBy(options.Sort)
-
 	limit := int(PaginationDefault)
 	if options.Limit != 0 {
 		limit = int(options.Limit)
@@ -100,7 +98,10 @@ func ApplyRequestOptionsToSelect(q sqlbuilder.Selector, fieldSet FieldSet, optio
 	}
 
 	if options.Sort != "" {
-		q = q.OrderBy(options.Sort)
+		for _, sort := range strings.Split(options.Sort, ",") {
+			q = q.OrderBy(sort)
+		}
+
 	}
 
 	// build meta
